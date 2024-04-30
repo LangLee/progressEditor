@@ -14,7 +14,8 @@
     "@tiptap/pm": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",
     "@tiptap/vue-3": "^2.3.0",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@tiptap/extension-blockquote": "^2.3.0",
