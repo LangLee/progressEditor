@@ -7,6 +7,10 @@ import Book from '@/views/Book.vue'
 const routes = [
     {
         path: '/',
+        redirect: '/login'
+    },
+    {
+        path: '/login',
         component: Login
     },
     {

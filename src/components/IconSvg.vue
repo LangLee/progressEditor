@@ -16,8 +16,8 @@
    
   <style scoped lang="scss">
   .symbol-icon-svg {
-    width: 1em;
-    height: 1em;
+    width: 1.5em;
+    height: 1.5em;
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;

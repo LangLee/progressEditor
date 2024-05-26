@@ -2,114 +2,80 @@
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import StarterKit from '@tiptap/starter-kit'
+import Placeholder from '@tiptap/extension-placeholder'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
-import { defineProps } from "vue"
-import IconSvg from './IconSvg.vue'
+import { TableOfContents } from '@tiptap-pro/extension-table-of-contents'
+import { ref, watch, defineProps, defineComponent } from "vue"
+import Anchor from '@/types/anchor'
+import TableOfContent from './TableOfContent.vue'
+import FMenu from './FMenu.vue'
+import BMenu from './BMenu.vue'
 
+defineComponent({
+  TableOfContent,
+  FMenu,
+  BMenu
+})
 const props = defineProps({
   modelValue: String
 });
 const emits = defineEmits(['update:modelValue']);
+const anchors = ref([]);
 const editor = useEditor({
   content: props.modelValue,
+  editorProps: {
+    attributes: {
+      class: 'prose w-full max-w-full focus:outline-none',
+    },
+  },
   extensions: [
     StarterKit,
     Highlight,
-    Typography
+    Typography,
+    TableOfContents.configure({
+      onUpdate: (content: Array<Anchor>) => {
+        anchors.value = content
+      }
+    }),
+    Placeholder.configure({
+          placeholder: '写点啥...',
+    })
   ],
   onUpdate: ({ editor }) => {
     emits('update:modelValue', editor.getHTML());
   }
 })
+watch(() => props.modelValue, (value) => {
+  const isSame = editor.value.getHTML() === value;
+  // JSON
+  // const isSame = JSON.stringify(editor.getJSON()) === JSON.stringify(value)
+  if (isSame) {
+    return;
+  };
+  editor.value.commands.setContent(value, false);
+})
 </script>
 
 <template>
-  <div v-if="editor" class="me-editor-tool">
-    <button @click="editor.chain().focus().toggleBold().run()"
-      :disabled="!editor.can().chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
-      <IconSvg name="bold"/>
-    </button>
-    <button @click="editor.chain().focus().toggleItalic().run()"
-      :disabled="!editor.can().chain().focus().toggleItalic().run()"
-      :class="{ 'is-active': editor.isActive('italic') }">
-      <IconSvg name="italic"/>
-    </button>
-    <button @click="editor.chain().focus().toggleStrike().run()"
-      :disabled="!editor.can().chain().focus().toggleStrike().run()"
-      :class="{ 'is-active': editor.isActive('strike') }">
-      <IconSvg name="strike-through"/>
-    </button>
-    <button @click="editor.chain().focus().setParagraph().run()" :class="{ 'is-active': editor.isActive('paragraph') }">
-      <IconSvg name="paragraph"/>
-    </button>
-    <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-      :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
-      <IconSvg name="h1"/>
-    </button>
-    <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-      :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
-      <IconSvg name="h2"/>
-    </button>
-    <button @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-      :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
-      <IconSvg name="h3"/>
-    </button>
-    <button @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
-      :class="{ 'is-active': editor.isActive('heading', { level: 4 }) }">
-      <IconSvg name="h4"/>
-    </button>
-    <button @click="editor.chain().focus().toggleHeading({ level: 5 }).run()"
-      :class="{ 'is-active': editor.isActive('heading', { level: 5 }) }">
-      <IconSvg name="h5"/>
-    </button>
-    <button @click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
-      :class="{ 'is-active': editor.isActive('heading', { level: 6 }) }">
-      <IconSvg name="h6"/>
-    </button>
-    <button @click="editor.chain().focus().toggleBulletList().run()"
-      :class="{ 'is-active': editor.isActive('bulletList') }">
-      <IconSvg name="no-order"/>
-    </button>
-    <button @click="editor.chain().focus().toggleOrderedList().run()"
-      :class="{ 'is-active': editor.isActive('orderedList') }">
-      <IconSvg name="order"/>
-    </button>
-    <button @click="editor.chain().focus().toggleCode().run()"
-      :disabled="!editor.can().chain().focus().toggleCode().run()" :class="{ 'is-active': editor.isActive('code') }">
-      <IconSvg name="code-inline"/>
-    </button>
-    <button @click="editor.chain().focus().toggleCodeBlock().run()"
-      :class="{ 'is-active': editor.isActive('codeBlock') }">
-      <IconSvg name="code-block"/>
-    </button>
-    <button @click="editor.chain().focus().toggleBlockquote().run()"
-      :class="{ 'is-active': editor.isActive('blockquote') }">
-      <IconSvg name="block-quote"/>
-    </button>
-    <button @click="editor.chain().focus().setHorizontalRule().run()">
-      <IconSvg name="horizontal-line"/>
-    </button>
-    <button @click="editor.chain().focus().setHardBreak().run()">
-      <IconSvg name="hard-break"/>
-    </button>
-    <button @click="editor.chain().focus().clearNodes().run()">
-      <IconSvg name="clean"/>
-    </button>
-    <!-- <button @click="editor.chain().focus().unsetAllMarks().run()">
-      clear marks
-    </button> -->
-    <button @click="editor.chain().focus().undo().run()" :disabled="!editor.can().chain().focus().undo().run()">
-      <IconSvg name="undo"/>
-    </button>
-    <button @click="editor.chain().focus().redo().run()" :disabled="!editor.can().chain().focus().redo().run()">
-      <IconSvg name="redo"/>
-    </button>
+  <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16 xl: mr-64 xl:pr-16">
+    <FMenu :editor="editor"></FMenu>
+    <BMenu :editor="editor"></BMenu>
+    <editor-content class="h-full" :editor="editor" />
   </div>
-  <editor-content class="me-editor" :editor="editor" />
+  <div id="tableOfContent" class="fixed z-20 top-[3.8125rem] bottom-0 right-[max(0px,calc(50%-45rem))] py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-64 pl-8">
+    <TableOfContent :editor=editor :anchors="anchors" />
+  </div>
 </template>
 <style scoped lang="scss">
-.me-editor-tool {
-  padding-bottom: 0.5rem;
+.me-editor .tiptap {
+  width: 100%;
+  min-height: 8rem;
+}
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #adb5bd;
+  pointer-events: none;
+  height: 0;
 }
 </style>
-

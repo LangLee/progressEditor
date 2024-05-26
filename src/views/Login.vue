@@ -1,10 +1,96 @@
 <template>
-    <div>login</div>
+    <div class="h-screen flex items-center justify-center">
+        <div class="h-80 w-80 p-4 flex flex-col bg-grey-100 rounded-lg shadow-lg">
+            <input class="px-4 py-3 my-2 bg-white text-gray-700 placeholder-gray-400 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="text" v-model="name" placeholder="请输入用户名" />
+            <input class="px-4 py-3 my-2 bg-white text-gray-700 placeholder-gray-400 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="password" v-model="password" placeholder="请输入密码">
+            <button class="py-3 px-4 my-2 bg-blue-400 text-white font-semibold rounded-md shadow-md hover:bg-blue-500"
+                @click="onLogin">登录</button>
+            <button class="py-3 px-4 my-2 bg-red-400 text-white font-semibold rounded-md shadow-md hover:bg-red-500"
+                @click="onRegister">注册</button>
+        </div>
+    </div>
+
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
-
+import { ref } from 'vue'
+import md5 from 'md5'
+import { login, register } from '../api/user'
+import { useRouter } from 'vue-router'
+const name = ref('');
+const password = ref('');
+const router = useRouter();
+const onLogin = () => {
+    console.log(name.value, password.value, md5(password.value));
+    login({ name: name.value, password: md5(password.value) }).then((result) => {
+        console.log(result);
+        if (result && result.data) {
+            if (result.data.success) {
+                console.log('登录成功');
+                let token = result.data.data;
+                // result.data.message && alert(result.data.message);
+                localStorage.setItem('me_token', token);
+                router.push("/books");
+            } else {
+                console.log('登录失败');
+                result.data.message && alert(result.data.message);
+            }
+        } else {
+            console.log('登录失败');
+        }
+    })
+}
+const onRegister = () => {
+    console.log(name.value, password.value, md5(password.value));
+    register({ name: name.value, password: md5(password.value) }).then((result) => {
+        console.log(result);
+        if (result && result.data) {
+            if (result.data.success) {
+                console.log('注册成功');
+            } else {
+                console.log('注册失败');
+            }
+            result.data.message && alert(result.data.message);
+        } else {
+            console.log('注册失败');
+        }
+    })
+}
 </script>
 
 
-<style lang='less' scoped></style>
+<style lang='scss' scoped>
+// .me-form-item {
+//     height: 2rem;
+//     line-height: 1.5;
+//     font-size: 0.875rem;
+// }
+
+// .me-login {
+//     display: flex;
+//     width: 20rem;
+//     height: 20rem;
+//     flex-direction: column;
+//     justify-content: center;
+//     padding: 2rem;
+//     input {
+//         @extend .me-form-item;
+//         border: 1px solid #e1e5eb;
+//         margin-bottom: 0.5rem;
+//         padding: 0 0.5rem;
+//         color: #1a253b;
+//     }
+
+//     button {
+//         @extend .me-form-item;
+//         background-color: #1377eb;
+//         font-size: 1rem;
+//         color: #fff;
+//         border: none;
+//         border-radius: 0.25rem;
+//         outline: none;
+//         box-shadow: 0;
+//     }
+//     button:active {
+//         box-shadow: 1;
+//     }
+// }</style>
