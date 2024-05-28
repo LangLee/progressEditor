@@ -5,7 +5,7 @@ import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import { TableOfContents } from '@tiptap-pro/extension-table-of-contents'
-import { ref, watch, defineProps, defineComponent } from "vue"
+import { watch, defineProps, defineComponent } from "vue"
 import Anchor from '@/types/anchor'
 import TableOfContent from './TableOfContent.vue'
 import FMenu from './FMenu.vue'
@@ -17,10 +17,10 @@ defineComponent({
   BMenu
 })
 const props = defineProps({
-  modelValue: String
+  modelValue: String,
+  anchors: Array<Anchor>
 });
-const emits = defineEmits(['update:modelValue']);
-const anchors = ref([]);
+const emits = defineEmits(['update:modelValue', 'update:anchors']);
 const editor = useEditor({
   content: props.modelValue,
   editorProps: {
@@ -34,11 +34,12 @@ const editor = useEditor({
     Typography,
     TableOfContents.configure({
       onUpdate: (content: Array<Anchor>) => {
-        anchors.value = content
+        emits('update:anchors', content);
       }
     }),
     Placeholder.configure({
-          placeholder: '写点啥...',
+      emptyEditorClass: 'is-editor-empty',
+      placeholder: '写点啥...',
     })
   ],
   onUpdate: ({ editor }) => {
@@ -52,30 +53,27 @@ watch(() => props.modelValue, (value) => {
   if (isSame) {
     return;
   };
-  editor.value.commands.setContent(value, false);
+  editor.value.commands.setContent(value, true);
 })
 </script>
 
 <template>
-  <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16 xl: mr-64 xl:pr-16">
+  <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 pt-10 pb-24 lg:pb-16 xl:mr-64 xl:pr-16">
     <FMenu :editor="editor"></FMenu>
     <BMenu :editor="editor"></BMenu>
     <editor-content class="h-full" :editor="editor" />
   </div>
-  <div id="tableOfContent" class="fixed z-20 top-[3.8125rem] bottom-0 right-[max(0px,calc(50%-45rem))] py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-64 pl-8">
+  <div id="tableOfContent"
+    class="fixed z-20 top-[3.8125rem] bottom-0 right-[max(0px,calc(50%-45rem))] py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-64 pl-8">
     <TableOfContent :editor=editor :anchors="anchors" />
   </div>
 </template>
-<style scoped lang="scss">
-.me-editor .tiptap {
-  width: 100%;
-  min-height: 8rem;
-}
+<style lang="scss">
 .tiptap p.is-editor-empty:first-child::before {
+  color: rgb(203 213 225);
   content: attr(data-placeholder);
   float: left;
-  color: #adb5bd;
-  pointer-events: none;
   height: 0;
+  pointer-events: none;
 }
 </style>

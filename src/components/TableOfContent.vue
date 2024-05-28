@@ -1,15 +1,26 @@
 <template>
-    <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pt-10 pb-6 top-18">
-        <ul class="text-slate-700 text-sm leading-6">
-            <li v-for="item in anchors" key="item.id" :class="`pl-${(item.level-1)*4}`">
-                <a class="block py-1 font-medium hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-                    :href='`#${item.id}`' @click=onItemClick(item)>{{ item.textContent }}</a>
+    <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pb-6 top-18">
+        <ul v-if="anchors && anchors.length>0" class="text-slate-600 text-sm leading-6">
+            <p class="font-semibold text-gray-900 leading-8">概要</p>
+            <li v-for="item in anchors" key="item.id" :class="`pl-${(item.level-1) * 4}`">
+                <a class="block py-1 font-medium hover:text-slate-900"
+                :class="{'text-slate-900': item.isActive}"
+                    :href='`#${item.id}`' @click=onItemClick(item)>
+                    <RemixIcon v-if="item.level>1" name="arrow-right-s-line"/>
+                    {{ item.textContent }}</a>
             </li>
         </ul>
+        <div v-else class="text-slate-300 text-sm">
+            <p>写点啥才能有概要...</p>
+        </div>
     </div>
 </template>
 <script setup>
-import { ref, reactive, defineProps } from 'vue'
+import { ref, reactive, defineProps, defineComponent } from 'vue'
+import RemixIcon from './RemixIcon.vue'
+defineComponent({
+    RemixIcon
+})
 defineProps({
     editor: {
         type: Object,
@@ -19,7 +30,7 @@ defineProps({
     },
     anchors: {
         type: Array,
-        default: () => [{ id: 0, itemIndex: 1, textContent: 'test' }, { id: 1, itemIndex: 2, textContent: 'test1' }, { id: 2, itemIndex: 3, textContent: 'test2' }]
+        default: () => []
     }
 })
 const onItemClick = (item) => {
