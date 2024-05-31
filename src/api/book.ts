@@ -16,7 +16,7 @@ const getBooks = () => {
     });
 }
 const getBookById = (id: String) => {
-    return axios.get("/books/getBookById", {params: {id}}).then((res) => {
+    return axios.get("/books/getBookById", { params: { id } }).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {
@@ -52,7 +52,16 @@ const updateBookTitle = (params: Book) => {
     });
 }
 const removeBook = (id: string) => {
-    return axios.post("/books/removeBook", {id}).then((res) => {
+    return axios.post("/books/removeBook", { id }).then((res) => {
+        if (res && res.data && res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res && res.data && res.data.message);
+        }
+    });
+}
+const searchBook = (key: string) => {
+    return axios.get("/books/searchBook", { params: {key} }).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {
@@ -66,5 +75,6 @@ export {
     createBook,
     updateBook,
     removeBook,
-    updateBookTitle
+    updateBookTitle,
+    searchBook
 }

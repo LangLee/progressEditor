@@ -29,12 +29,13 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import IconSvg from '@/components/IconSvg.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { getBooks, createBook, removeBook, updateBookTitle } from '../api/book'
 
 const router = useRouter();
+const route = useRoute();
 const menuList = ref([{ _id: 0, name: "默认笔记" }]);
 const activeItem = ref('');
 const editing = ref(false);
@@ -70,8 +71,13 @@ onMounted(() => {
     getBooks().then(data => {
         menuList.value = data || [];
     })
-
 })
+watch(()=>route.params.id, (value, oldValue)=>{
+    if (value !== oldValue){
+        console.log('route', route)
+        activeItem.value = value;
+    }
+}, {immediate: true})
 </script>
 
 
