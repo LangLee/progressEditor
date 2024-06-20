@@ -27,11 +27,10 @@ const onLogin = () => {
         console.log(result);
         if (result && result.data) {
             if (result.data.success) {
-                console.log('登录成功');
                 let token = result.data.data;
-                result.data.message && message.success(result.data.message);
+                // result.data.message && message.success(result.data.message);
                 localStorage.setItem('me_token', token);
-                router.push("/books");
+                router.push("/Home");
             } else {
                 console.log('登录失败');
                 result.data.message && message.error(result.data.message);

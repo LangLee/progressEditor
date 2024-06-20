@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import MdEditor from "@/components/editor/Markdown.vue"
-import { defineComponent, ref, watch, onBeforeMount, onBeforeUnmount } from "vue"
+// import MdEditor from "@/components/editor/Markdown.vue"
+import { ref, watch, onBeforeMount, onBeforeUnmount, defineAsyncComponent } from "vue"
 import { useRoute } from "vue-router";
 import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
 import Anchor from "@/types/anchor";
 const route = useRoute();
-defineComponent({
-  MdEditor
-})
+// defineComponent({
+//   MdEditor
+// })
+const currentComponent = ref(null);
 const content = ref('');
 const anchors = ref(Array<Anchor>());
 let previousContent = '';
@@ -38,6 +39,28 @@ const autoSave = () => {
     previousContent = content.value
   })
 }
+const setCurrentComponent = (type)=>{
+  switch(type) {
+    case "markdown": {
+      currentComponent.value = defineAsyncComponent(() =>
+        import('@/components/editor/Markdown.vue')
+      );
+      break;
+    }
+    case "text": {
+      currentComponent.value = defineAsyncComponent(() =>
+        import('@/components/editor/Text.vue')
+      );
+      break;
+    }
+    default: {
+      currentComponent.value = defineAsyncComponent(() =>
+        import('@/components/editor/Markdown.vue')
+      );
+      break;
+    }
+  }
+}
 watch(() => route.params.id, (newVal, oldValue) => {
   if (newVal && newVal !== oldValue) {
     if (typeof(newVal) === 'string') {
@@ -47,6 +70,7 @@ watch(() => route.params.id, (newVal, oldValue) => {
       content.value = data.content || '';
       anchors.value = data.anchors || [];
       previousContent = data.content || "";
+      setCurrentComponent(data.type);
     })
   }
 }, { immediate: true })
@@ -63,7 +87,7 @@ onBeforeMount(() => {
 
 <template>
   <div class="w-full flex">
-    <MdEditor v-model="content" v-model:anchors="anchors" />
+    <component :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
   </div>
 </template>
 

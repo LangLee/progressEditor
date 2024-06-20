@@ -1,10 +1,12 @@
 // 1.引入创建路由需要的组件
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
+import Home from '@/views/Home.vue'
 import Register from '@/views/Register.vue'
 import Books from '@/views/Books.vue'
 import Book from '@/views/Book.vue'
 import Schedule from '@/views/Schedule.vue'
+import Robot from '@/views/Robot.vue'
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -15,6 +17,11 @@ const routes = [
         name: 'login',
         path: '/login',
         component: Login
+    },
+    {
+        name: 'home',
+        path: '/home',
+        component: Home
     },
     {
         name: 'register',
@@ -36,6 +43,11 @@ const routes = [
         name: 'schedule',
         path: '/schedule',
         component: Schedule
+    },
+    {
+        name: 'robot',
+        path: '/robot',
+        component: Robot
     }
 ]
 

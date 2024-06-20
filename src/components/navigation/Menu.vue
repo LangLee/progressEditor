@@ -137,7 +137,6 @@ const onEditBookTitle = (id) => {
     editItem.value = id;
     proxy.$nextTick(() => {
         let titleInput = proxy.$refs.titleInput;
-        console.log(titleInput)
         titleInput && titleInput[0] && titleInput[0].focus();
     })
 }

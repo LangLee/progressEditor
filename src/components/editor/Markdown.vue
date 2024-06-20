@@ -25,7 +25,7 @@ import html from 'highlight.js/lib/languages/xml'
 import { createLowlight } from 'lowlight'
 
 // import FloatingMenu from '@tiptap/extension-floating-menu'
-import { watch, defineProps, defineComponent } from "vue"
+import { watch, defineProps, defineComponent, onBeforeUnmount } from "vue"
 import Anchor from '@/types/anchor'
 import TableOfContent from '../navigation/TableOfContent.vue'
 // import FMenu from '../toolbar/FMenu.vue'
@@ -47,11 +47,15 @@ defineComponent({
 })
 const props = defineProps({
   modelValue: String,
+  editable: {
+    type: Boolean,
+    default: true
+  },
   anchors: Array<Anchor>
 });
 const emits = defineEmits(['update:modelValue', 'update:anchors']);
 const editor = useEditor({
-  editable: true,
+  editable: props.editable,
   content: props.modelValue,
   editorProps: {
     attributes: {
@@ -160,6 +164,15 @@ watch(() => props.modelValue, (value) => {
     return;
   };
   editor.value && editor.value.commands.setContent(value || '', true);
+})
+watch(() => props.editable, (value, oldValue) => {
+    if (value === oldValue) {
+        return;
+    }
+    editor.value && editor.value.setEditable(value)
+})
+onBeforeUnmount(() => {
+    editor.value && editor.value.destroy()
 })
 </script>
 
