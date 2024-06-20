@@ -83,7 +83,7 @@
 </template>
 <script setup>
 import { ref, reactive, defineProps, defineComponent } from 'vue'
-import IconSvg from './IconSvg.vue'
+import IconSvg from '../common/IconSvg.vue'
 import { BubbleMenu } from '@tiptap/vue-3';
 defineComponent({
   BubbleMenu,

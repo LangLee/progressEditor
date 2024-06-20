@@ -98,7 +98,7 @@
 </template>
 <script setup>
 import { ref, reactive, defineProps, defineComponent } from 'vue'
-import RemixIcon from './RemixIcon.vue'
+import RemixIcon from '../common/RemixIcon.vue'
 import { FloatingMenu } from '@tiptap/vue-3';
 defineComponent({
   FloatingMenu,

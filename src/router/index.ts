@@ -1,6 +1,7 @@
 // 1.引入创建路由需要的组件
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
 import Books from '@/views/Books.vue'
 import Book from '@/views/Book.vue'
 import Schedule from '@/views/Schedule.vue'
@@ -11,10 +12,17 @@ const routes = [
         redirect: '/login'
     },
     {
+        name: 'login',
         path: '/login',
         component: Login
     },
     {
+        name: 'register',
+        path: '/register',
+        component: Register
+    },
+    {
+        name: 'books',
         path: '/books',
         component: Books,
         children: [
@@ -25,6 +33,7 @@ const routes = [
         ]
     },
     {
+        name: 'schedule',
         path: '/schedule',
         component: Schedule
     }

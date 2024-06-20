@@ -14,14 +14,14 @@
             </button>
         </div>
     </div>
-    <SearchModal v-model:visible="searching">
+    <SearchModal v-if="searching" v-model:visible="searching">
         <span>这是一个测试</span>
     </SearchModal>
 </template>
 <script setup>
 import { ref, reactive, onBeforeMount, onBeforeUnmount } from 'vue'
-import RemixIcon from './RemixIcon.vue';
-import SearchModal from './SearchModal.vue'
+import RemixIcon from '../common/RemixIcon.vue';
+import SearchModal from '../feedback/SearchModal.vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const searching = ref(false);

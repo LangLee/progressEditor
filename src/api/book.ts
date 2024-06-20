@@ -1,13 +1,7 @@
 import axios from "axios";
-interface Book {
-    title: String,
-    author: String,
-    description: String,
-    image: String,
-    content: String
-}
-const getBooks = () => {
-    return axios.get("/books/getBooks").then((res) => {
+import Book from "@/types/book"
+const getBooks = (params: Object) => {
+    return axios.get("/books/getBooks", {params}).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {

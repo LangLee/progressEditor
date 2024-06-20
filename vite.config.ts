@@ -6,10 +6,16 @@ import autoprefixer from 'autoprefixer'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  base: './',
   resolve: {
     alias: {
       '@': '/src',
     },
+  },
+  css: {
+    postcss: {
+      plugins: [tailwindcss, autoprefixer]
+    }
   },
   // server: {
   //   proxy: {
@@ -23,9 +29,17 @@ export default defineConfig({
   //     }
   //   }
   // },
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer]
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('@tiptap')) {
+            return 'tiptap';
+          } else if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
+      }
     }
   }
 })

@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pb-6 top-18">
-        <ul v-if="anchors && anchors.length>0" class="text-slate-600 text-sm leading-6">
+        <ul v-if="anchors && anchors.length>0" class="text-slate-600 text-sm leading-6 px-4">
             <p class="font-semibold text-gray-900 leading-8">概要</p>
-            <li v-for="item in anchors" key="item.id" :class="`pl-${(item.level-1) * 4}`">
+            <li v-for="item in anchors" key="item.id" :class="`pl-${item.level * 4} border-l-2`">
                 <a class="block py-1 font-medium hover:text-slate-900"
                 :class="{'text-slate-900': item.isActive}"
                     :href='`#${item.id}`' @click=onItemClick(item)>
@@ -17,7 +17,7 @@
 </template>
 <script setup>
 import { ref, reactive, defineProps, defineComponent } from 'vue'
-import RemixIcon from './RemixIcon.vue'
+import RemixIcon from '../common/RemixIcon.vue'
 defineComponent({
     RemixIcon
 })

@@ -17,6 +17,7 @@ import { ref } from 'vue'
 import md5 from 'md5'
 import { login, register } from '../api/user'
 import { useRouter } from 'vue-router'
+import message from '../components/feedback/message'
 const name = ref('');
 const password = ref('');
 const router = useRouter();
@@ -28,33 +29,20 @@ const onLogin = () => {
             if (result.data.success) {
                 console.log('登录成功');
                 let token = result.data.data;
-                // result.data.message && alert(result.data.message);
+                result.data.message && message.success(result.data.message);
                 localStorage.setItem('me_token', token);
                 router.push("/books");
             } else {
                 console.log('登录失败');
-                result.data.message && alert(result.data.message);
+                result.data.message && message.error(result.data.message);
             }
         } else {
-            console.log('登录失败');
+            result.data.message && message.error('登录失败');
         }
     })
 }
 const onRegister = () => {
-    console.log(name.value, password.value, md5(password.value));
-    register({ name: name.value, password: md5(password.value) }).then((result) => {
-        console.log(result);
-        if (result && result.data) {
-            if (result.data.success) {
-                console.log('注册成功');
-            } else {
-                console.log('注册失败');
-            }
-            result.data.message && alert(result.data.message);
-        } else {
-            console.log('注册失败');
-        }
-    })
+    router.push('register');
 }
 </script>
 
