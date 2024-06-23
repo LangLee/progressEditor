@@ -1,6 +1,7 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 let baseUrl = BASE_URL || window.location.origin;
+import message from '@/components/feedback/message'
 export default function initialize(logout: Function) {
     // 添加请求拦截器  
     axios.interceptors.request.use(function (config) {
@@ -36,9 +37,10 @@ export default function initialize(logout: Function) {
         }
     }, function (error) {
         // 对响应错误做点什么  
-        if (error.response.status === 401) {
+        if (error.response && error.response.status === 401) {
             logout();
         }
+        // message.error(error.message);
         return Promise.reject(error);
     });
 }

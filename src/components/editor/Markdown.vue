@@ -29,7 +29,7 @@ import { watch, defineProps, defineComponent, onBeforeUnmount } from "vue"
 import Anchor from '@/types/anchor'
 import TableOfContent from '../navigation/TableOfContent.vue'
 // import FMenu from '../toolbar/FMenu.vue'
-import BMenu from '../toolbar/BMenu.vue'
+import BubbleMenu from '../toolbar/BubbleMenu.vue'
 
 import Commands from './extend/commands'
 import suggestion from './extend/suggestion'
@@ -43,7 +43,7 @@ lowlight.register({ html, css, js, ts });
 defineComponent({
   TableOfContent,
   // FMenu,
-  BMenu
+  BubbleMenu
 })
 const props = defineProps({
   modelValue: String,
@@ -179,7 +179,7 @@ onBeforeUnmount(() => {
 <template>
   <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10 xl:mr-80">
     <!-- <FMenu :editor="editor"></FMenu> -->
-    <BMenu :editor="editor"></BMenu>
+    <BubbleMenu :editor="editor"></BubbleMenu>
     <editor-content class="h-full" :editor="editor" />
   </div>
   <div id="tableOfContent"

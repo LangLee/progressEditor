@@ -19,7 +19,9 @@
                         <span>{{ group.name }}</span>
                         <span v-if="!group.readonly && (!group.books || group.books.length <= 0)"
                             class="font-sans text-xs text-blue-300 hover:text-blue-400 ml-4 cursor-pointer"
-                            @click="onRemoveGroup(group, index)">删除</span>
+                            @click="onRemoveGroup(group, index)">
+                            删除
+                        </span>
                     </div>
                     <ul class="ml-3">
                         <li v-for="(book, idx) in group.books" :key="book.id">
@@ -27,12 +29,20 @@
                                 type="text" v-model="book.title" @keyup.enter="onUpdateBook(book)" />
                             <a v-else href="#" @click="onMenuChange(book)" @dblclick="onEditBookTitle(book.id)"
                                 class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900">
-                                <span v-if="book.id === activeItem"
-                                    class="rounded-md absolute inset-0 bg-blue-300"></span>
-                                    <tippy placement="top-start">
-                                        <span class="relative block text-base text-ellipsis whitespace-nowrap overflow-hidden">{{ book.title }}</span>
-                                        <template #content><span class="p-2 bg-slate-700 text-white text-sm rounded shadow-md">{{ book.title }}</span></template>
-                                    </tippy>
+                                <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
+                                </span>
+                                <!-- <span class="inline-block">M</span> -->
+                                <tippy placement="top-start">
+                                    <span
+                                        class="relative inline-block text-base text-ellipsis whitespace-nowrap overflow-hidden">
+                                        {{ book.title }}
+                                    </span>
+                                    <template #content>
+                                        <span class="p-2 bg-slate-700 text-white text-sm rounded shadow-md">
+                                            {{ book.title }}
+                                        </span>
+                                    </template>
+                                </tippy>
                             </a>
                             <div v-if="book.id === activeItem"
                                 class="font-sans text-xs text-blue-300 hover:text-blue-400 mx-4 py-1">
@@ -44,7 +54,8 @@
                 </li>
             </ul>
         </nav>
-        <BookModal v-if="!!editBook" :title="`${editBook && editBook.isNew?'新增': '编辑'}书籍`" :visible="!!editBook" @confirm="finishEditBook" @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
+        <BookModal v-if="!!editBook" :title="`${editBook && editBook.isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook"
+            @confirm="finishEditBook" @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
     </div>
 </template>
 <script setup>
@@ -122,14 +133,14 @@ const finishEditBook = () => {
         onUpdateBook(editBook.value)
     }
 }
-const closeModal = ()=>{
+const closeModal = () => {
     editBook.value = null;
 }
 const onRemoveBook = (books, index) => {
     removeBook(activeItem.value).then(() => {
         books.splice(index, 1);
         let activeIdx = books && books.length > index ? index : books.length - 1;
-        onMenuChange(activeIdx<0?null:books[activeIdx]);
+        onMenuChange(activeIdx < 0 ? null : books[activeIdx]);
         message.success("删除书籍成功!")
     })
 }
@@ -146,7 +157,7 @@ const onEditBook = (book) => {
     editBook.value = book;
 }
 const onUpdateBook = (book) => {
-    updateBookTitle({...book, category: book.category === "default"?"":book.category}).then((data) => {
+    updateBookTitle({ ...book, category: book.category === "default" ? "" : book.category }).then((data) => {
         if (editItem.value !== book.category) {
             // 移动书籍到新的分组下
         }

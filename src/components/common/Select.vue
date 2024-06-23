@@ -1,5 +1,4 @@
 <template>
-
     <div
         class="flex w-full p-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
         <div class="flex-1 pr-4">
@@ -21,6 +20,7 @@
 
 </template>
 <script setup>
+
 import { ref, reactive, watch, defineProps, defineEmits } from 'vue'
 import RemixIcon from './RemixIcon.vue';
 const dropdown = ref()
@@ -36,25 +36,19 @@ const props = defineProps({
     }
 })
 const emits = defineEmits(['update:value'])
-let showValue;
-props.options.map(({ value, label }) => {
-    if (props.value === value) {
-        showValue = label;
-    }
-})
-const display = ref(showValue)
+const display = ref('')
 const selectItem = (item) => {
     display.value = item.label;
     emits('update:modelValue', item.value);
     dropdown.value.hide();
 }
-watch(() => props.modelValue, (newVal, oldVal) => {
+watch(() => props.modelValue, (newVal) => {
     props.options.map(({ value, label }) => {
         if (newVal === value) {
             display.value = label;
         }
     })
-})
+}, {immediate: true})
 </script>
 
 

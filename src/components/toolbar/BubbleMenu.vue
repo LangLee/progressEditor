@@ -94,22 +94,46 @@
         <RemixIcon name="text-wrap" />
       </div>
     </div>
+    <div class="flex flex-row flex-wrap">
+      <div class="m-1 px-1 rounded-sm shadow bg-gray-50 hover:bg-gray-300 cursor-pointer"
+        @mousedown="onTranslate">
+        <RemixIcon name="translate" />
+      </div>
+    </div>
   </BubbleMenu>
 </template>
 <script setup>
-import { ref, reactive, defineProps, defineComponent } from 'vue'
+import { ref, reactive, defineProps, defineComponent, onMounted, proxyRefs } from 'vue'
 import RemixIcon from '../common/RemixIcon.vue'
 import { BubbleMenu } from '@tiptap/vue-3';
+import {getYouDaoAiTranslate} from "@/api/ai"
+import message from '../feedback/message';
 defineComponent({
   BubbleMenu,
   RemixIcon
 })
-defineProps({
+const props = defineProps({
   editor: {
     type: Object,
     default: null
   }
 })
+const onTranslate = ()=>{
+  let {doc, selection} = props.editor?.view?.state || {};
+  let {from, to} = selection || {};
+  let text = doc.textBetween(selection.from, selection.to, '\n');
+  if (from === to || !text) {
+    message.warning("请选择要翻译的文本！")
+  }
+  const reg = new RegExp(/^[a-zA-Z]+$/);
+  const isEnglish = reg.test(text);
+  getYouDaoAiTranslate({query: text, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS": "en"}).then((data) => {
+    if (data !== text) {
+      // 在翻译单词后插入翻译结果
+      props.editor.commands.insertContentAt(to, `<em>[翻译：${data}]</em>`);
+    }
+  })
+}
 </script>
 
 

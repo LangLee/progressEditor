@@ -32,7 +32,7 @@ const onFinishSearch = () => {
     searching.value = false;
 }
 const goHome = () => {
-    router.push('/schedule')
+    router.push('/home')
 }
 const handleKeyDown = (event) => {
     if (event.key === 'k' && event.metaKey) {
