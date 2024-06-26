@@ -8,12 +8,12 @@
 
 @font-face {
     font-family: "remixicon";
-    src: url('remixicon.eot?t=1719042510943'); /* IE9*/
-    src: url('remixicon.eot?t=1719042510943#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url("remixicon.woff2?t=1719042510943") format("woff2"),
-    url("remixicon.woff?t=1719042510943") format("woff"),
-    url('remixicon.ttf?t=1719042510943') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-    url('remixicon.svg?t=1719042510943#remixicon') format('svg'); /* iOS 4.1- */
+    src: url('remixicon.eot?t=1719310761534'); /* IE9*/
+    src: url('remixicon.eot?t=1719310761534#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url("remixicon.woff2?t=1719310761534") format("woff2"),
+    url("remixicon.woff?t=1719310761534") format("woff"),
+    url('remixicon.ttf?t=1719310761534') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('remixicon.svg?t=1719310761534#remixicon') format('svg'); /* iOS 4.1- */
     font-display: swap;
 }
 
@@ -110,3 +110,22 @@
 .ri-arrow-left-right-line:before { content: "\ea62"; }
 .ri-rocket-fill:before { content: "\f095"; }
 .ri-rocket-line:before { content: "\f096"; }
+.ri-add-line:before { content: "\ea13"; }
+.ri-user-settings-line:before { content: "\f26e"; }
+.ri-user-settings-fill:before { content: "\f26d"; }
+.ri-tools-fill:before { content: "\f21a"; }
+.ri-settings-5-fill:before { content: "\f0e9"; }
+.ri-settings-5-line:before { content: "\f0ea"; }
+.ri-code-box-fill:before { content: "\eba6"; }
+.ri-code-box-line:before { content: "\eba7"; }
+.ri-vuejs-fill:before { content: "\f2a5"; }
+.ri-reactjs-line:before { content: "\f058"; }
+.ri-tailwind-css-fill:before { content: "\f517"; }
+.ri-zhihu-line:before { content: "\f2d9"; }
+.ri-stack-overflow-line:before { content: "\f183"; }
+.ri-meta-fill:before { content: "\f342"; }
+.ri-openai-fill:before { content: "\f34a"; }
+.ri-ie-fill:before { content: "\ee42"; }
+.ri-chrome-fill:before { content: "\eb8c"; }
+.ri-baidu-fill:before { content: "\ea8b"; }
+.ri-alipay-fill:before { content: "\ea2b"; }

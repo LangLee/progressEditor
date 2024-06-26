@@ -9,6 +9,7 @@ import Schedule from '@/views/Schedule.vue'
 import Robot from '@/views/Robot.vue'
 import Translation from '@/views/Translation.vue'
 import Portals from '@/views/Portals.vue'
+import Coding from '@/views/Coding.vue'
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -60,6 +61,11 @@ const routes = [
         name: 'portals',
         path: '/portals',
         component: Portals
+    },
+    {
+        name: 'coding',
+        path: '/coding',
+        component: Coding
     }
 ]
 

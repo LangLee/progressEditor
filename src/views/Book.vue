@@ -53,6 +53,12 @@ const setCurrentComponent = (type)=>{
       );
       break;
     }
+    case "code": {
+      currentComponent.value = defineAsyncComponent(() =>
+        import('@/components/editor/Code.vue')
+      );
+      break;
+    }
     default: {
       currentComponent.value = defineAsyncComponent(() =>
         import('@/components/editor/Markdown.vue')
@@ -86,7 +92,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="w-full flex">
+  <div class="w-full h-full flex">
     <component :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
   </div>
 </template>

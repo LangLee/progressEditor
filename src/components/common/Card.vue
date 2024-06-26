@@ -1,8 +1,8 @@
 <template>
-    <a class="w-24 lg:w-28 p-2 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
-        :class="`text-${theme}-400 hover:text-${theme}-700`" href="javascript:void(0);" @click="openBook">
-        <RemixIcon class="text-2xl lg:text-4xl" :name="book.icon || 'book-2-line'"></RemixIcon>
-        <span class="text-sm lg:text-basic break-all text-center">{{ book.title }}</span>
+    <a class="w-24 h-24 lg:w-28 lg:h-28 p-2 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
+        :class="`text-${theme}-400 hover:text-${theme}-700`" href="javascript:void(0);" @click="open">
+        <RemixIcon class="text-3xl lg:text-4xl mb-1 lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
+        <span class="text-sm lg:text-basic break-all text-center">{{ modelValue.title }}</span>
     </a>
     <!-- 预加载主题颜色 -->
     <span v-if="false"
@@ -10,12 +10,12 @@
     </span>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter();
 const props = defineProps({
-    book: {
+    modelValue: {
         type: Object,
         default: () => {
             return {}
@@ -24,17 +24,20 @@ const props = defineProps({
     theme: {
         type: String,
         default: 'purple',
-        validator(value) {
+        validator(value: string) {
             return ['slate', 'purple', 'blue', 'green', 'red', 'yellow', 'sky', 'orange', 'pink'].includes(value)
         }
     }
 })
-const openBook = () => {
-    if (!props.book) return;
-    if (props.book.inner) {
-        router.push(props.book.url);
+const emits = defineEmits(['update:modelValue', 'cardClick']);
+const open = () => {
+    if (!props.modelValue || !props.modelValue.url) {
+        // 跳转链接为空
+        emits('cardClick');
+    } else if (props.modelValue.inner) {
+        router.push(props.modelValue.url);
     } else {
-        window.open(props.book.url, '_blank')
+        window.open(props.modelValue.url, '_blank')
     }
 }
 </script>

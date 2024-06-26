@@ -1,19 +1,26 @@
 <template>
     <Modal v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
-        <input class="p-2 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="text" v-model="book.title" placeholder="请输入书名" />
-        <ProSelect v-model="book.category" :options="categoryOptions"></ProSelect>
-        <div class="flex flex-row my-2 p-2">
-            <span v-for="(type, index) in Object.keys(types)" :key="index" class="mr-2 text-base">
-            <span class="mr-2" ><input :id="type" :value="type" type="radio" v-model="book.type" /></span>
-            <span :for="type">{{ types[type] }}</span>
-        </span>
+        <input
+            class="p-2 mb-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            type="text" v-model="book.title" placeholder="请输入书名" />
+        <ProSelect class="my-2" v-model="book.category" :options="categoryOptions"></ProSelect>
+        <input v-if="link"
+            class="p-2 mb-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            type="text" v-model="book.url" placeholder="请输入链接(http://www.xxxx.com)" />
+        <div v-else class="flex flex-row flex-wrap px-2">
+            <span v-for="(type, index) in Object.keys(types)" :key="index" class="mr-2 mb-2 text-base">
+                <span class="mr-2">
+                    <input :id="type" :value="type" type="radio" v-model="book.type" />
+                </span>
+                <label :for="type">{{ types[type] }}</label>
+            </span>
         </div>
     </Modal>
 </template>
 <script setup>
 import { ref, reactive, defineProps, watch, computed } from 'vue'
 import Modal from './Modal.vue'
-import {Classification} from '@/types/enum'
+import { Classification } from '@/types/enum'
 import ProSelect from '../common/Select.vue'
 const props = defineProps({
     visible: {
@@ -41,10 +48,14 @@ const props = defineProps({
         default: () => {
             return Classification
         }
+    },
+    link: {
+        type: Boolean,
+        default: false
     }
 })
-const categoryOptions = computed(()=>{
-    return props.categories.map(category=>{
+const categoryOptions = computed(() => {
+    return props.categories.map(category => {
         return {
             label: category.name,
             value: category.id
@@ -53,18 +64,16 @@ const categoryOptions = computed(()=>{
 })
 const emits = defineEmits(['update:book', 'confirm', 'cancel']);
 const visibleState = ref(props.visible)
-const confirm= ()=>{
+const confirm = () => {
     emits('confirm')
     visibleState.value = false;
 }
-const cancel = ()=>{
+const cancel = () => {
     emits('cancel')
     visibleState.value = false;
 }
-watch(()=>props.visible, ()=>{
+watch(() => props.visible, () => {
     visibleState.value = props.visible
 })
 </script>
-<style lang='scss' scoped>
-
-</style>
+<style lang='scss' scoped></style>

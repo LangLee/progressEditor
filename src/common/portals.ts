@@ -54,6 +54,15 @@ const groups = [
                 url: "https://github.com/windicss/vite-plugin-windicss"
             }
         ]
+    }, {
+        id: '4',
+        name: "开发语言",
+        books: [
+            {
+                title: "mongodb",
+                url: "https://mongoosejs.net/docs/guide"
+            }
+        ]
     }
 ];
 export default groups;

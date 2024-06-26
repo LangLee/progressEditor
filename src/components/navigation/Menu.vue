@@ -168,6 +168,9 @@ const onUpdateBook = (book) => {
 onMounted(() => {
     getGroupAndBooks().then(data => {
         groups.value = data || [];
+        if (groups.value[0] && groups.value[0].books && groups.value[0].books[0]) {
+            onMenuChange(groups.value[0].books[0]);
+        }
     })
 })
 watch(() => route.params.id, (value, oldValue) => {

@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen flex items-center justify-center">
-        <div class="h-80 w-80 p-4 flex flex-col bg-slate-50 rounded-lg shadow-md">
+        <div class="h-80 w-80 p-4 flex flex-col bg-transparent rounded-lg shadow-md">
             <span class="font-sans font-semibold text-3xl leading-10 text-slate-300">I Want Progress</span>
             <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="text" v-model="name" placeholder="请输入用户名" />
             <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="password" v-model="password" placeholder="请输入密码">
@@ -13,14 +13,16 @@
 
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
 import md5 from 'md5'
 import { login, register } from '../api/user'
 import { useRouter } from 'vue-router'
 import message from '../components/feedback/message'
+import Stars from '@/common/starts'
 const name = ref('');
 const password = ref('');
 const router = useRouter();
+let starsInstance = null;
 const onLogin = () => {
     console.log(name.value, password.value, md5(password.value));
     login({ name: name.value, password: md5(password.value) }).then((result) => {
@@ -30,7 +32,7 @@ const onLogin = () => {
                 let token = result.data.data;
                 // result.data.message && message.success(result.data.message);
                 localStorage.setItem('me_token', token);
-                router.push("/Home");
+                router.push("/home");
             } else {
                 console.log('登录失败');
                 result.data.message && message.error(result.data.message);
@@ -43,6 +45,14 @@ const onLogin = () => {
 const onRegister = () => {
     router.push('register');
 }
+onBeforeMount(() => {
+    starsInstance = new Stars();
+    starsInstance.animate();
+})
+onBeforeUnmount(() => {
+    starsInstance.canvas.remove();
+    starsInstance = null;
+})
 </script>
 
 

@@ -1,7 +1,16 @@
 import axios from "axios";
 import Group from "@/types/group"
-const getGroupAndBooks = (params: Object) => {
-    return axios.get("/groups/getGroupAndBooks", {params}).then((res) => {
+const getPortalAndBooks = () => {
+    return axios.get("/groups/getPortalAndBooks").then((res) => {
+        if (res && res.data && res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res && res.data && res.data.message);
+        }
+    });
+}
+const getGroupAndBooks = () => {
+    return axios.get("/groups/getGroupAndBooks").then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {
@@ -37,6 +46,7 @@ const removeGroup = (id: string) => {
     });
 }
 export {
+    getPortalAndBooks,
     getGroupAndBooks,
     createGroup,
     updateGroup,

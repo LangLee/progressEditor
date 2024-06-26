@@ -1,11 +1,11 @@
 import Book from "./book";
 
 interface Group {
-  id: string;
+  id?: string;
   name?: string;
   description?: string;
   createTime?: string;
-  children?: Book[];
+  books?: Book[];
   readonly?: boolean;
 }
 
