@@ -33,7 +33,8 @@ const props = defineProps({
             return {
                 id: '',
                 title: '',
-                category: ''
+                category: '',
+                url: ''
             }
         }
     },

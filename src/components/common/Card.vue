@@ -1,8 +1,15 @@
 <template>
-    <a class="w-24 h-24 lg:w-28 lg:h-28 p-2 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
-        :class="`text-${theme}-400 hover:text-${theme}-700`" href="javascript:void(0);" @click="open">
+    <a class="relative w-24 h-24 lg:w-28 lg:h-28 p-2 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
+        :class="`text-${theme}-400 hover:text-${theme}-700`" href="javascript:void(0);" @click="open"
+        @mouseover="onMouseover" @mouseleave="onMouseleave">
         <RemixIcon class="text-3xl lg:text-4xl mb-1 lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
         <span class="text-sm lg:text-basic break-all text-center">{{ modelValue.title }}</span>
+        <div v-if="editable && active" class="absolute bottom-0 left-0 right-0 z-10 bg-slate-300/10 flex justify-center py-2 text-xl backdrop-blur-lg">
+            <RemixIcon class="mx-1" :class="`text-${theme}-400 hover:text-${theme}-700`"
+                name="edit-line" @click.stop="edit"></RemixIcon>
+            <RemixIcon class="mx-1" :class="`text-${theme}-400 hover:text-${theme}-700`"
+                name="delete-bin-line" @click.stop="remove"></RemixIcon>
+        </div>
     </a>
     <!-- 预加载主题颜色 -->
     <span v-if="false"
@@ -10,7 +17,7 @@
     </span>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter();
@@ -27,18 +34,38 @@ const props = defineProps({
         validator(value: string) {
             return ['slate', 'purple', 'blue', 'green', 'red', 'yellow', 'sky', 'orange', 'pink'].includes(value)
         }
+    },
+    editable: {
+        type: Boolean,
+        default: false
     }
 })
-const emits = defineEmits(['update:modelValue', 'cardClick']);
+const active = ref(false);
+const emits = defineEmits(['update:modelValue', 'cardClick', 'edit', 'remove']);
 const open = () => {
     if (!props.modelValue || !props.modelValue.url) {
         // 跳转链接为空
         emits('cardClick');
     } else if (props.modelValue.inner) {
-        router.push(props.modelValue.url);
+        router.push({path: props.modelValue.url, query: {appId: props.modelValue._id}});
     } else {
         window.open(props.modelValue.url, '_blank')
     }
+}
+const edit = () => {
+    if (!props.editable) {
+        return;
+    }
+    emits('edit', props.modelValue);
+}
+const remove = () => {
+    emits('remove', props.modelValue);
+}
+const onMouseover = () => {
+    active.value = true;
+}
+const onMouseleave = () => {
+    active.value = false;
 }
 </script>
 

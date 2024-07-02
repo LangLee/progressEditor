@@ -27,7 +27,7 @@ import { ref, reactive } from 'vue'
     height: 100%;
     border-radius: 0.25rem;
     margin: 0 0.25rem;
-    background: rgb(233 213 255);
+    background: rgb(219 234 254);
     animation: load 1s ease infinite;
 }
 @keyframes load {
@@ -35,23 +35,23 @@ import { ref, reactive } from 'vue'
     100% {
         height: 4rem;
         margin: 0 0.25rem;
-        background-color: rgb(233 213 255);
+        background-color: rgb(219 234 254);
     }
 
     20% {
         height: 1rem;
         margin: 1.5rem 0.25rem;
-        background-color: rgb(192 132 252);
+        background-color: rgb(147 197 253);
     }
     40% {
         height: 2rem;
         margin: 1rem 0.25rem;
-        background-color: rgb(147 51 234);
+        background-color: rgb(59 130 246);
     }
     80% {
         height: 3rem;
         margin: 0.5rem 0.25rem;
-        background-color: rgb(107 33 168);
+        background-color: rgb(29 78 216);
     }
 }
 

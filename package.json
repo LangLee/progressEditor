@@ -13,6 +13,7 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@floating-ui/vue": "^1.1.0",
     "@tailwindcss/typography": "^0.5.13",
     "@tiptap-pro/extension-file-handler": "^2.8.9",
     "@tiptap-pro/extension-table-of-contents": "^2.8.7",

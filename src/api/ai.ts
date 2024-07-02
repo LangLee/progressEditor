@@ -2,8 +2,7 @@ import axios from "axios";
 
 // 百度千帆
 export const getQianFanAiChart = (messages, question)=>{
-    messages = [...messages, {role: 'user', content: question}]
-    return axios.post("/ai/getQianFanAiChart", {messages}).then((res) => {
+    return axios.post("/ai/getQianFanAiChart", {messages, question}).then((res) => {
         if (res.data && res.data.success) {
             return res.data.data && res.data.data.result;
         } else {
@@ -25,9 +24,29 @@ export const getTongYiAiChart = (messages, question)=>{
 export const getYouDaoAiTranslate = (params)=>{
     return axios.post("/ai/getYouDaoAiTranslate", params).then((res) => {
         if (res.data && res.data.success) {
-            return res.data.data && res.data.data[0];
+            return res.data.data && res.data.data;
         } else {
             return Promise.reject(res.data && res.data.message);
+        }
+    });
+}
+//有道词典
+export const getYouDaoAiDict = (params)=>{
+    return axios.post("/ai/getYouDaoAiDict", params).then((res) => {
+        if (res.data && res.data.success) {
+            return res.data.data && res.data.data;
+        } else {
+            return Promise.reject(res.data && res.data.message);
+        }
+    });
+}
+//月之暗面
+export const getMoonshotAiChart = (messages, question)=>{
+    return axios.post("/ai/getMoonshotAiChart", {messages, question}).then((res) => {
+        if (res?.data?.success) {
+            return res?.data?.data;
+        } else {
+            return Promise.reject(res?.data?.message);
         }
     });
 }

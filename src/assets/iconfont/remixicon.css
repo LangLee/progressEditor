@@ -8,12 +8,12 @@
 
 @font-face {
     font-family: "remixicon";
-    src: url('remixicon.eot?t=1719310761534'); /* IE9*/
-    src: url('remixicon.eot?t=1719310761534#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url("remixicon.woff2?t=1719310761534") format("woff2"),
-    url("remixicon.woff?t=1719310761534") format("woff"),
-    url('remixicon.ttf?t=1719310761534') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-    url('remixicon.svg?t=1719310761534#remixicon') format('svg'); /* iOS 4.1- */
+    src: url('remixicon.eot?t=1719724734036'); /* IE9*/
+    src: url('remixicon.eot?t=1719724734036#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url("remixicon.woff2?t=1719724734036") format("woff2"),
+    url("remixicon.woff?t=1719724734036") format("woff"),
+    url('remixicon.ttf?t=1719724734036') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('remixicon.svg?t=1719724734036#remixicon') format('svg'); /* iOS 4.1- */
     font-display: swap;
 }
 
@@ -129,3 +129,20 @@
 .ri-chrome-fill:before { content: "\eb8c"; }
 .ri-baidu-fill:before { content: "\ea8b"; }
 .ri-alipay-fill:before { content: "\ea2b"; }
+.ri-edit-line:before { content: "\ec86"; }
+.ri-edit-fill:before { content: "\ec85"; }
+.ri-delete-bin-line:before { content: "\ec2a"; }
+.ri-menu-fold-line:before { content: "\ef3d"; }
+.ri-menu-unfold-line:before { content: "\ef40"; }
+.ri-menu-line:before { content: "\ef3e"; }
+.ri-volume-up-line:before { content: "\f2a2"; }
+.ri-volume-down-line:before { content: "\f29c"; }
+.ri-file-copy-2-line:before { content: "\ecd3"; }
+.ri-clipboard-line:before { content: "\eb91"; }
+.ri-javascript-line:before { content: "\f33b"; }
+.ri-javascript-fill:before { content: "\f33a"; }
+.ri-user-voice-line:before { content: "\f27a"; }
+.ri-user-voice-fill:before { content: "\f279"; }
+.ri-user-smile-line:before { content: "\f274"; }
+.ri-user-2-line:before { content: "\f254"; }
+.ri-user-2-fill:before { content: "\f253"; }

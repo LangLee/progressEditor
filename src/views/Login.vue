@@ -1,13 +1,26 @@
 <template>
     <div class="h-screen flex items-center justify-center">
         <div class="h-80 w-80 p-4 flex flex-col bg-transparent rounded-lg shadow-md">
-            <span class="font-sans font-semibold text-3xl leading-10 text-slate-300">I Want Progress</span>
-            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="text" v-model="name" placeholder="请输入用户名" />
-            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="password" v-model="password" placeholder="请输入密码">
-            <button class="py-3 px-4 my-2 bg-blue-400 text-white font-semibold rounded-md shadow-md hover:bg-blue-500"
-                @click="onLogin">登录</button>
-            <button class="py-3 px-4 my-2 bg-red-400 text-white font-semibold rounded-md shadow-md hover:bg-red-500"
-                @click="onRegister">注册</button>
+            <span class="font-sans font-normal lg:font-semibold text-2xl lg:text-3xl leading-10 text-slate-500">
+                I Want Progress
+            </span>
+            <input
+                class="px-4 py-3 my-2 bg-transparent text-slate-300 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                type="text" v-model="name" placeholder="请输入用户名" />
+            <input
+                class="px-4 py-3 my-2 bg-transparent text-slate-300 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                type="password" v-model="password" placeholder="请输入密码">
+            <div class="flex flex-row justify-between my-2">
+                <button
+                    class="w-32 py-3 px-4 bg-blue-300 text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+                    @click="onLogin">登录</button>
+                <button class="w-32 py-3 px-4 bg-red-300 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                    @click="onRegister">注册</button>
+            </div>
+            <!-- <div class="my-2 text-slate-300">
+                <input id="remember" class="mr-4" type="checkbox" />
+                <label for="remember">记住密码</label>
+            </div> -->
         </div>
     </div>
 
@@ -30,9 +43,12 @@ const onLogin = () => {
         if (result && result.data) {
             if (result.data.success) {
                 let token = result.data.data;
-                // result.data.message && message.success(result.data.message);
-                localStorage.setItem('me_token', token);
-                router.push("/home");
+                if (token) {
+                    localStorage.setItem('me_token', token);
+                    router.push("/home");
+                } else {
+                    result.data.message && message.error(result.data.message);
+                }
             } else {
                 console.log('登录失败');
                 result.data.message && message.error(result.data.message);
@@ -56,7 +72,7 @@ onBeforeUnmount(() => {
 </script>
 
 
-<style lang='scss' scoped>
+<style lang='scss'>
 // .me-form-item {
 //     height: 2rem;
 //     line-height: 1.5;

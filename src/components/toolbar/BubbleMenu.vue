@@ -125,12 +125,13 @@ const onTranslate = ()=>{
   if (from === to || !text) {
     message.warning("请选择要翻译的文本！")
   }
-  const reg = new RegExp(/^[a-zA-Z]+$/);
+  const reg = new RegExp(/^[a-zA-Z/s]*$/);
   const isEnglish = reg.test(text);
   getYouDaoAiTranslate({query: text, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS": "en"}).then((data) => {
-    if (data !== text) {
+    let translation = data.translation;
+    if (translation !== text) {
       // 在翻译单词后插入翻译结果
-      props.editor.commands.insertContentAt(to, `<em>[翻译：${data}]</em>`);
+      props.editor.commands.insertContentAt(to, `<em>[翻译：${translation}]</em>`);
     }
   })
 }

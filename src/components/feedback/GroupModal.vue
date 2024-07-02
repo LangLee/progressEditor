@@ -2,7 +2,7 @@
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
         <input
             class="p-2 mb-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="group.title" placeholder="请输入分类名" />
+            type="text" v-model="group.name" placeholder="请输入分类名" />
     </Modal>
 </template>
 <script setup>
@@ -15,13 +15,13 @@ const props = defineProps({
     },
     title: {
         type: String,
-        default: '新增分组'
+        default: '新增分类'
     },
     group: {
         type: Object,
         default: () => {
             return {
-                title: '',
+                name: '',
                 icon: ''
             }
         }

@@ -1,53 +1,42 @@
 <template>
-    <div id="header" class="sticky top-0 z-30 w-full max-w-screen-2xl mx-auto bg-white flex-none flex">
+    <div id="header" class="sticky h-16 top-0 z-20 w-full max-w-screen-2xl mx-auto backdrop-blur lg:border-b border-slate-900/10 bg-white/90 lg:bg-white/80 flex-none flex lg:shadow-none shadow-lg">
         <div
             class="hidden lg:flex flex-none pl-4 sm:pl-6 xl:pl-8 items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72">
-            <div class="font-semibold text-3xl text-slate-500" @click="goHome">I Want progress</div>
+            <div class="font-semibold text-3xl text-slate-500 cursor-pointer" @click="goHome">I Want progress</div>
         </div>
-        <div class="flex-auto border-b border-gray-200 h-18 flex items-center px-4 sm:px-6 lg:mx-6 lg:px-0 xl:mx-8">
-            <RemixIcon name="home-8-line" class="lg:hidden p-1 text-xl text-slate-400 hover:text-blue-300"
-                @click="goHome"></RemixIcon>
-            <button class=" text-slate-400 px-4 py-3 my-2" @click="onSearch" @keydown.meta.key="handleKeyDown">
-                <RemixIcon name="search-line"></RemixIcon>
-                <span class="px-3 text-normal">快速搜索一切</span>
-                <span class="px-1 text-normal bg-slate-200 rounded">⌘K</span>
-            </button>
+        <div class="flex items-center px-2 sm:px-6 lg:mx-6 lg:px-0 xl:mx-8">
+            <RemixIcon v-if="!hiddenFold" :name="fold?'menu-fold-line':'menu-unfold-line'" class="lg:hidden py-1 px-2 text-2xl text-slate-500 hover:text-slate-700"
+                @click="toggleFold">
+            </RemixIcon>
+            <RemixIcon name="home-8-line" class="lg:hidden py-1 px-2 text-2xl text-blue-500 hover:text-blue-700"
+                @click="goHome">
+            </RemixIcon>
+            <slot></slot>
         </div>
     </div>
-    <SearchModal v-if="searching" v-model:visible="searching">
-        <span>这是一个测试</span>
-    </SearchModal>
 </template>
 <script setup>
-import { ref, reactive, onBeforeMount, onBeforeUnmount } from 'vue'
+import { ref, reactive, defineEmits } from 'vue'
 import RemixIcon from '../common/RemixIcon.vue';
-import SearchModal from '../feedback/SearchModal.vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
-const searching = ref(false);
-const onSearch = () => {
-    searching.value = true;
-}
-const onFinishSearch = () => {
-    searching.value = false;
-}
+const props = defineProps({
+    hiddenFold: {
+        type: Boolean,
+        default: false
+    },
+    fold: {
+        type: Boolean,
+        default: true
+    }
+})
+const emits = defineEmits(['toggleFold']);
 const goHome = () => {
     router.push('/home')
 }
-const handleKeyDown = (event) => {
-    if (event.key === 'k' && event.metaKey) {
-        searching.value = true;
-        // 阻止事件冒泡
-        event.preventDefault();
-    }
+const toggleFold = () => {
+    emits("toggleFold");
 }
-
-onBeforeMount(()=>{
-  document.addEventListener("keydown", handleKeyDown)
-})
-onBeforeUnmount(()=>{
-  document.removeEventListener("keydown", handleKeyDown)
-})
 </script>
 
 

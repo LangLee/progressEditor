@@ -1,41 +1,50 @@
 <template>
-    <div class="h-screen w-full p-2 lg:p-4 overflow-y-auto">
-        <div v-if="editable" class="fixed top-0 left-0 right-0 h-12 lg:h-14 px-2 lg:px-4 py-2 shadow-md bg-white">
+    <div class="flex flex-col h-screen w-full">
+        <Header :hiddenFold="true">
+            <div v-if="editable">
             <button
-                class="px-2 lg:px-4 py-1 mr-2 lg:mr-4 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-purple-400 border-purple-400 hover:text-purple-700 hover:border-purple-700"
+                class="px-2 lg:py-1 lg:px-4 mx-1 lg:mx-2 text-basic lg:text-lg font-normal lg:font-medium rounded-md text-slate-50 bg-blue-400 hover:bg-blue-700"
                 @click="appendPortal">
-                <span>新增分类</span>
+                <span>新增</span>
                 <RemixIcon name="add-line" />
             </button>
             <button
-                class="px-2 lg:px-4 py-1 mr-2 lg:mr-4 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-purple-400 border-purple-400 hover:text-purple-700 hover:border-purple-700"
+                class="px-2 lg:py-1 lg:px-4 mx-1 lg:mx-2 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-blue-400 border-blue-400 hover:text-blue-700 hover:border-blue-700"
                 @click="importPortal">
-                <span>导入书签</span>
+                <span>导入</span>
                 <RemixIcon name="add-line" />
             </button>
             <button
-                class="px-2 lg:px-4 py-1 mr-2 lg:mr-4 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-purple-400 border-purple-400 hover:text-purple-700 hover:border-purple-700"
+                class="px-2 lg:py-1 lg:px-4 mx-1 lg:mx-2 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-blue-400 border-blue-400 hover:text-blue-700 hover:border-blue-700"
                 @click="exportPortal">
-                <span>导出书签</span>
+                <span>导出</span>
                 <RemixIcon name="add-line" />
             </button>
         </div>
-        <div :class="`${editable ? 'mt-12 lg:mt-14' : ''}`">
+        </Header>
+        <div class="flex-1 p-2 lg:p-4 overflow-y-auto">
             <ul v-for="(portal, index) in portals" :key="index">
-                <p class="mb-2 text-basic lg:text-lg text-purple-900 font-normal lg:font-medium">{{ portal.name }}</p>
+                <p class="mb-2 text-basic lg:text-lg text-blue-900 font-medium" @mouseover="onItemMouseover(portal.id)"
+                @mouseleave="onItemMouseleave()">
+                    <span class="mr-2">{{ portal.name }}</span>
+                    <RemixIcon v-if="editable && hoverItem===portal.id" class="shadow-sm rounded-sm text-blue-300 hover:text-blue-700" name="edit-line" @click.stop="onEditPortal(portal)"></RemixIcon>
+                </p>
                 <div class="flex flex-row flex-wrap">
                     <li v-for="(book, idx) in portal.books" class='mb-4 mr-4 lg:mb-8 lg:mr-8' :key="idx">
-                        <Card :modelValue="book" />
+                        <Card theme="blue" :editable="editable" :modelValue="book" @edit="onEditBook(book)" @remove="onRemoveBook(book)"/>
                     </li>
                     <li v-if="editable" class='mb-4 mr-4 lg:mb-8 lg:mr-8'>
-                        <Card :modelValue="{ title: '新增书签', icon: 'add-line' }" @cardClick="() => appendBook(portal)" />
+                        <Card theme="blue" :modelValue="{ title: '新增书签', icon: 'add-line' }" @cardClick="() => appendBook(portal)" />
                     </li>
                 </div>
             </ul>
         </div>
     </div>
     <GroupModal v-if="!!editPortal" :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" :group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
-    <BookModal v-if="!!editBook" :link="true" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!editBook" :book="editBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
+    <BookModal v-if="!!currentBook" :link="true" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
+    <Modal :visible="!!currentRemoveBook" :closable="false" title="确认删除？" @confirm="finishRemoveBook" @cancel="closeRemoveModal">
+        <p class="align-center">确认删除书签么？</p>
+    </Modal>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
@@ -43,22 +52,51 @@ import RemixIcon from '@/components/common/RemixIcon.vue'
 import Card from '@/components/common/Card.vue'
 import GroupModal from '@/components/feedback/GroupModal.vue'
 import BookModal from '@/components/feedback/BookModal.vue'
+import Header from '@/components/navigation/Header.vue';
+import Modal from '@/components/feedback/Modal.vue'
 import { getPortalAndBooks, createGroup, updateGroup } from '@/api/group'
 import Group from '@/types/group'
-import { createBook, updateBook } from '@/api/book'
+import Book from '@/types/book'
+import { createBook, updateBook, removeBook } from '@/api/book'
+import message from '@/components/feedback/message'
 const portals = ref(Array<Group>());
 const editable = ref(false);
-const editBook = ref();
+const currentBook = ref();
+const currentCategory = ref();
 const editPortal = ref();
 const isNew = ref(false);
+const currentRemoveBook = ref();
+const hoverItem = ref('');
 const appendBook = (portal: Group) => {
     isNew.value = true;
-    editBook.value = {
+    currentBook.value = {
         title: '新增书签',
         type: 'link',
         url: '',
         category: portal.id 
     }
+}
+const onEditBook = (book) => {
+    isNew.value = false;
+    currentBook.value = book;
+    currentCategory.value = book.category;
+}
+const onRemoveBook = (book) => {
+    currentRemoveBook.value = book.id;
+}
+const closeRemoveModal = ()=>{
+    currentRemoveBook.value = null;
+}
+const finishRemoveBook = () => {
+    removeBook(currentRemoveBook.value).then((data)=>{
+        portals.value = portals.value.map((portal:Group) => {
+            if (portal.id === data.category) {
+                portal.books = portal.books && portal.books.filter((book) => book.id !== data.id);
+            }
+            return portal;
+        })
+        currentRemoveBook.value = null;
+    });
 }
 const appendPortal = () => {
     isNew.value = true;
@@ -66,11 +104,15 @@ const appendPortal = () => {
         name: ''
     }
 }
+const onEditPortal = (portal)=>{
+    isNew.value = false;
+    editPortal.value = portal;
+}
 const importPortal = () => {
-    console.log();
+    message.warning('还未开发，敬请期待');
 }
 const exportPortal = () => {
-    console.log();
+    message.warning('还未开发，敬请期待');
 }
 const finishEditPortal = () => {
     if (isNew.value) {
@@ -95,17 +137,29 @@ const finishEditPortal = () => {
 }
 const finishEditBook = () => {
     if(isNew.value) {
-        createBook(editBook.value).then((data) => {
+        createBook(currentBook.value).then((data) => {
             let group = portals.value.find(({ id }) => id === data.category);
             if (!group) return;
             group.books = group.books || [];
             data.id = data._id;
             group.books.splice(0, 0, data);
-            editBook.value = null;
+            currentBook.value = null;
             isNew.value = false;
         })
-    } else if (editBook && editBook.value) {
-        updateBook(editBook.value);
+    } else if (currentBook && currentBook.value) {
+        updateBook(currentBook.value).then((data: Book) => {
+            if (data.category !== currentCategory.value) {
+                portals.value = portals.value.map((portal:Group) => {
+                    if (portal.id === currentCategory.value) {
+                        portal.books = portal.books && portal.books.filter((book) => book.id !== data.id);
+                    }
+                    if (portal.id === data.category) {
+                        portal.books?.splice(0, 0, data);
+                    }
+                    return portal;
+                })
+            }
+        });
     }
 }
 const closePortalModal = ()=>{
@@ -113,8 +167,15 @@ const closePortalModal = ()=>{
     isNew.value = false;
 }
 const closeBookModal = ()=>{
-    editBook.value = null;
+    currentBook.value = null;
+    currentCategory.value = null;
     isNew.value = false;
+}
+const onItemMouseover = (id) => {
+    hoverItem.value = id;
+}
+const onItemMouseleave = () => {
+    hoverItem.value = '';
 }
 onMounted(() => {
     getPortalAndBooks().then((res) => {

@@ -1,10 +1,11 @@
 <template>
-    <div class="w-full h-screen flex flex-col relative overflow-y-auto pb-40">
-        <Codemirror class="w-full h-full pro-code" v-model="code" pleholder="输入代码..." :autofocus="true"
+    <div class="w-full h-screen flex flex-col relative pb-44">
+        <Header></Header>
+        <Codemirror class="w-full flex-1 pro-code" v-model="code" pleholder="输入代码..." :autofocus="true"
             :indent-with-tab="true" :tab-size="2" :extensions="extensions" @ready="handleReady" @change="change"
             @focus="focus" @blur="blur">
         </Codemirror>
-        <div class="absolute left-0 bottom-0 w-full flex flex-col bg-slate-900">
+        <div class="absolute left-0 bottom-0 w-full flex flex-col p-2 bg-slate-50">
             <div class="flex flex-row h-8 text-sm">
                 <button
                     class="border border-blue-300 text-blue-300 hover:text-blue-100 hover:border-blue-100 rounded-md px-2 m-1"
@@ -23,9 +24,10 @@
 import { ref, shallowRef, defineProps, defineEmits, watch } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
-import { oneDark } from '@codemirror/theme-one-dark'
+import Header from '@/components/navigation/Header.vue'
+// import { oneDark } from '@codemirror/theme-one-dark'
 
-const extensions = [javascript(), oneDark];
+const extensions = [javascript()];
 const props = defineProps({
     modelValue: String
 });
@@ -86,6 +88,7 @@ watch(() => props.modelValue, (newVal) => {
 .pro-code {
     :deep .cm-editor {
         height: 100%;
+        overflow-y: auto;
         border: 1px dotted rgb(203 213 225);
     }
 }

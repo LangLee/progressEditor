@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full flex flex-col lg:px-8">
+    <div class="w-full h-full flex flex-col">
         <Codemirror class="w-full h-full" v-model="code" pleholder="输入代码..." :autofocus="true" :indent-with-tab="true"
             :tab-size="2" :extensions="extensions" @ready="handleReady" @change="change" @focus="focus" @blur="blur">
         </Codemirror>

@@ -1,17 +1,29 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import Menu from '@/components/navigation/Menu.vue'
 import Header from '@/components/navigation/Header.vue'
+import Search from '@/components/common/Search.vue'
+const fold = ref(true);
+const toggleFold = (float)=>{
+  if(float !== undefined) {
+    fold.value = float;
+    return;
+  }
+  fold.value = !fold.value;
+}
 </script>
 
 <template>
-  <Header></Header>
+  <Header @toggleFold="toggleFold" :fold="fold">
+    <Search />
+  </Header>
   <div id="content" class="w-full max-w-screen-2xl mx-auto">
     <div class="lg:flex">
-      <div id="sidebar"
-      class="lg:block fixed z-20 inset-0 flex-none h-full bg-black bg-opacity-25 w-full lg:bg-white lg:static lg:h-auto lg:overflow-y-visible lg:pt-0 lg:w-60 xl:w-72 hidden">
-      <Menu></Menu>
-    </div>
-    <div id="contentWrapper" class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible">
+      <!-- <div id="sidebar" @click="toggleFold"
+      class="fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 w-full lg:w-80 transition-transform duration-300 ease-out delay-100 lg:translate-x-0" :class="floatMenu ? 'translate-x-0' : 'translate-x-[-100%]'"> -->
+      <Menu :editable="true" @toggleFold="toggleFold" :fold="fold"></Menu>
+    <!-- </div> -->
+    <div id="contentWrapper" class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible lg:pl-80">
       <router-view></router-view>
     </div>
     </div>
