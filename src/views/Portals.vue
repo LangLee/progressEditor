@@ -24,16 +24,16 @@
         </Header>
         <div class="flex-1 p-2 lg:p-4 overflow-y-auto">
             <ul v-for="(portal, index) in portals" :key="index">
-                <p class="mb-2 text-basic lg:text-lg text-blue-900 font-medium" @mouseover="onItemMouseover(portal.id)"
+                <p class="m-2 lg:m-4 text-basic lg:text-lg text-blue-900 font-medium" @mouseover="onItemMouseover(portal.id)"
                 @mouseleave="onItemMouseleave()">
                     <span class="mr-2">{{ portal.name }}</span>
                     <RemixIcon v-if="editable && hoverItem===portal.id" class="shadow-sm rounded-sm text-blue-300 hover:text-blue-700" name="edit-line" @click.stop="onEditPortal(portal)"></RemixIcon>
                 </p>
                 <div class="flex flex-row flex-wrap">
-                    <li v-for="(book, idx) in portal.books" class='mb-4 mr-4 lg:mb-8 lg:mr-8' :key="idx">
+                    <li v-for="(book, idx) in portal.books" class='m-2 lg:m-4' :key="idx">
                         <Card theme="blue" :editable="editable" :modelValue="book" @edit="onEditBook(book)" @remove="onRemoveBook(book)"/>
                     </li>
-                    <li v-if="editable" class='mb-4 mr-4 lg:mb-8 lg:mr-8'>
+                    <li v-if="editable" class='m-2 lg:m-4'>
                         <Card theme="blue" :modelValue="{ title: '新增书签', icon: 'add-line' }" @cardClick="() => appendBook(portal)" />
                     </li>
                 </div>
@@ -42,8 +42,8 @@
     </div>
     <GroupModal v-if="!!editPortal" :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" :group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
     <BookModal v-if="!!currentBook" :link="true" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
-    <Modal :visible="!!currentRemoveBook" :closable="false" title="确认删除？" @confirm="finishRemoveBook" @cancel="closeRemoveModal">
-        <p class="align-center">确认删除书签么？</p>
+    <Modal :visible="!!currentRemoveBook" :closable="false" title="确认删除" @confirm="finishRemoveBook" @cancel="closeRemoveModal">
+        <p class="align-center">你真的要删除这个书签？</p>
     </Modal>
 </template>
 <script setup lang="ts">

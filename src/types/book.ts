@@ -8,6 +8,7 @@ interface Book {
     content: string,
     anchors?: Array<Anchor>
     category?: string,
-    type?: string
+    type?: string,
+    appId?: string
 }
 export default Book;

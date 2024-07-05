@@ -1,7 +1,16 @@
 import axios from "axios";
 import Book from "@/types/book"
-const getBooks = (params: Object) => {
-    return axios.get("/books/getBooks", {params}).then((res) => {
+const getBooks = () => {
+    return axios.get("/books/getBooks").then((res) => {
+        if (res && res.data && res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res && res.data && res.data.message);
+        }
+    });
+}
+const getAppBooks = (params: Object) => {
+    return axios.get("/books/getAppBooks", {params}).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {
@@ -65,6 +74,7 @@ const searchBook = (key: string) => {
 }
 export {
     getBooks,
+    getAppBooks,
     getBookById,
     createBook,
     updateBook,

@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
-import { ref, defineProps, defineEmits, watch, onBeforeUnmount } from 'vue'
+import { defineProps, defineEmits, watch, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
     modelValue: String,
@@ -47,7 +47,7 @@ watch(() => props.editable, (value, oldValue) => {
     editor.value && editor.value.setEditable(value)
 })
 onBeforeUnmount(() => {
-    editor.value.destroy()
+    editor.value && editor.value.destroy()
 })
 
 </script>

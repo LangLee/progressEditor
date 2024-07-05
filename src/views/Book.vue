@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import MdEditor from "@/components/editor/Markdown.vue"
-import { ref, watch, onBeforeMount, onBeforeUnmount, defineAsyncComponent } from "vue"
+import { ref, shallowRef, watch, onBeforeMount, onBeforeUnmount, defineAsyncComponent } from "vue"
 import { useRoute } from "vue-router";
 import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
@@ -9,7 +9,7 @@ const route = useRoute();
 // defineComponent({
 //   MdEditor
 // })
-const currentComponent = ref(null);
+const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
 let previousContent = '';

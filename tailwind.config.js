@@ -2,7 +2,7 @@
 export default {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   content: ["./src/**/*.{html,js,vue,ts,jsx,tsx}"],
-  darkMode: true,
+  darkMode: 'selector',
   theme: {
     extend: {},
     container: {

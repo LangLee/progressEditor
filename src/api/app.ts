@@ -1,5 +1,6 @@
 import axios from "axios";
-import App from "@/types/app"
+import App from "@/types/app";
+import message from "@/components/feedback/message";
 const getApps = () => {
     return axios.get("/app/getApps").then((res) => {
         if (res && res.data && res.data.success) {
@@ -21,6 +22,7 @@ const createApp = (params: App) => {
 const updateApp = (params: App) => {
     return axios.post("/app/updateApp", params).then((res) => {
         if (res && res.data && res.data.success) {
+            res.data.message && message.success(res.data.message);
             return res.data.data;
         } else {
             return Promise.reject(res && res.data && res.data.message);

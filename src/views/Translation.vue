@@ -4,6 +4,11 @@
     <div class="flex-1 w-full p-2 lg:p-4">
       <!-- {{ response }} -->
       <!-- <iframe v-if="dictUrl" :src="dictUrl" frameborder="0" width="100%" height="100%"></iframe> -->
+      <div v-if="dailyNote" class="rounded-lg shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
+        <div class="font-bold text-normal lg:text-lg py-2"><span class="bg-blue-600 text-slate-50 rounded-xl px-2 py-1">每日一句</span></div>
+        <div class="text-normal lg:text-lg p-2">{{ dailyNote.chinese || '' }}</div>
+        <div class="text-normal lg:text-lg p-2">{{ dailyNote.english || '' }}</div>
+      </div>
       <div v-if="question" class="rounded shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
         <div class="font-bold text-lg lg:text-xl text-blue-700 py-1">{{ question }}</div>
         <span class="text-lg text-slate-300">
@@ -18,8 +23,8 @@
         <div class="font-bold text-lg lg:text-xl text-blue-700">{{ response }}</div>
         <span class="text-lg text-slate-300">
           <RemixIcon class="mr-2 hover:text-blue-400" name="volume-up-line" @click="playAudio(false)" />
-          <RemixIcon class="mr-2 hover:text-blue-400" name="clipboard-line" @click.stop="copyText(response)" />
-          <RemixIcon class="hover:text-blue-400" name="add-line" />
+          <RemixIcon class="mr-2 hover:text-blue-400" name="clipboard-line" @click.stop="copyText()" />
+          <RemixIcon class="hover:text-blue-400" name="add-line" @click.stop="addText()"/>
         </span>
         <audio id="responseAudioPlayer" :src="resSpeakUrl"></audio> 
         <!-- <audio v-show="false" controls id="responseAudioPlayer">
@@ -41,10 +46,11 @@
   <Loading v-if="loading"></Loading>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { getYouDaoAiTranslate, getYouDaoAiDict } from '@/api/ai'
-import message from '@/components/feedback/message'
+import { getDailyEnglish, createWord } from '@/api/word'
+import message from '@/components/feedback/message.ts'
 import Header from '@/components/navigation/Header.vue'
 import Loading from '@/components/common/Loading.vue'
 const fallbackCopyTextToClipboard = (text) => {
@@ -69,15 +75,27 @@ const resSpeakUrl = ref('');
 const response = ref('');
 const loading = ref(false);
 const dictUrl = ref('');
-const copyText = (text) => {
+const dailyNote = ref();
+const copyText = () => {
   // 判断Clipboard API的支持情况
+  if (!response.value) return;
   if (!navigator.clipboard) {
     navigator.clipboard = {
       writeText: fallbackCopyTextToClipboard
     };
   }
-  navigator.clipboard.writeText(text);
+  navigator.clipboard.writeText(response.value);
   message.success("复制成功！")
+}
+const addText = () => {
+  createWord({
+    code: response.value,
+    english: response.value,
+    chinese: question.value,
+    newWord: true
+  }).catch((msg) => {
+    message.error(msg)
+  })
 }
 const onTranslate = () => {
   if (!question.value) {
@@ -111,6 +129,11 @@ const playAudio = (isQue) => {
     audioPlayer.pause();
   }
 }
+onMounted(() => {
+  getDailyEnglish().then((data) => {
+    dailyNote.value = data;
+  })
+})
 </script>
 
 

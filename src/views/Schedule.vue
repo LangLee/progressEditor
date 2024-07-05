@@ -17,7 +17,7 @@
                         <div class="w-0.5 mx-auto bg-slate-300 h-full"></div>
                     </div>
                     <div class="inline-block w-1/2 pl-8">
-                        <a href="#" class="text-normal font-bold text-slate-700" @click="openBook(book)">{{ book.title
+                        <a class="text-normal font-bold text-slate-700" @click.stop="openBook(book)">{{ book.title
                             }}</a>
                     </div>
                 </li>
@@ -34,7 +34,12 @@ import Header from '@/components/navigation/Header.vue';
 const router = useRouter();
 const books = ref([]);
 const openBook = (book) => {
-    router.push(`/books/${book._id}`)
+    router.push({
+        path: `/books/${book._id}`,
+        query: {
+            appId: book.appId
+        }
+    })
 }
 const COLOR_MAP = ['blue', 'teal', 'red', 'orange', 'amber', 'yellow', 'purple', 'green', 'pink', 'rose'];
 onMounted(() => {

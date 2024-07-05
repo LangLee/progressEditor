@@ -2,7 +2,7 @@
     <div v-if="visible" class="fixed top-0 left-0 inset-0 center z-50 backdrop-blur bg-white/50">
       <div
         class="flex flex-col w-full lg:w-80 mx-auto lg:mt-[10%] max-h-full lg:max-h-[60%] shadow-lg rounded-lg bg-white">
-        <div class="flex px-4 py-2 border-b border-slate-100 ">
+        <div v-if="title || !closable" class="flex px-4 py-2 border-b border-slate-100 ">
           <div class="flex flex-1 items-center">
             <span class="font-semibold">{{ title }}</span>
           </div>

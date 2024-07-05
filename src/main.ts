@@ -2,7 +2,9 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import "./assets/iconfont/iconfont.js"
-import './assets/iconfont/remixicon.css'
+// import './assets/iconfont/remixicon.css'
+import 'remixicon/fonts/remixicon.css'
+
 import 'tippy.js/themes/light-border.css';
 import router from './router'
 import VueTippy from 'vue-tippy'

@@ -23,7 +23,6 @@
             </div> -->
         </div>
     </div>
-
 </template>
 <script setup>
 import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
@@ -62,7 +61,7 @@ const onRegister = () => {
     router.push('register');
 }
 onBeforeMount(() => {
-    starsInstance = new Stars();
+    starsInstance = new Stars({count: 50, background: 'rgb(41 37 36)'});
     starsInstance.animate();
 })
 onBeforeUnmount(() => {

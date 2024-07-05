@@ -10,7 +10,7 @@ const getPortalAndBooks = () => {
     });
 }
 const getGroupAndBooks = () => {
-    return axios.get("/groups/getGroupAndBooks").then((res) => {
+    return axios.get("/groups/getAppGroupAndBooks").then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {

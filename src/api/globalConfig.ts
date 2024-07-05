@@ -1,13 +1,14 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 let baseUrl = BASE_URL || window.location.origin;
-import message from '@/components/feedback/message'
-export default function initialize(logout: Function) {
+// import message from '@/components/feedback/message'
+export default function initialize(route, logout: Function) {
     // 添加请求拦截器  
     axios.interceptors.request.use(function (config) {
         // 登录权限
         const Authorization = localStorage.getItem("me_token");
         config.headers['Authorization'] = Authorization;
+        config.headers['appId'] = route.query.appId;
         // 或者你可以在这里打印出所有请求的详细信息  
         if (config.url && !new RegExp(/http|https/).test(config.url)) {
             config.url = baseUrl + config.url;

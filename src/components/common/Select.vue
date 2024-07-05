@@ -8,7 +8,12 @@
         <tippy class="w-0" ref="dropdown" trigger="click" placement="bottom-end" :offset="[0, 10]" animation="fade" :interactive="true" :arrow="false">
             <RemixIcon class="float-right hover:text-blue-500" name="arrow-down-s-line" />
             <template #content>
-                
+                <div class="w-[17rem] p-2 bg-white shadow-xl rounded">
+                    <div v-for="(item, index) in options" :key="index"
+                        class="w-full px-2 py-1 cursor-pointer hover:bg-blue-100" @click="selectItem(item)">
+                        {{ item.label }}
+                    </div>
+                </div>
             </template>
         </tippy>
     </div>

@@ -1,5 +1,5 @@
 <template>
-    <div id="header" class="sticky h-16 top-0 z-20 w-full max-w-screen-2xl mx-auto backdrop-blur lg:border-b border-slate-900/10 bg-white/90 lg:bg-white/80 flex-none flex lg:shadow-none shadow-lg">
+    <div id="header" class="sticky h-16 top-0 z-20 w-full max-w-screen-2xl mx-auto backdrop-blur lg:border-b border-slate-900/10 bg-white/90 lg:bg-white/60 flex-none flex lg:shadow-none shadow-lg">
         <div
             class="hidden lg:flex flex-none pl-4 sm:pl-6 xl:pl-8 items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72">
             <div class="font-semibold text-3xl text-slate-500 cursor-pointer" @click="goHome">I Want progress</div>

@@ -56,7 +56,7 @@ const onChart = () => {
             messages.value.push({ role: "user", content: question.value });
             messages.value.push({ role: "assistant", content: data });
             question.value = '';
-            questionInput.value && questionInput.value.focus();
+            // questionInput.value && questionInput.value.focus();
             proxy.$nextTick(() => {
                 const aiChatContent = document.getElementById('aiChatContent');
                 aiChatContent && aiChatContent.scrollTo({ top: aiChatContent.scrollHeight, behavior: 'smooth' });
@@ -74,7 +74,7 @@ const onChangeLLM = (value, role) => {
     question.value = '';
 }
 onMounted(() => {
-    questionInput.value && questionInput.value.focus();
+    // questionInput.value && questionInput.value.focus();
 })
 </script>
 

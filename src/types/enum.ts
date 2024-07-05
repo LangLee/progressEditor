@@ -3,6 +3,7 @@ enum Classification {
     text = '文字',
     drawing = '图画',
     todoList = '待办',
-    code = '代码'
+    code = '代码',
+    link = '链接'
 }
 export {Classification}

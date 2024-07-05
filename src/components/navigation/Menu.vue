@@ -1,20 +1,22 @@
 <template>
     <div id="sideBar"
-        class="fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
+        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-white/90 lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
-        <div v-if="editable" class="flex h-14 px-3 py-1 pt-4 bg-white/95">
+        <div v-if="editable" class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/90 lg:bg-transparent">
             <button
-                class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mr-2"
+                class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateGroup">
-                添加分类
+                <RemixIcon name="add-line"/>
+                <span>分类</span>
             </button>
             <button
-                class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2"
+                class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateBook">
-                添加笔记
+                <RemixIcon name="add-line"/>
+                <span>笔记</span>
             </button>
         </div>
-        <nav class="px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95">
+        <nav class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/90 lg:bg-transparent">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
@@ -42,7 +44,7 @@
                         <li :id="`book-${book.id}`" v-for="(book, idx) in group.books" :key="book.id">
                             <input ref="titleInput" v-if="book.id === editItem" class="p-2 w-full rounded-md"
                                 type="text" v-model="book.title" @keyup.enter="onUpdateBook(book)" />
-                            <a v-else href="#" @click.stop="onMenuChange(book)"
+                            <a v-else @click.stop="onMenuChange(book)"
                                 @dblclick.stop="onEditBookTitle(book.id)" @mouseover="onItemMouseover(book.id)"
                                 @mouseleave="onItemMouseleave(book.id)"
                                 class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900">
@@ -89,7 +91,7 @@
 <script setup>
 import { ref, reactive, onMounted, watch, getCurrentInstance, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { getBooks, createBook, removeBook, updateBookTitle } from '../../api/book'
+import { createBook, removeBook, updateBookTitle } from '../../api/book'
 import { getGroupAndBooks, createGroup, updateGroup, removeGroup } from '../../api/group'
 import BookModal from '../feedback/BookModal.vue'
 import GroupModal from '../feedback/GroupModal.vue'
@@ -134,14 +136,14 @@ const doFold = () => {
 const onMenuChange = (item) => {
     let { id } = item || {};
     if (!id) {
-        router.replace({path: `/books`, query: route.query});
+        router.push({ path: `/books`, query: { appId: route.query.appId } });
         return;
     }
     // 激活菜单
     activeItem.value = id;
     editItem.value = '';
     doFold();
-    router.replace({path: `/books/${id}`, query: route.query});
+    router.push({ path: `/books/${id}`, query: { appId: route.query.appId } });
 }
 const onCreateGroup = () => {
     editGroup.value = { name: "新增分类" };
@@ -236,6 +238,7 @@ const onEditBook = (book) => {
     // 缓存当前分类
     editItem.value = book.category;
     editBook.value = book;
+    isNew.value = false;
 }
 const onUpdateBook = (book) => {
     updateBookTitle({ ...book, category: book.category === "default" ? "" : book.category }).then((data) => {
@@ -291,10 +294,10 @@ watch(() => route.params.id, (value, oldValue) => {
 watch(() => route.query.appId, (value) => {
     appId.value = value;
     console.log(value);
-}, { immediate: true }),
-    watch(() => props.fold, (value, oldValue) => {
-        foldState.value = value
-    }, { immediate: true })
+}, { immediate: true })
+watch(() => props.fold, (value, oldValue) => {
+    foldState.value = value
+}, { immediate: true })
 </script>
 
 

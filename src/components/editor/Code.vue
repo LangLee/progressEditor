@@ -9,7 +9,7 @@
 import { ref, shallowRef, defineProps, defineEmits, watch } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
-import { oneDark } from '@codemirror/theme-one-dark'
+// import { oneDark } from '@codemirror/theme-one-dark'
 
 const extensions = [javascript()];
 const props = defineProps({

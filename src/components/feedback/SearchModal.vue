@@ -19,7 +19,7 @@
         </div>
         <ul v-else class="text-normal font-normal text-slate-600">
           <li v-for="(book, index) in searchBooks" :key=index>
-            <a href="#" @click="openBook(book)"
+            <a @click="openBook(book)"
               class="flex m-2 p-2 lg:p-4 hover:bg-blue-400 rounded-lg hover:text-slate-100 shadow-sm"
               :class="{ 'bg-slate-100': activeItem.bookIdx !== index || activeItem.anchorIdx !== -1, 'bg-blue-500': activeItem.bookIdx === index && activeItem.anchorIdx === -1, 'text-slate-100': activeItem.bookIdx === index && activeItem.anchorIdx === -1 }">
               <div class="flex-1">
@@ -31,7 +31,7 @@
             </a>
             <ul v-if="book.anchors && book.anchors.length > 0" class="ml-4">
               <li v-for="(anchor, idx) in book.anchors" :key=idx class="pl-4 border-l-2 border-slate-100">
-                <a href="#" @click="openAnchor(book, anchor)"
+                <a @click="openAnchor(book, anchor)"
                   class="flex m-2 p-2 lg:p-4 hover:bg-blue-400 rounded-lg hover:text-slate-100 shadow-sm"
                   :class="{ 'bg-slate-100': activeItem.bookIdx !== index || activeItem.anchorIdx !== idx, 'bg-blue-500': activeItem.bookIdx === index && activeItem.anchorIdx === idx, 'text-slate-100': activeItem.bookIdx === index && activeItem.anchorIdx === idx }">
                   <div class="flex-1">
@@ -92,14 +92,13 @@ const onSearch = () => {
   })
 }
 const openBook = (book) => {
-  router.replace({path: `/books/${book.id}`, query: route.query});
+  router.push({path: `/books/${book.id}`, query: {appId: book.appId}});
   closeModal();
 }
 const openAnchor = (book, anchor) => {
-  router.replace({
+  router.push({
     path: `/books/${book.id}`,
-    query: route.query,
-    hash: `#${anchor.id}`
+    query: {appId: book.appId, anchorId: anchor.id}
   });
   closeModal();
 }

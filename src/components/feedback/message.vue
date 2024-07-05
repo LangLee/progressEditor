@@ -36,15 +36,15 @@ const close = () => {
 </script>
 <style lang='scss' scoped>
 .info {
-    color: #4a90e2;
+    color: rgb(37 99 235);
 }
 .success {
-    color: #2ecc71;
+    color: rgb(22 163 74);
 }
 .warning {
-    color: #f39c12;
+    color: rgb(202 138 4);
 }
 .error {
-    color: #e74c3c;
+    color: rgb(220 38 38);
 }
 </style>

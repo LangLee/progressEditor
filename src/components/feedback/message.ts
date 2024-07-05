@@ -1,5 +1,5 @@
 import { createVNode, render } from 'vue';
-import MessageComponent from './message.vue';
+import MessageComponent from './Message.vue';
 interface MessageOptions {
   content: String,
   type: String
