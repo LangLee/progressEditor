@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-col items-center shadow-lg p-2 lg:p-4 rounded-lg">
+    <div class="flex flex-col items-center shadow-lg p-2 lg:p-4 rounded-lg bg-slate-900">
         <img class="w-full lg:w-[50rem]" :src="modelValue.image" :alt="modelValue.photoBy" />
-        <span class="lg:text-lg text-slate-400 mb-2">{{ modelValue.photoBy }}</span>
-        <p class="font-medium lg:font-bold lg:text-lg text-slate-600">{{ modelValue.word }}</p>
-    </div>
+        <span class="lg:text-lg text-slate-300 mb-2">{{ modelValue.photoBy }}</span>
+        <p class="font-medium lg:font-bold lg:text-lg text-slate-50">{{ modelValue.word }}</p>
+    </div>  
 </template>
 <script setup>
 import { ref, reactive, defineProps } from 'vue'

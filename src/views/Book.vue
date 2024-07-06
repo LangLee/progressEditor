@@ -59,6 +59,18 @@ const setCurrentComponent = (type)=>{
       );
       break;
     }
+    case "task": {
+      currentComponent.value = defineAsyncComponent(() =>
+        import('@/components/editor/Task.vue')
+      );
+      break;
+    }
+    case "drawing": {
+      currentComponent.value = defineAsyncComponent(() =>
+        import('@/components/editor/Drawing.vue')
+      );
+      break;
+    }
     default: {
       currentComponent.value = defineAsyncComponent(() =>
         import('@/components/editor/Markdown.vue')

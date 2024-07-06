@@ -1,8 +1,8 @@
 <template>
     <div id="sideBar"
-        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-white/90 lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
+        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
-        <div v-if="editable" class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/90 lg:bg-transparent">
+        <div v-if="editable" class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent">
             <button
                 class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateGroup">
@@ -16,7 +16,7 @@
                 <span>笔记</span>
             </button>
         </div>
-        <nav class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/90 lg:bg-transparent">
+        <nav class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95 lg:bg-transparent">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
@@ -282,7 +282,6 @@ const onItemMouseleave = (id) => {
 }
 watch(() => route.params.id, (value, oldValue) => {
     if (value !== oldValue) {
-        console.log('route', route)
         activeItem.value = value;
         editItem.value = '';
         doFold();

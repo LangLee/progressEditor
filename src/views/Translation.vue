@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen w-full justify-center items-center text-slate-700">
     <Header></Header>
-    <div class="flex-1 w-full p-2 lg:p-4">
+    <div class="flex-1 w-full p-2 lg:p-4 overflow-y-auto">
       <!-- {{ response }} -->
       <!-- <iframe v-if="dictUrl" :src="dictUrl" frameborder="0" width="100%" height="100%"></iframe> -->
       <div v-if="dailyNote" class="rounded-lg shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
