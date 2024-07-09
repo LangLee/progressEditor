@@ -2,7 +2,7 @@
     <div class="h-screen w-full flex flex-col overflow-y-auto">
         <Header :hiddenFold="true"></Header>
         <Note class="flex-none m-4 lg:m-8" :modelValue="oneNote"/>
-        <div class="flex p-2 lg:p-4 flex-wrap content-start">
+        <div class="flex p-2 lg:p-4 flex-wrap justify-start">
             <div v-for="(app, index) in apps" :key="app._id"
                 class="flex flex-col items-center m-2 lg:m-4">
                 <Card :editable="(app.system && editable) || !app.system" :modelValue="app" theme="blue"

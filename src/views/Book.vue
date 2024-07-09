@@ -1,3 +1,9 @@
+<template>
+  <div class="w-full h-full flex">
+    <component :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
+  </div>
+</template>
+
 <script setup lang="ts">
 // import MdEditor from "@/components/editor/Markdown.vue"
 import { ref, shallowRef, watch, onBeforeMount, onBeforeUnmount, defineAsyncComponent } from "vue"
@@ -6,9 +12,6 @@ import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
 import Anchor from "@/types/anchor";
 const route = useRoute();
-// defineComponent({
-//   MdEditor
-// })
 const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
@@ -102,12 +105,6 @@ onBeforeMount(() => {
     clearInterval(intervalSave)
   })
 </script>
-
-<template>
-  <div class="w-full h-full flex">
-    <component :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
-  </div>
-</template>
 
 
 <style lang="scss"></style>

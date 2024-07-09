@@ -1,4 +1,3 @@
-
 <template>
   <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10">
     <EditorContent class="h-full" :editor="editor" />
@@ -10,10 +9,15 @@ import Text from '@tiptap/extension-text'
 import Paper from './extend/paper.js'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import { watch, defineProps } from "vue"
+import { debounce } from '@/common/utils'
 const props = defineProps({
   modelValue: String
 });
 const emits = defineEmits(['update:modelValue', 'update:anchors']);
+const updateContent = debounce((editor) => {
+  const content = editor.getJSON();
+  emits('update:modelValue', JSON.stringify(content));
+}, 300)
 const editor = useEditor({
   content: JSON.parse(props.modelValue || ""),
   editorProps: {
@@ -29,8 +33,7 @@ const editor = useEditor({
     Paper
   ],
   onUpdate: ({ editor }) => {
-    const content = editor.getJSON();
-    emits('update:modelValue', JSON.stringify(content));
+    updateContent(editor)
   }
 })
 watch(() => props.modelValue, (value) => {

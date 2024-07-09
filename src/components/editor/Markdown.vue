@@ -33,7 +33,7 @@ import BubbleMenu from '../toolbar/BubbleMenu.vue'
 
 import Commands from './extend/commands'
 import suggestion from './extend/suggestion'
-
+import { debounce } from '@/common/utils.ts'
 const CustomDocument = Document.extend({
   content: 'heading block*',
 })
@@ -54,6 +54,9 @@ const props = defineProps({
   anchors: Array<Anchor>
 });
 const emits = defineEmits(['update:modelValue', 'update:anchors']);
+const updateContent = debounce((editor) => {
+  emits('update:modelValue', editor.getHTML());
+}, 300);
 const editor = useEditor({
   editable: props.editable,
   content: props.modelValue,
@@ -152,10 +155,12 @@ const editor = useEditor({
     TableHeader,
     TableCell
   ],
+
   onUpdate: ({ editor }) => {
-    emits('update:modelValue', editor.getHTML());
+    updateContent(editor)
   }
 })
+
 watch(() => props.modelValue, (value) => {
   const isSame = editor.value && editor.value.getHTML() === value;
   // JSON
@@ -166,13 +171,13 @@ watch(() => props.modelValue, (value) => {
   editor.value && editor.value.commands.setContent(value || '', true);
 })
 watch(() => props.editable, (value, oldValue) => {
-    if (value === oldValue) {
-        return;
-    }
-    editor.value && editor.value.setEditable(value)
+  if (value === oldValue) {
+    return;
+  }
+  editor.value && editor.value.setEditable(value)
 })
 onBeforeUnmount(() => {
-    editor.value && editor.value.destroy()
+  editor.value && editor.value.destroy()
 })
 </script>
 
@@ -204,6 +209,7 @@ onBeforeUnmount(() => {
   :first-child {
     margin-top: 0;
   }
+
   /* Placeholder (on every new line) */
   .is-empty::before {
     color: rgb(203 213 225);
@@ -251,7 +257,7 @@ onBeforeUnmount(() => {
 
     .hljs-comment,
     .hljs-quote {
-      color: #616161;
+      color: #787878;
     }
 
     .hljs-variable,

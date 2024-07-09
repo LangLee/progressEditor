@@ -50,3 +50,12 @@ export const getMoonshotAiChart = (messages, question)=>{
         }
     });
 }
+export const getAiChat = (id, mode, question)=>{
+    return axios.post("/ai/getAiChat", {id, mode, question}).then((res) => {
+        if (res.data && res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data && res.data.message);
+        }
+    });
+}

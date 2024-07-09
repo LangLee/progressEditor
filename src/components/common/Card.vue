@@ -1,9 +1,9 @@
 <template>
-    <a class="relative w-24 h-24 lg:w-28 lg:h-28 p-2 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
+    <a class="relative w-[4.5rem] h-[4.5rem] lg:w-28 lg:h-28 p-1 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
         :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="open"
         @mouseover="onMouseover" @mouseleave="onMouseleave">
-        <RemixIcon class="text-3xl lg:text-4xl mb-1 lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
-        <span class="text-sm lg:text-basic break-all text-center">{{ modelValue.title }}</span>
+        <RemixIcon class="text-2xl lg:text-4xl lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
+        <span class="text-xs lg:text-base break-all text-center">{{ modelValue.title }}</span>
         <div v-if="editable && active" class="absolute bottom-0 left-0 right-0 z-10 bg-slate-300/10 flex justify-center py-2 text-xl backdrop-blur-lg">
             <RemixIcon class="mx-1" :class="`text-${theme}-400 hover:text-${theme}-700`"
                 name="edit-line" @click.stop="edit"></RemixIcon>

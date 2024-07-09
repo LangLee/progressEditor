@@ -9,7 +9,7 @@ import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import { defineProps, defineEmits, watch, onBeforeUnmount } from 'vue'
-
+import { debounce } from '@/common/utils'
 const props = defineProps({
     modelValue: String,
     editable: {
@@ -18,7 +18,9 @@ const props = defineProps({
     }
 });
 const emits = defineEmits(['update:modelValue']);
-
+const updateContent = debounce((editor) => {
+  emits('update:modelValue', editor.getHTML());
+}, 300);
 const editor = useEditor({
     editable: props.editable,
     content: props.modelValue,
@@ -33,7 +35,7 @@ const editor = useEditor({
         Text
     ],
     onUpdate: ({ editor }) => {
-        emits('update:modelValue', editor.getHTML())
+        updateContent(editor)
     },
 })
 watch(() => props.modelValue, (value) => {

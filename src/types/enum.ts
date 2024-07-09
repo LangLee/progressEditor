@@ -4,6 +4,7 @@ enum Classification {
     drawing = '图画',
     task = '待办',
     code = '代码',
-    link = '链接'
+    link = '链接',
+    chat = '对话'
 }
 export {Classification}

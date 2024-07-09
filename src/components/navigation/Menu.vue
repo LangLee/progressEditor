@@ -47,7 +47,7 @@
                             <a v-else @click.stop="onMenuChange(book)"
                                 @dblclick.stop="onEditBookTitle(book.id)" @mouseover="onItemMouseover(book.id)"
                                 @mouseleave="onItemMouseleave(book.id)"
-                                class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900">
+                                class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 cursor-pointer">
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->
@@ -82,7 +82,7 @@
                 </li>
             </ul>
         </nav>
-        <BookModal v-if="!!editBook" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook" @confirm="finishEditBook"
+        <BookModal v-if="!!editBook" :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook" @confirm="finishEditBook"
             @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
         <GroupModal v-if="!!editGroup" :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editGroup" :group="editGroup"
             @confirm="finishEditGroup" @cancel="closeModal" />
@@ -121,29 +121,30 @@ const props = defineProps({
     },
     editable: {
         type: Boolean,
+        default: true
+    },
+    fixedType: {
+        type: String,
+        default: ''
+    },
+    defaultGroup: {
+        type: Boolean,
         default: false
     }
 })
-// const editHiddenClass = computed(() => {
-//     return props.editable ? '' : 'hidden';
-// })
 const foldState = ref(true);
-const emits = defineEmits(['toggleFold']);
+const emits = defineEmits(['toggleFold', 'menuChange']);
 const doFold = () => {
     foldState.value = true;
     emits('toggleFold', true);
 }
 const onMenuChange = (item) => {
     let { id } = item || {};
-    if (!id) {
-        router.push({ path: `/books`, query: { appId: route.query.appId } });
-        return;
-    }
     // 激活菜单
-    activeItem.value = id;
+    activeItem.value = id || '';
     editItem.value = '';
     doFold();
-    router.push({ path: `/books/${id}`, query: { appId: route.query.appId } });
+    emits('menuChange', id, route.query.appId);
 }
 const onCreateGroup = () => {
     editGroup.value = { name: "新增分类" };
@@ -163,7 +164,7 @@ const onEditGroup = (group) => {
     isNew.value = false;
 }
 const finishEditGroup = () => {
-    if (editGroup.value && isNew) {
+    if (editGroup.value && isNew.value) {
         createGroup(editGroup.value).then((data) => {
             let { _id, name } = data;
             if (!_id) return;
@@ -196,13 +197,16 @@ const onRemoveGroup = (group, index) => {
 
 const onCreateBook = () => {
     isNew.value = true;
-    editBook.value = { title: "新增笔记", type: "markdown" };
+    editBook.value = { title: "新增笔记", type: props.fixedType || "markdown" };
 }
 const finishEditBook = () => {
     if (editBook && isNew.value) {
         createBook(editBook.value).then((data) => {
             let group = groups.value.find(({ id }) => id === data.category);
-            if (!group) return;
+            if (!group) {
+                group = groups.value.find(({ id }) => id === 'default');
+                if (!group) return;
+            };
             group.books = group.books || [];
             data.id = data._id;
             group.books.splice(0, 0, data);
@@ -250,7 +254,7 @@ const onUpdateBook = (book) => {
     })
 }
 onMounted(() => {
-    getGroupAndBooks().then(data => {
+    getGroupAndBooks(props.defaultGroup).then(data => {
         groups.value = data || [];
         if (!route.params.id && groups.value[0] && groups.value[0].books && groups.value[0].books[0]) {
             onMenuChange(groups.value[0].books[0]);

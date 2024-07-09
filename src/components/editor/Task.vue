@@ -1,7 +1,7 @@
 <template>
-    <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10">
-        <editor-content class="h-full" :editor="editor" />
-    </div>
+  <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10">
+    <editor-content class="h-full" :editor="editor" />
+  </div>
 </template>
 <script setup lang="ts">
 import { useEditor, EditorContent } from '@tiptap/vue-3'
@@ -11,58 +11,61 @@ import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import Text from '@tiptap/extension-text'
 import { defineProps, defineEmits, watch, onBeforeUnmount } from 'vue'
+import { debounce } from '@/common/utils'
 const CustomDocument = Document.extend({
-    content: 'taskList',
+  content: 'taskList',
 })
 
 const CustomTaskItem = TaskItem.extend({
-    content: 'inline*',
+  content: 'inline*',
 })
 const props = defineProps({
-    modelValue: String,
-    editable: {
-        type: Boolean,
-        default: true
-    }
+  modelValue: String,
+  editable: {
+    type: Boolean,
+    default: true
+  }
 });
 const emits = defineEmits(['update:modelValue']);
-
+const updateContent = debounce((editor) => {
+  emits('update:modelValue', editor.getHTML());
+}, 300);
 const editor = useEditor({
-    editable: props.editable,
-    content: props.modelValue,
-    editorProps: {
-        attributes: {
-            class: 'prose w-full max-w-full focus:outline-none',
-        },
+  editable: props.editable,
+  content: props.modelValue,
+  editorProps: {
+    attributes: {
+      class: 'prose w-full max-w-full focus:outline-none',
     },
-    extensions: [
-        CustomDocument,
-        Paragraph,
-        Text,
-        TaskList,
-        CustomTaskItem
-    ],
-    onUpdate: ({ editor }) => {
-        emits('update:modelValue', editor.getHTML())
-    },
+  },
+  extensions: [
+    CustomDocument,
+    Paragraph,
+    Text,
+    TaskList,
+    CustomTaskItem
+  ],
+  onUpdate: ({ editor }) => {
+    updateContent(editor)
+  },
 })
 watch(() => props.modelValue, (value) => {
-    const isSame = editor.value && editor.value.getHTML() === value;
-    // JSON
-    // const isSame = JSON.stringify(editor.getJSON()) === JSON.stringify(value)
-    if (isSame) {
-        return;
-    };
-    editor.value && editor.value.commands.setContent(value || '', true);
+  const isSame = editor.value && editor.value.getHTML() === value;
+  // JSON
+  // const isSame = JSON.stringify(editor.getJSON()) === JSON.stringify(value)
+  if (isSame) {
+    return;
+  };
+  editor.value && editor.value.commands.setContent(value || '', true);
 })
 watch(() => props.editable, (value, oldValue) => {
-    if (value === oldValue) {
-        return;
-    }
-    editor.value && editor.value.setEditable(value)
+  if (value === oldValue) {
+    return;
+  }
+  editor.value && editor.value.setEditable(value)
 })
 onBeforeUnmount(() => {
-    editor.value && editor.value.destroy()
+  editor.value && editor.value.destroy()
 })
 
 </script>
@@ -96,13 +99,13 @@ onBeforeUnmount(() => {
       align-items: center;
       display: flex;
 
-      > label {
+      >label {
         flex: 0 0 auto;
         margin-right: 0.5rem;
         user-select: none;
       }
 
-      > div {
+      >div {
         flex: 1 1 auto;
       }
     }

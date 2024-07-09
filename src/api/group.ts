@@ -9,8 +9,8 @@ const getPortalAndBooks = () => {
         }
     });
 }
-const getGroupAndBooks = () => {
-    return axios.get("/groups/getAppGroupAndBooks").then((res) => {
+const getGroupAndBooks = (defaultGroup) => {
+    return axios.get("/groups/getAppGroupAndBooks", {params: {defaultGroup}}).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {

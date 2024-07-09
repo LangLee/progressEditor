@@ -9,6 +9,7 @@
 import { ref, shallowRef, defineProps, defineEmits, watch } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
+import { debounce } from '@/common/utils'
 // import { oneDark } from '@codemirror/theme-one-dark'
 
 const extensions = [javascript()];
@@ -21,8 +22,12 @@ const view = shallowRef();
 const handleReady = (payload) => {
     view.value = payload.view
 }
-const change = (code) => {
+
+const updateContent = debounce((code) => {
     emits('update:modelValue', code);
+}, 300);
+const change = (code) => {
+    updateContent(code)
 };
 const focus = () => {
     console.log('focus');

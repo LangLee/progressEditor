@@ -41,7 +41,7 @@
         </div>
     </div>
     <GroupModal v-if="!!editPortal" :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" :group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
-    <BookModal v-if="!!currentBook" :link="true" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
+    <BookModal v-if="!!currentBook" fixedType="link" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
     <Modal :visible="!!currentRemoveBook" :closable="false" title="确认删除" @confirm="finishRemoveBook" @cancel="closeRemoveModal">
         <p class="align-center">你真的要删除这个书签？</p>
     </Modal>
