@@ -2,17 +2,17 @@
     <div id="chatContent" class="flex-1 text-base p-2 lg:p-4 text-slate-900 font-normal overflow-y-auto">
         <div v-if="messages && messages.length > 0" class="flex flex-col content-space-between">
             <div v-for="(item, index) in messages" :key="index"
-                :class="`my-3 text-slate-700 ${index % 2 === 0 ? 'self-end lg: ml-8' : 'self-start lg:mr-8'}`">
-                <Avatar v-if="index % 2 !== 0" icon="robot-2-fill" />
+                :class="`my-3 text-slate-700 ${item[roleProperty]!==owner ? 'self-start lg:mr-8' : 'self-end lg: ml-8'}`">
+                <Avatar v-if="item[roleProperty]!==owner" icon="robot-2-fill" />
                 <span class="inline-block px-4 py-2 rounded-xl shadow-md"
-                    :class="index % 2 !== 0 ? '' : 'bg-blue-50'">{{
+                    :class="item[roleProperty]!==owner ? '' : 'bg-blue-50'">{{
                         item.content }}</span>
-                <Avatar v-if="index % 2 === 0" />
+                <Avatar v-if="item[roleProperty]===owner" />
             </div>
         </div>
         <div v-else class="inline-block my-3 self-start lg:mr-8">
             <Avatar icon="robot-2-fill" />
-            <span class="px-4 py-2 text-slate-700  bg-blue-50 rounded-xl shadow-md">开始向我提问吧...</span>
+            <span class="px-4 py-2 text-slate-700  bg-blue-50 rounded-xl shadow-md">{{ placeholder }}</span>
         </div>
     </div>
     <div v-if="editable" class="relative h-24 lg:h-28 w-full text-lg px-2 lg:px-4 mb-4 lg:mb-8">
@@ -47,13 +47,26 @@ const props = defineProps({
     messages: {
         type: Array,
         default: () => []
+    },
+    placeholder: {
+        type: String,
+        default: '开始向我提问吧...'
+    },
+    owner: {
+        type: String,
+        default: 'user'
+    },
+    roleProperty: {
+        type: String,
+        default: 'role'
     }
 })
 const emits = defineEmits(['chart'])
 const question = ref('')
 const onChart = () => {
-    question.value = question.value.replace(/[\r\n]/g, "");
-    emits('chart', question.value)
+    question.value = question.value.replace(/[\r\n]/g, '');
+    emits('chart', question.value);
+    question.value = '';
 }
 watch(()=>props.messages, (newVal, oldVal) => {
     if (newVal && newVal.length !== oldVal.length) {

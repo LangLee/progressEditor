@@ -1,14 +1,14 @@
 <template>
     <Modal v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
         <input
-            class="p-2 mb-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            class="p-2 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             type="text" v-model="book.title" placeholder="请输入书名" />
         <ProSelect class="my-2" v-model="book.category" :options="categoryOptions"></ProSelect>
         <input v-if="fixedType==='link'"
-            class="p-2 mb-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            class="p-2 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             type="text" v-model="book.url" placeholder="请输入链接(http://www.xxxx.com)" />
-        <div v-else-if="!fixedType" class="flex flex-row flex-wrap px-2">
-            <span v-for="(type, index) in Object.keys(types)" :key="index" class="mr-2 mb-2 text-base">
+        <div v-else-if="!fixedType" class="flex flex-row flex-wrap px-2 my-2">
+            <span v-for="(type, index) in Object.keys(types)" :key="index" class="pr-4 py-2 basis-1/4 lg:basis-1/3">
                 <span class="mr-2">
                     <input :id="type" :value="type" type="radio" v-model="book.type" />
                 </span>

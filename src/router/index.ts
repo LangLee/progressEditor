@@ -12,6 +12,7 @@ import Portals from '@/views/Portals.vue'
 import Coding from '@/views/Coding.vue'
 import Setting from '@/views/Setting.vue'
 import Words from '@/views/Words.vue'
+import Chat from '@/views/Chat.vue'
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -79,6 +80,11 @@ const routes = [
         name: 'words',
         path: '/words',
         component: Words
+    },
+    {
+        name: 'chat',
+        path: '/chat',
+        component: Chat
     }
 ]
 

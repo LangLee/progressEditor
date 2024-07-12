@@ -6,13 +6,13 @@
             <button
                 class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateGroup">
-                <RemixIcon name="add-line"/>
+                <RemixIcon name="add-line" />
                 <span>分类</span>
             </button>
             <button
                 class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateBook">
-                <RemixIcon name="add-line"/>
+                <RemixIcon name="add-line" />
                 <span>笔记</span>
             </button>
         </div>
@@ -23,30 +23,35 @@
                         v-model="group.name" @keyup.enter="onUpdateGroup(group)" />
                     <div v-else class="px-3 py-2 relative font-medium text-gray-900 cursor-pointer"
                         @dblclick.stop="onInputEditGroup(group.id)" @mouseover="onItemMouseover(group.id)"
-                        @mouseleave="onItemMouseleave(group.id)">
+                        @mouseleave="onItemMouseleave(group.id)"
+                        @touchstart.passive="(e) => handleTouchStart(e, group.id)"
+                        @touchend.passive="(e) => handleTouchEnd(e, group.id)">
                         <span class="text-base mr-2">{{ group.name }}</span>
-                        <transition name="fade">
-                            <span v-if="hoverItem === group.id">
+                        <transition name="slide">
+                            <div v-if="hoverItem === group.id" class="absolute right-0 top-3 font-sans text-slate-50">
                                 <span v-if="editable && !group.readonly"
-                                    class="font-sans text-blue-300 hover:text-blue-700 mr-1 cursor-pointer"
+                                    class="cursor-pointer bg-blue-300 hover:bg-blue-700 p-2"
                                     @click.stop="onEditGroup(group)">
                                     <RemixIcon name="edit-line" />
+                                    <span>编辑</span>
                                 </span>
                                 <span v-if="editable && !group.readonly && (!group.books || group.books.length <= 0)"
-                                    class="font-sans text-blue-300 hover:text-blue-700 cursor-pointer"
+                                    class="cursor-pointer bg-red-300 hover:bg-red-700 p-2"
                                     @click.stop="onRemoveGroup(group, index)">
                                     <RemixIcon name="delete-bin-line" />
+                                    <span>删除</span>
                                 </span>
-                            </span>
+                            </div>
                         </transition>
                     </div>
                     <ul class="ml-3">
                         <li :id="`book-${book.id}`" v-for="(book, idx) in group.books" :key="book.id">
                             <input ref="titleInput" v-if="book.id === editItem" class="p-2 w-full rounded-md"
                                 type="text" v-model="book.title" @keyup.enter="onUpdateBook(book)" />
-                            <a v-else @click.stop="onMenuChange(book)"
-                                @dblclick.stop="onEditBookTitle(book.id)" @mouseover="onItemMouseover(book.id)"
-                                @mouseleave="onItemMouseleave(book.id)"
+                            <a v-else @click.stop="onMenuChange(book)" @dblclick.stop="onEditBookTitle(book.id)"
+                                @mouseover="onItemMouseover(book.id)" @mouseleave="onItemMouseleave(book.id)"
+                                @touchstart.passive="(e) => handleTouchStart(e, book.id)"
+                                @touchend.passive="(e) => handleTouchEnd(e, book.id)"
                                 class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 cursor-pointer">
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
@@ -63,16 +68,18 @@
                                         </span>
                                     </template>
                                 </tippy>
-                                <transition name="fade">
+                                <transition name="slide">
                                     <div v-if="editable && book.id === hoverItem"
-                                        class="float-right font-sans text-blue-300 py-1">
-                                        <span class="mr-1 cursor-pointer hover:text-blue-700 "
+                                        class="absolute right-0 top-3 font-sans text-slate-50">
+                                        <span class="cursor-pointer bg-blue-300 hover:bg-blue-700 p-2"
                                             @click.stop="onEditBook(book)">
                                             <RemixIcon name="edit-line" />
+                                            <span>编辑</span>
                                         </span>
-                                        <span class="cursor-pointer hover:text-blue-700 "
+                                        <span class="cursor-pointer bg-red-300 hover:bg-red-700 p-2"
                                             @click.stop="onRemoveBook(group.books, idx)">
                                             <RemixIcon name="delete-bin-line" />
+                                            <span>删除</span>
                                         </span>
                                     </div>
                                 </transition>
@@ -82,9 +89,9 @@
                 </li>
             </ul>
         </nav>
-        <BookModal v-if="!!editBook" :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook" @confirm="finishEditBook"
-            @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
-        <GroupModal v-if="!!editGroup" :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editGroup" :group="editGroup"
+        <BookModal :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook"
+            @confirm="finishEditBook" @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
+        <GroupModal :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editGroup" :group="editGroup"
             @confirm="finishEditGroup" @cancel="closeModal" />
     </div>
 </template>
@@ -108,11 +115,13 @@ const hoverItem = ref('');
 // 当前input输入编辑的节点
 const editItem = ref('');
 // 弹窗编辑分类
-const editGroup = ref(null);
+const editGroup = ref(undefined);
 // 弹窗编辑书签
-const editBook = ref(null);
+const editBook = ref(undefined);
 // 是否是新增的分类或者书签
 const isNew = ref(false);
+// 标记移动端触摸事件
+let touchStart = null;
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     fold: {
@@ -170,7 +179,7 @@ const finishEditGroup = () => {
             if (!_id) return;
             groups.value.push({ id: _id, name, books: [] });
             editItem.value = '';
-            editGroup.value = null;
+            editGroup.value = undefined;
             isNew.value = false;
         })
     } else if (editGroup.value) {
@@ -180,7 +189,7 @@ const finishEditGroup = () => {
 const onUpdateGroup = (group) => {
     updateGroup(group).then(() => {
         editItem.value = '';
-        editGroup.value = null;
+        editGroup.value = undefined;
         isNew.value = false;
     })
 }
@@ -211,7 +220,7 @@ const finishEditBook = () => {
             data.id = data._id;
             group.books.splice(0, 0, data);
             onMenuChange(data);
-            editBook.value = null;
+            editBook.value = undefined;
         })
     } else if (editBook && editBook.value) {
         onUpdateBook(editBook.value)
@@ -219,8 +228,8 @@ const finishEditBook = () => {
 }
 const closeModal = () => {
     editItem.value = '';
-    editBook.value = null;
-    editGroup.value = null;
+    editBook.value = undefined;
+    editGroup.value = undefined;
     isNew.value = false;
 }
 const onRemoveBook = (books, index) => {
@@ -284,6 +293,26 @@ const onItemMouseover = (id) => {
 const onItemMouseleave = (id) => {
     hoverItem.value = '';
 }
+const handleTouchStart = (e, id) => {
+    touchStart = { x: e.touches[0].clientX, target: id };
+}
+const handleTouchEnd = (e, id) => {
+    if (!touchStart) return;
+    let { x, target } = touchStart;
+    if (target !== id) {
+        touchStart = null;
+        return;
+    }
+    let touchEnd = e.changedTouches[0].clientX;
+    if (x > touchEnd) {
+        // 左移
+        hoverItem.value = id;
+    } else if (x < touchEnd) {
+        // 右移
+        hoverItem.value = '';
+    }
+    touchStart = null;
+}
 watch(() => route.params.id, (value, oldValue) => {
     if (value !== oldValue) {
         activeItem.value = value;
@@ -307,11 +336,21 @@ watch(() => props.fold, (value, oldValue) => {
 <style lang='scss' scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s;
+    transition: opacity 0.3s;
 }
 
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: transform 0.3s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+    transform: translateX(100%);
 }
 </style>

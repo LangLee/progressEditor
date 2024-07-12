@@ -40,8 +40,8 @@
             </ul>
         </div>
     </div>
-    <GroupModal v-if="!!editPortal" :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" :group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
-    <BookModal v-if="!!currentBook" fixedType="link" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
+    <GroupModal :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" :group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
+    <BookModal fixedType="link" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
     <Modal :visible="!!currentRemoveBook" :closable="false" title="确认删除" @confirm="finishRemoveBook" @cancel="closeRemoveModal">
         <p class="align-center">你真的要删除这个书签？</p>
     </Modal>
@@ -100,9 +100,7 @@ const finishRemoveBook = () => {
 }
 const appendPortal = () => {
     isNew.value = true;
-    editPortal.value = {
-        name: ''
-    }
+    editPortal.value = {name: ''}
 }
 const onEditPortal = (portal)=>{
     isNew.value = false;
@@ -120,7 +118,7 @@ const finishEditPortal = () => {
             if (portals.value && portals.value.length > 0) {
                 portals.value.push(data);
             }
-            editPortal.value = null;
+            editPortal.value = undefined;
             isNew.value = false;
         })
     } else {
@@ -131,7 +129,7 @@ const finishEditPortal = () => {
                 }
                 return portal;
             })
-            editPortal.value = null;
+            editPortal.value = undefined;
         })
     }
 }
@@ -163,12 +161,12 @@ const finishEditBook = () => {
     }
 }
 const closePortalModal = ()=>{
-    editPortal.value = null;
+    editPortal.value = undefined;
     isNew.value = false;
 }
 const closeBookModal = ()=>{
-    currentBook.value = null;
-    currentCategory.value = null;
+    currentBook.value = undefined;
+    currentCategory.value = undefined;
     isNew.value = false;
 }
 const onItemMouseover = (id) => {

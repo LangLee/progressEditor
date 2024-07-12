@@ -31,6 +31,7 @@ import { login, register } from '../api/user'
 import { useRouter } from 'vue-router'
 import message from '../components/feedback/message'
 import Stars from '@/common/starts'
+import {setUserInfo} from '@/common/userInfo'
 const name = ref('');
 const password = ref('');
 const router = useRouter();
@@ -41,9 +42,11 @@ const onLogin = () => {
         console.log(result);
         if (result && result.data) {
             if (result.data.success) {
-                let token = result.data.data;
+                let {token, userId, name, avatar} = result.data.data;
                 if (token) {
                     localStorage.setItem('me_token', token);
+                    // 缓存个人信息
+                    setUserInfo({userId, name, avatar});
                     router.push("/home");
                 } else {
                     result.data.message && message.error(result.data.message);

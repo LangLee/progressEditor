@@ -1,8 +1,8 @@
 <template>
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
-        <input
+        <!-- <input
             class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="app.name" placeholder="请输入应用名" :required="true"/>
+            type="text" v-model="app.name" placeholder="请输入应用名" :required="true"/> -->
         <input
             class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             type="text" v-model="app.title" placeholder="请输入应用标题" />
@@ -38,7 +38,6 @@ const props = defineProps({
         type: Object,
         default: () => {
             return {
-                name: '',
                 title: '',
                 url: '',
                 icon: '',

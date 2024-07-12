@@ -4,11 +4,11 @@
         <Note class="flex-none m-4 lg:m-8" :modelValue="oneNote"/>
         <div class="flex p-2 lg:p-4 flex-wrap justify-start">
             <div v-for="(app, index) in apps" :key="app._id"
-                class="flex flex-col items-center m-2 lg:m-4">
-                <Card :editable="(app.system && editable) || !app.system" :modelValue="app" theme="blue"
+                class="flex flex-col items-center p-2 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12">
+                <Card class="w-full h-full" :editable="(app.system && editable) || !app.system" :modelValue="app" theme="blue"
                     @edit="onEditApp(app, index)" @remove="onRemoveApp(app._id)" />
             </div>
-            <div class="flex flex-col items-center m-2 lg:m-4">
+            <div class="flex flex-col items-center p-2 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12">
                 <Card theme="blue" :modelValue="{ title: '新增应用', icon: 'add-line' }" @cardClick="appendApp" />
             </div>
         </div>
@@ -30,12 +30,12 @@ import message from '@/components/feedback/message';
 const apps = ref([]);
 const editable = ref(false);
 const modalVisible = ref(false);
-const app = ref({});
+const app = ref(undefined);
 const append = ref(false);
 const oneNote = ref();
 const appendApp = () => {
     append.value = true;
-    app.value = { name: 'new', title: '新增', icon: 'book-2-fill', inner: true };
+    app.value = { title: '新增', icon: 'book-2-fill', inner: true };
     modalVisible.value = true;
 }
 const onEditApp = (appObj) => {
@@ -58,7 +58,7 @@ const finishEditApp = async () => {
 }
 const closeModal = () => {
     append.value = false;
-    app.value = null;
+    app.value = undefined;
     modalVisible.value = false;
 }
 const onRemoveApp = (id) => {

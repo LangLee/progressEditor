@@ -50,6 +50,7 @@ const setCurrentComponent = (type)=>{
       );
       break;
     }
+    case "chat":
     case "text": {
       currentComponent.value = defineAsyncComponent(() =>
         import('@/components/editor/Text.vue')

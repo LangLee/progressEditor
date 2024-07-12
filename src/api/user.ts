@@ -5,7 +5,27 @@ const login = (params: Object) => {
 const register = (params: Object) => {
     return axios.post("/users/register", params);
 }
+const getLoginUser = ()=>{
+    return axios.get("/users/getLoginUser").then((res)=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    });
+}
+const getContactList = ()=>{
+    return axios.get("/users/getContactList").then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
 export {
     login,
-    register
+    register,
+    getLoginUser,
+    getContactList
 }

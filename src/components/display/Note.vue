@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center shadow-lg rounded-lg bg-white">
         <img class="w-full lg:w-[50rem]" :src="modelValue.image" :alt="modelValue.photoBy" />
         <span class="lg:text-lg text-slate-300">{{ modelValue.photoBy }}</span>
-        <p class="font-medium p-4 lg:p-8 lg:font-bold lg:text-lg text-slate-500">{{ modelValue.word }}</p>
+        <p class="p-4 lg:p-8 lg:font-medium lg:text-lg text-slate-500">{{ modelValue.word }}</p>
     </div>  
 </template>
 <script setup>

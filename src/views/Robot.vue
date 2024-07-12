@@ -7,7 +7,7 @@
         <Menu fixedType="chat" :defaultGroup="true" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange">
         </Menu>
         <div class="flex-1 flex flex-col w-full lg:pl-80 overflow-y-auto">
-            <Chat :editable="true" :messages="messages" :loading="loading" @chart="onChat"></Chat>
+            <ChatPanel :editable="true" :messages="messages" :loading="loading" @chart="onChat"></ChatPanel>
         </div>
     </div>
 </template>
@@ -15,7 +15,7 @@
 import { ref, reactive, onMounted, onBeforeUnmount, getCurrentInstance, watch } from 'vue'
 import ProSelect from '@/components/common/Select.vue'
 import Header from '@/components/navigation/Header.vue'
-import Chat from '@/components/display/Chat.vue'
+import ChatPanel from '@/components/display/ChatPanel.vue'
 import Menu from '@/components/navigation/Menu.vue'
 import { LLM_SELECT_OPTIONS } from '@/common/constants'
 import { getAiChat } from '@/api/ai'

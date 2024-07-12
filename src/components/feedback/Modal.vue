@@ -1,26 +1,27 @@
 <template>
-    <div v-if="visible" class="fixed top-0 left-0 inset-0 center z-50 backdrop-blur bg-white/50">
-      <div
-        class="flex flex-col w-full lg:w-80 mx-auto lg:mt-[10%] max-h-full lg:max-h-[60%] shadow-lg rounded-lg bg-white">
-        <div v-if="title || !closable" class="flex px-4 py-2 border-b border-slate-100 ">
-          <div class="flex flex-1 items-center">
-            <span class="font-semibold">{{ title }}</span>
-          </div>
-          <button v-if="closable" class="rounded px-2 bg-slate-100 hover:bg-blue-300 hover:text-slate-100"
-            @click.stop="closeModal">
-            <RemixIcon name="close-line" class="leading-6"></RemixIcon>
-          </button>
+  <div
+    class="flex flex-col lg:justify-center justify-end fixed top-0 left-0 inset-0 z-50 backdrop-blur bg-black/20 transition-transform duration-500 ease-in-out delay-200"
+    :class="visible ? 'translate-y-0' : 'translate-y-[100%]'">
+    <div class="flex flex-col w-full lg:w-80 mx-auto max-h-full lg:max-h-[60%] shadow-lg rounded-lg bg-white">
+      <div v-if="title || !closable" class="flex p-4 border-b border-slate-100 ">
+        <div class="flex flex-1 items-center">
+          <span class="text-lg font-semibold">{{ title }}</span>
         </div>
-        <div class="flex flex-1 flex-col p-4 overflow-auto">
-          <slot></slot>
-        </div>
-        <div class="flex justify-end py-1 px-6 border-t border-slate-100 leading-6">
-          <button class="px-2 my-2 mr-2 bg-blue-400 text-white font-medium rounded-md shadow-md hover:bg-blue-500"
-            @click.stop="confirm">确定</button>
-          <button class="px-2 my-2 font-medium rounded-md shadow-md" @click.stop="cancel">取消</button>
-        </div>
+        <button v-if="closable" class="rounded px-2 text-xl hover:bg-blue-300 hover:text-slate-100"
+          @click.stop="closeModal">
+          <RemixIcon name="close-line" class="leading-6"></RemixIcon>
+        </button>
+      </div>
+      <div class="flex flex-1 flex-col p-4 overflow-auto">
+        <slot></slot>
+      </div>
+      <div class="flex border-t border-slate-100 shadow-lg rounded-lg">
+        <button class="basis-1/2 py-3 bg-blue-400 text-white font-medium hover:bg-blue-700"
+          @click.stop="confirm">确定</button>
+        <button class="basis-1/2 py-3 font-medium bg-white hover:bg-slate-50" @click.stop="cancel">取消</button>
       </div>
     </div>
+  </div>
 </template>
 <script setup>
 import { ref, reactive, defineProps, onMounted, onUnmounted, getCurrentInstance } from 'vue'
@@ -84,5 +85,4 @@ onMounted(() => {
 </script>
 
 
-<style lang='scss'>
-</style>
+<style lang='scss'></style>
