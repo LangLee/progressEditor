@@ -1,22 +1,21 @@
 
 import { ref } from 'vue';
 import { getUserId, setUserInfo } from './userInfo';
-import {getContactMessages} from '@/api/message'
+import {getContactMessages, updateContactMessageStatus} from '@/api/message'
 import { getContactList, getLoginUser } from '@/api/user'
 const WS_URL = import.meta.env.VITE_API_BASE_WS
 class MessageManage {
-    sender: any = ref(getUserId());
+    sender: any = ref();
     recipient: string;
     contacts: any = ref([]);
     messages: any = ref([]);
     socket: WebSocket;
     constructor() {
+        this.sender = ref(getUserId());
         this.recipient = "";
-        this.contacts = ref([]);
         getContactList().then((data) => {
             this.contacts.value = data || [];
         })
-        this.messages = ref([]);
         this.socket = new WebSocket(WS_URL);
         this.bindEvent();
     }
@@ -29,7 +28,7 @@ class MessageManage {
     appendMessage(message, isReceive = false) {
         let { from, to } = message;
         let chatter = isReceive ? from : to;
-        this.messages.value.push(message);
+        this.messages.value = this.messages.value.concat([message]);
         let contact = this.contacts.value.find(({ _id }) => _id === chatter);
         if (contact && !isReceive) {
             contact.unreadCount = contact.unreadCount ? contact.unreadCount + 1 : 1;
@@ -38,6 +37,8 @@ class MessageManage {
     }
     close() {
         this.socket.close();
+        this.contacts = null;
+        this.messages = null;
     }
     bindEvent() {
         // 连接打开时执行的回调
@@ -89,7 +90,8 @@ class MessageManage {
     }
     changeRecipient(userId) {
         this.recipient = userId;
-        let messages = this.contacts.value.find(({ _id }) => _id === userId)?.messages;
+        let contact = this.contacts.value.find(({ _id }) => _id === userId);
+        let messages = contact?.messages;
         if (messages) {
             this.messages.value = messages;
         } else {
@@ -98,6 +100,11 @@ class MessageManage {
                 this.contacts.value.find(({ _id }) => _id === userId).messages = this.messages.value;
             });
         }
+        if (contact?.noReadCount) {
+            updateContactMessageStatus(userId, this.sender.value, 'read').then(() => {
+                contact.noReadCount = 0;
+            })
+        } 
     }
     onChat(content) {
         this.sendMessage({

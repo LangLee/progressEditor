@@ -139,6 +139,10 @@ const props = defineProps({
     defaultGroup: {
         type: Boolean,
         default: false
+    },
+    defaultSelected: {
+        type: Boolean,
+        default: true
     }
 })
 const foldState = ref(true);
@@ -265,10 +269,12 @@ const onUpdateBook = (book) => {
 onMounted(() => {
     getGroupAndBooks(props.defaultGroup).then(data => {
         groups.value = data || [];
-        if (!route.params.id && groups.value[0] && groups.value[0].books && groups.value[0].books[0]) {
-            onMenuChange(groups.value[0].books[0]);
+        if (props.defaultSelected) {
+            if (!route.params.id && groups.value[0] && groups.value[0].books && groups.value[0].books[0]) {
+                onMenuChange(groups.value[0].books[0]);
+            }
         }
-        if (route.params.id || (groups.value && groups.value[0] && groups.value[0].books && groups.value[0].books[0] && groups.value[0].books[0].id)) {
+        if (route.params.id) {
             proxy.$nextTick(() => {
                 scrollToBook(route.params.id || groups.value[0].books[0].id)
             })

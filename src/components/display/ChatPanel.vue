@@ -73,7 +73,7 @@ watch(()=>props.messages, (newVal, oldVal) => {
         question.value = ''
         proxy.$nextTick(() => {
             const aiChatContent = document.getElementById('chatContent');
-            aiChatContent && aiChatContent.scrollTo({ top: aiChatContent.scrollHeight, behavior: 'smooth' });
+            chatContent && chatContent.scrollTo({ top: chatContent.scrollHeight, behavior: 'smooth' });
         })
     }
 })

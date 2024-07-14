@@ -3,5 +3,6 @@ interface User {
     userId?: string;
     name?: string;
     avatar?: string;
+    noReadCount?: number;
 }
 export default User;

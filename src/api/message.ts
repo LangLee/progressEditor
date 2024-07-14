@@ -8,4 +8,13 @@ const getContactMessages = (contact) => {
         }
     });
 }
-export {getContactMessages}
+const updateContactMessageStatus = (from, to, status) => {
+    return axios.post("/message/updateContactMessageStatus", {from, to, status}).then((res) => {
+        if (res && res.data && res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res && res.data && res.data.message);
+        }
+    });
+}
+export {getContactMessages, updateContactMessageStatus}

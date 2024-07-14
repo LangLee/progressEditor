@@ -3,8 +3,9 @@
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
         <nav class="flex-1 p-2 sm:p-3 xl:p-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent">
             <ul>
-                <li v-for="(contact, index) in contacts" :key="contact._id" @click="chatTo(contact._id)" class="cursor-pointer">
-                    <Avatar size="sm" />
+                <li v-for="(contact, index) in contacts" :key="contact._id" @click="chatTo(contact._id)" class="relative cursor-pointer">
+                    <Avatar size="md" />
+                    <span v-if="contact.noReadCount > 0" class="absolute left-8 top-0 block w-4 h-4 bg-red-600 text-slate-50 text-center rounded-xl text-xs">{{ contact.noReadCount }}</span>
                     <span
                         :class="chatter === contact._id ? 'text-blue-500 font-bold' : 'text-slate-500 hover:text-blue-300'">{{
                         contact.name }}</span>

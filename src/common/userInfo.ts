@@ -8,7 +8,7 @@ const getUserInfo = ()=>{
     return _userInfo.value;
 }
 const getUserId = ()=>{
-    return _userInfo.value?.userId;
+    return _userInfo.value?._id;
 }
 const useUserInfo = ()=>{
     return _userInfo;

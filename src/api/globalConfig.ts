@@ -45,3 +45,4 @@ export default function initialize(route, logout: Function) {
         return Promise.reject(error);
     });
 }
+export {baseUrl}

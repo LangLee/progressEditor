@@ -23,9 +23,45 @@ const getContactList = ()=>{
         }
     })
 }
+const updateUser = (data)=>{
+    return axios.post("/users/update", data).then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
+const uploadAvatar = (userId, file) => {
+    let formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("file", file);
+    return axios.post("/users/uploadAvatar", formData, {headers: {
+        'Content-Type': 'multipart/form-data',
+        'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.name)}`
+    }}).then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
+const removeAvatar = (user) => {
+    return axios.post("/users/removeAvatar", user).then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
 export {
     login,
     register,
     getLoginUser,
-    getContactList
+    getContactList,
+    updateUser,
+    uploadAvatar,
+    removeAvatar
 }

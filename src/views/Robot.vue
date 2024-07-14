@@ -4,7 +4,7 @@
             <ProSelect class="w-48" v-model="LLMKey" palaceHolder="请选择模型" :options="LLM_SELECT_OPTIONS"
                 @update:modelValue="onChangeLLM"></ProSelect>
         </Header>
-        <Menu fixedType="chat" :defaultGroup="true" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange">
+        <Menu fixedType="chat" :defaultGroup="true" :fold="fold" :defaultSelected="false" @toggleFold="toggleFold" @menuChange="onMenuChange">
         </Menu>
         <div class="flex-1 flex flex-col w-full lg:pl-80 overflow-y-auto">
             <ChatPanel :editable="true" :messages="messages" :loading="loading" @chart="onChat"></ChatPanel>
