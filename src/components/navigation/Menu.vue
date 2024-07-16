@@ -1,8 +1,8 @@
 <template>
     <div id="sideBar"
-        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
+        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 dark:bg-transparent lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
-        <div v-if="editable" class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent">
+        <div v-if="editable" class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent dark:bg-transparent">
             <button
                 class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateGroup">
@@ -16,12 +16,12 @@
                 <span>笔记</span>
             </button>
         </div>
-        <nav class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95 lg:bg-transparent">
+        <nav class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-transparent">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
                         v-model="group.name" @keyup.enter="onUpdateGroup(group)" />
-                    <div v-else class="px-3 py-2 relative font-medium text-gray-900 cursor-pointer"
+                    <div v-else class="px-3 py-2 relative font-medium text-gray-900 dark:text-slate-100 cursor-pointer"
                         @dblclick.stop="onInputEditGroup(group.id)" @mouseover="onItemMouseover(group.id)"
                         @mouseleave="onItemMouseleave(group.id)"
                         @touchstart.passive="(e) => handleTouchStart(e, group.id)"
@@ -52,7 +52,7 @@
                                 @mouseover="onItemMouseover(book.id)" @mouseleave="onItemMouseleave(book.id)"
                                 @touchstart.passive="(e) => handleTouchStart(e, book.id)"
                                 @touchend.passive="(e) => handleTouchEnd(e, book.id)"
-                                class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 cursor-pointer">
+                                class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 dark:text-slate-400 dark:hover:text-gray-50 cursor-pointer">
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->

@@ -5,7 +5,7 @@
             :indent-with-tab="true" :tab-size="2" :extensions="extensions" @ready="handleReady" @change="change"
             @focus="focus" @blur="blur">
         </Codemirror>
-        <div class="absolute left-0 bottom-0 w-full flex flex-col p-2 bg-slate-50">
+        <div class="absolute left-0 bottom-0 w-full flex flex-col p-2 bg-slate-50 dark:bg-transparent">
             <div class="flex flex-row h-8 text-sm">
                 <button
                     class="border border-blue-300 text-blue-300 hover:text-blue-100 hover:border-blue-100 rounded-md px-2 m-1"

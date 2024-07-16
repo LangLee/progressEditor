@@ -1,6 +1,6 @@
 <template>
     <div id="header"
-        class="sticky h-16 top-0 z-20 w-full max-w-screen-2xl mx-auto backdrop-blur lg:border-b border-slate-900/10 bg-white/90 lg:bg-white/60 flex-none flex lg:shadow-none shadow-lg">
+        class="sticky h-16 top-0 z-20 w-full max-w-screen-2xl mx-auto backdrop-blur lg:border-b lg:border-slate-900/10 bg-white/90 lg:bg-white/60 dark:border-slate-50/10 dark:bg-transparent flex-none flex lg:shadow-none shadow-lg">
         <div
             class="hidden lg:flex flex-none pl-4 sm:pl-6 xl:pl-8 items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72">
             <div class="font-semibold text-3xl text-slate-500 cursor-pointer" @click="goHome">I Want progress</div>
@@ -15,15 +15,16 @@
             <slot></slot>
         </div>
         <div class="flex-auto flex items-center justify-end pr-4 sm:pr-6 xl:pr-8">
+            <RemixIcon :name="dark?'moon-fill':'sun-fill'" class="text-2xl" @click="toggleDark"/>
             <tippy trigger="mouseenter click" placement="bottom-end" :offset="[10, 0]" animation="slide" :interactive="true">
                 <Avatar size="sm" :img="userAvatar"></Avatar>
                 <span class="text-sm font-bold">{{ user && user.name }}</span>
                 <template #content>
-                    <div class="min-w-20 lg:min-w-24 bg-white shadow-xl border border-slate-100 rounded text-center">
+                    <div class="min-w-20 lg:min-w-24 bg-white dark:bg-slate-700 shadow-xl border border-slate-100 dark:border-slate-50/10 rounded text-center text-slate-500 dark:text-slate-50">
                         <ul>
-                            <ol class="px-2 py-1 text-slate-500 hover:bg-blue-400 hover:text-slate-50 rounded"><a
+                            <ol class="px-2 py-1 hover:bg-blue-400 hover:text-slate-50 rounded dark:border-b dark:border-slate-50/10"><a
                                     @click.stop="mine">我的</a></ol>
-                            <ol class="px-2 py-1 text-slate-500 hover:bg-blue-400 hover:text-slate-50 rounded"><a
+                            <ol class="px-2 py-1 hover:bg-blue-400 hover:text-slate-50 rounded"><a
                                     @click.stop="exit">退出</a></ol>
                         </ul>
                     </div>
@@ -55,6 +56,7 @@ const props = defineProps({
         default: true
     }
 })
+const dark = ref(localStorage.theme === 'dark');
 const emits = defineEmits(['toggleFold']);
 const goHome = () => {
     router.push('/home')
@@ -68,6 +70,16 @@ const exit = () => {
 }
 const mine = () => {
     router.push('/setting');
+}
+const toggleDark = ()=>{
+    if (dark.value) {
+        localStorage.theme = 'light';
+        document.documentElement.classList.remove('dark')
+    } else {
+        localStorage.theme = 'dark';
+        document.documentElement.classList.add('dark')
+    }
+    dark.value = !dark.value;
 }
 onBeforeMount(() => {
     let userInfo = getUserInfo();

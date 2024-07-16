@@ -17,6 +17,11 @@ import initialize from './api/globalConfig'
 const router = useRouter();
 const route = useRoute();
 onBeforeMount(() => {
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
   initialize(route, () => {
     localStorage.removeItem("me_token")
     router.replace('/login')

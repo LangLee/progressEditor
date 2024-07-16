@@ -62,7 +62,7 @@ const editor = useEditor({
   content: props.modelValue,
   editorProps: {
     attributes: {
-      class: 'prose w-full max-w-full focus:outline-none',
+      class: 'prose dark:prose-invert w-full max-w-full focus:outline-none',
     },
   },
   extensions: [

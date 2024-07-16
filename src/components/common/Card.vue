@@ -1,5 +1,5 @@
 <template>
-    <a class="relative w-[4.5rem] h-[4.5rem] lg:w-28 lg:h-28 p-1 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg"
+    <a class="relative w-[4.5rem] h-[4.5rem] lg:w-28 lg:h-28 p-1 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg dark:border dark:border-slate-50/10 dark:bg-slate-700/20 dark:text-slate-400 dark:hover:text-slate-700"
         :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="open"
         @mouseover="onMouseover" @mouseleave="onMouseleave">
         <RemixIcon class="text-2xl lg:text-4xl lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
