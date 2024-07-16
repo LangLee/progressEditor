@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full flex flex-col">
-        <Codemirror class="w-full h-full" v-model="code" pleholder="输入代码..." :autofocus="true" :indent-with-tab="true"
+        <Codemirror class="w-full h-full" v-model="code" pleholder="输入代码..." :autofocus="true" :indent-with-tab="true" :disabled="!editable"
             :tab-size="2" :extensions="extensions" @ready="handleReady" @change="change" @focus="focus" @blur="blur">
         </Codemirror>
     </div>
@@ -14,7 +14,11 @@ import { debounce } from '@/common/utils'
 
 const extensions = [javascript()];
 const props = defineProps({
-    modelValue: String
+    modelValue: String,
+    editable: {
+        type: Boolean,
+        default: true
+    }
 });
 const emits = defineEmits(['update:modelValue']);
 const code = ref(props.modelValue);

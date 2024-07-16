@@ -98,7 +98,7 @@
 <script setup>
 import { ref, reactive, onMounted, watch, getCurrentInstance, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { createBook, removeBook, updateBookTitle } from '../../api/book'
+import { createBook, removeBook, updateBook } from '../../api/book'
 import { getGroupAndBooks, createGroup, updateGroup, removeGroup } from '../../api/group'
 import BookModal from '../feedback/BookModal.vue'
 import GroupModal from '../feedback/GroupModal.vue'
@@ -237,7 +237,11 @@ const closeModal = () => {
     isNew.value = false;
 }
 const onRemoveBook = (books, index) => {
-    removeBook(activeItem.value).then(() => {
+    let book = books[index];
+    if (!book || !book.id) {
+        return;
+    }
+    removeBook(book.id).then(() => {
         books.splice(index, 1);
         let activeIdx = books && books.length > index ? index : books.length - 1;
         onMenuChange(activeIdx < 0 ? null : books[activeIdx]);
@@ -258,12 +262,12 @@ const onEditBook = (book) => {
     isNew.value = false;
 }
 const onUpdateBook = (book) => {
-    updateBookTitle({ ...book, category: book.category === "default" ? "" : book.category }).then((data) => {
+    updateBook({ ...book, category: book.category === "default" ? "" : book.category }).then((data) => {
         if (editItem.value !== book.category) {
             // 移动书籍到新的分类下
         }
         editItem.value = '';
-        editBook.value = null;
+        editBook.value = undefined;
     })
 }
 onMounted(() => {

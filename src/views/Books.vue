@@ -15,7 +15,7 @@ const toggleFold = (float) => {
 }
 const onMenuChange = (id, appId) => {
   let path = id ? `/books/${id}` : '/books'
-  router.push({
+  router.replace({
     path: path,
     query: {
       appId

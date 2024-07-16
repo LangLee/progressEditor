@@ -42,11 +42,11 @@ const onLogin = () => {
         console.log(result);
         if (result && result.data) {
             if (result.data.success) {
-                let {token, userId, name, avatar} = result.data.data;
+                let {token, _id, name, avatar} = result.data.data;
                 if (token) {
                     localStorage.setItem('me_token', token);
                     // 缓存个人信息
-                    setUserInfo({userId, name, avatar});
+                    setUserInfo({_id, name, avatar});
                     router.push("/home");
                 } else {
                     result.data.message && message.error(result.data.message);

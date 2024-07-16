@@ -1,6 +1,7 @@
 import Anchor from './anchor';
 interface Book {
-    id: string
+    _id?: string;
+    id?: string
     title?: string,
     author?: string,
     description?: string,
@@ -9,6 +10,7 @@ interface Book {
     anchors?: Array<Anchor>
     category?: string,
     type?: string,
-    appId?: string
+    appId?: string,
+    editable?: boolean
 }
 export default Book;

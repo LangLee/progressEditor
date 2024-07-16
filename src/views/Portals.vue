@@ -40,8 +40,8 @@
             </ul>
         </div>
     </div>
-    <GroupModal :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" :group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
-    <BookModal fixedType="link" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" :book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
+    <GroupModal :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editPortal" v-model:group="editPortal" @confirm="finishEditPortal" @cancel="closePortalModal"/>
+    <BookModal fixedType="link" :title="`${isNew ? '新增书签' : '编辑书签'}`" :visible="!!currentBook" v-model:book="currentBook" @confirm="finishEditBook" :categories="portals" @cancel="closeBookModal"/>
     <Modal :visible="!!currentRemoveBook" :closable="false" title="确认删除" @confirm="finishRemoveBook" @cancel="closeRemoveModal">
         <p class="align-center">你真的要删除这个书签？</p>
     </Modal>
@@ -141,7 +141,7 @@ const finishEditBook = () => {
             group.books = group.books || [];
             data.id = data._id;
             group.books.splice(0, 0, data);
-            currentBook.value = null;
+            currentBook.value = undefined;
             isNew.value = false;
         })
     } else if (currentBook && currentBook.value) {

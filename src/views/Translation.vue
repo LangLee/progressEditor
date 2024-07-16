@@ -35,7 +35,7 @@
     <div class="relative h-24 lg:h-28 w-full text-lg px-2 lg:px-4 mb-4 lg:mb-8">
       <textarea ref="questionInput" :rows="3"
         class="w-full border rounded-lg shadow-sm py-2 lg:py-4 pl-4 pr-20 text-slate-600 placeholder-slate-300 font-normal text-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-        v-model="question" type="text" placeholder="开始对话" @keyup.enter.stop="onTranslate" />
+        v-model="word" type="text" placeholder="开始对话" @keyup.enter.stop="onTranslate" />
       <button class="absolute top-2 lg:top-4 right-4 lg:right-8 w-16 text-blue-300 hover:text-blue-600"
         @click="onTranslate">
         <span class="mr-1">发送</span>
@@ -69,6 +69,7 @@ const fallbackCopyTextToClipboard = (text) => {
   }
   document.body.removeChild(textArea);
 }
+const word = ref('');
 const question = ref('');
 const queSpeakUrl = ref('');
 const resSpeakUrl = ref('');
@@ -98,15 +99,17 @@ const addText = () => {
   })
 }
 const onTranslate = () => {
-  if (!question.value) {
+  if (!word.value) {
     message.warning("请输入要翻译的文本！")
   }
-  question.value = question.value.replace(/[\r\n]/g, "");
+  let query = word.value.replace(/[\r\n]/g, "");
   const reg = new RegExp(/^[A-Za-z\s]*$/);
-  const isEnglish = reg.test(question.value);
+  const isEnglish = reg.test(query);
   loading.value = true;
-  getYouDaoAiTranslate({ query: question.value, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS" : "en" }).then((data) => {
+  getYouDaoAiTranslate({ query, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS" : "en" }).then((data) => {
     let { translation, speakUrl, tSpeakUrl, dict, tDict } = data || {};
+    word.value = '';
+    question.value = query;
     response.value = translation;
     // dictUrl.value = mTerminalDict?.url;
     // queSpeakUrl.value = speakUrl;

@@ -11,7 +11,11 @@ import { useEditor, EditorContent } from '@tiptap/vue-3'
 import { watch, defineProps } from "vue"
 import { debounce } from '@/common/utils'
 const props = defineProps({
-  modelValue: String
+  modelValue: String,
+  editable: {
+    type: Boolean,
+    default: true
+  }
 });
 const emits = defineEmits(['update:modelValue', 'update:anchors']);
 const updateContent = debounce((editor) => {
@@ -19,6 +23,7 @@ const updateContent = debounce((editor) => {
   emits('update:modelValue', JSON.stringify(content));
 }, 300)
 const editor = useEditor({
+  editable: props.editable,
   content: JSON.parse(props.modelValue || ""),
   editorProps: {
     attributes: {
@@ -46,6 +51,12 @@ watch(() => props.modelValue, (value) => {
     return;
   };
   ed && ed.commands.setContent(JSON.parse(value || ""), true);
+})
+watch(() => props.editable, (value, oldValue) => {
+    if (value === oldValue) {
+        return;
+    }
+    editor.value && editor.value.setEditable(value)
 })
 </script>
 <style lang="scss"></style>

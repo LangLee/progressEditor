@@ -1,7 +1,7 @@
 <template>
     <div class="flex shadow-lg p-2 lg:p-4 rounded-lg">
         <div class="flex-1">
-            <p class="font-bold text-slate-900">{{ modelValue.chinese }}</p>
+            <p class="font-bold text-blue-700">{{ modelValue.chinese }}</p>
             <p class="text-blue-900">{{ modelValue.english }}</p>
         </div>
         <div class="w-8 flex items-center text-lg text-blue-300 hover:text-blue-700">

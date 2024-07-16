@@ -53,6 +53,9 @@ const Words = defineAsyncComponent(()=>{
 const Chat = defineAsyncComponent(()=>{
     return import('@/views/Chat.vue')
 })
+const Board = defineAsyncComponent(()=>{
+    return import('@/views/Board.vue')
+})
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -79,6 +82,17 @@ const routes = [
         name: 'books',
         path: '/books',
         component: Books,
+        children: [
+            {
+                path: ':id',
+                component: Book
+            }
+        ]
+    },
+    {
+        name: 'book',
+        path: '/book',
+        component: Book,
         children: [
             {
                 path: ':id',
@@ -125,6 +139,11 @@ const routes = [
         name: 'chat',
         path: '/chat',
         component: Chat
+    },
+    {
+        name: 'board',
+        path: '/board',
+        component: Board
     }
 ]
 

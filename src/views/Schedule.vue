@@ -17,7 +17,7 @@
                         <div class="w-0.5 mx-auto bg-slate-300 h-full"></div>
                     </div>
                     <div class="inline-block w-1/2 pl-8">
-                        <a class="text-normal font-bold text-slate-700" @click.stop="openBook(book)">{{ book.title
+                        <a class="text-normal font-bold text-slate-700 cursor-pointer" @click.stop="openBook(book)">{{ book.title
                             }}</a>
                     </div>
                 </li>
@@ -35,7 +35,7 @@ const router = useRouter();
 const books = ref([]);
 const openBook = (book) => {
     router.push({
-        path: `/books/${book._id}`,
+        path: `/book/${book._id}`,
         query: {
             appId: book.appId
         }

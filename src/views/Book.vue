@@ -1,26 +1,36 @@
 <template>
   <div class="w-full h-full flex">
-    <component :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
+    <component :editable='editing' :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
+    <div v-if="editable"
+      class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-50 cursor-pointer"
+      @click="doAction">
+      <RemixIcon class="text-slate-50 text-lg" :name="editing ? 'save-line' : 'file-edit-line'" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 // import MdEditor from "@/components/editor/Markdown.vue"
-import { ref, shallowRef, watch, onBeforeMount, onBeforeUnmount, defineAsyncComponent } from "vue"
+import { ref, shallowRef, watch, defineAsyncComponent } from "vue"
 import { useRoute } from "vue-router";
 import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
 import Anchor from "@/types/anchor";
+import message from '@/components/feedback/message'
+import RemixIcon from "@/components/common/RemixIcon.vue"
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
+const editable = ref(true);
+const editing = ref(false);
 let previousContent = '';
 const id = ref('')
-let intervalSave: NodeJS.Timeout | number;
+// let intervalSave: NodeJS.Timeout | number;
 const autoSave = () => {
-  if (content.value === previousContent) return;
-  let formatAnchors: Anchor[] = [];
+  return new Promise((resolve) => {
+    if (content.value === previousContent) return resolve(true);
+    let formatAnchors: Anchor[] = [];
     if (anchors.value.length > 0) {
       formatAnchors = anchors.value.map((anchor: Anchor) => {
         return {
@@ -33,17 +43,25 @@ const autoSave = () => {
         };
       });
     }
-  let book: Book = {
-    id: id.value,
-    content: content.value,
-    anchors: formatAnchors
-  }
-  updateBook(book).then(() => {
-    previousContent = content.value
+    let book: Book = {
+      id: id.value,
+      content: content.value,
+      anchors: formatAnchors
+    }
+    updateBook(book).then((data) => {
+      if (data) {
+        previousContent = content.value;
+        message.success('保存成功');
+        resolve(true);
+      }
+    }).catch(msg => {
+      message.error(msg);
+      resolve(false);
+    })
   })
 }
-const setCurrentComponent = (type)=>{
-  switch(type) {
+const setCurrentComponent = (type) => {
+  switch (type) {
     case "markdown": {
       currentComponent.value = defineAsyncComponent(() =>
         import('@/components/editor/Markdown.vue')
@@ -83,28 +101,41 @@ const setCurrentComponent = (type)=>{
     }
   }
 }
+const doAction = () => {
+  // 编辑模式
+  if (editing.value) {
+    // 保存
+    autoSave().then(() => {
+      editing.value = false;
+    });
+  } else {
+    editing.value = editable.value;
+  }
+}
 watch(() => route.params.id, (newVal, oldValue) => {
   if (newVal && newVal !== oldValue) {
-    if (typeof(newVal) === 'string') {
-      id.value =  newVal || '';
+    if (typeof (newVal) === 'string') {
+      id.value = newVal || '';
     }
     getBookById(id.value).then((data: Book) => {
       content.value = data.content || '';
       anchors.value = data.anchors || [];
       previousContent = data.content || "";
+      editable.value = data.editable || false;
       setCurrentComponent(data.type);
     })
   }
 }, { immediate: true })
 
-onBeforeMount(() => {
-  intervalSave = setInterval(() => {
-    autoSave()
-  }, 5000)
-}),
-  onBeforeUnmount(() => {
-    clearInterval(intervalSave)
-  })
+// onBeforeMount(() => {
+//   intervalSave = setInterval(() => {
+//     autoSave()
+//   }, 5000)
+// })
+
+// onBeforeUnmount(() => {
+//   clearInterval(intervalSave)
+// })
 </script>
 
 

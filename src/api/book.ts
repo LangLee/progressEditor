@@ -1,5 +1,14 @@
 import axios from "axios";
 import Book from "@/types/book"
+const getAllBooks = ()=>{
+    return axios.get("/books/getAllBooks").then((res) => {
+        if (res && res.data && res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res && res.data && res.data.message);
+        }
+    });
+}
 const getBooks = () => {
     return axios.get("/books/getBooks").then((res) => {
         if (res && res.data && res.data.success) {
@@ -45,15 +54,16 @@ const updateBook = (params: Book) => {
         }
     });
 }
-const updateBookTitle = (params: Book) => {
-    return axios.post("/books/updateBookTitle", params).then((res) => {
-        if (res && res.data && res.data.success) {
-            return res.data.data;
-        } else {
-            return Promise.reject(res && res.data && res.data.message);
-        }
-    });
-}
+// 暂时不用此方法
+// const updateBookTitle = (params: Book) => {
+//     return axios.post("/books/updateBookTitle", params).then((res) => {
+//         if (res && res.data && res.data.success) {
+//             return res.data.data;
+//         } else {
+//             return Promise.reject(res && res.data && res.data.message);
+//         }
+//     });
+// }
 const removeBook = (id: string) => {
     return axios.post("/books/removeBook", { id }).then((res) => {
         if (res && res.data && res.data.success) {
@@ -73,12 +83,13 @@ const searchBook = (key: string) => {
     });
 }
 export {
+    getAllBooks,
     getBooks,
     getAppBooks,
     getBookById,
     createBook,
     updateBook,
     removeBook,
-    updateBookTitle,
+    // updateBookTitle,
     searchBook
 }
