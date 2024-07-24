@@ -37,8 +37,7 @@ const uploadAvatar = (userId, avatar) => {
     formData.append("userId", userId);
     formData.append("avatar", avatar);
     return axios.post("/users/uploadAvatar", formData, {headers: {
-        'Content-Type': 'multipart/form-data',
-        'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.name)}`
+        'Content-Type': 'multipart/form-data'
     }}).then(res=>{
         if (res.data.success) {
             return res.data.data;
