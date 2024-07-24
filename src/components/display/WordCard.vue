@@ -1,10 +1,10 @@
 <template>
-    <div class="flex shadow-lg p-2 lg:p-4 rounded-lg">
+    <div class="flex shadow-lg p-2 lg:p-4 rounded-lg dark:border-b dark:border-slate-50/20">
         <div class="flex-1">
-            <p class="font-bold text-blue-700">{{ modelValue.chinese }}</p>
-            <p class="text-blue-900">{{ modelValue.english }}</p>
+            <p class="font-bold text-blue-700 dark:text-slate-400">{{ modelValue.chinese }}</p>
+            <p class="text-blue-900 dark:text-slate-50">{{ modelValue.english }}</p>
         </div>
-        <div class="w-8 flex items-center text-lg text-blue-300 hover:text-blue-700">
+        <div class="w-8 flex items-center text-lg text-blue-300 hover:text-blue-700 dark:text-slate-300 dark:hover:text-slate-50">
             <RemixIcon :name="modelValue.newWord?'flag-2-line':'flag-2-fill'" @click.stop="toggleWordState" />
         </div>
     </div>

@@ -30,10 +30,10 @@
                     <RemixIcon v-if="editable && hoverItem===portal.id" class="shadow-sm rounded-sm text-blue-300 hover:text-blue-700" name="edit-line" @click.stop="onEditPortal(portal)"></RemixIcon>
                 </p>
                 <div class="flex flex-row flex-wrap">
-                    <li v-for="(book, idx) in portal.books" class='m-2 lg:m-4' :key="idx">
+                    <li v-for="(book, idx) in portal.books" class='p-2 md:p-4 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12' :key="idx">
                         <Card theme="blue" :editable="editable" :modelValue="book" @edit="onEditBook(book)" @remove="onRemoveBook(book)"/>
                     </li>
-                    <li v-if="editable" class='m-2 lg:m-4'>
+                    <li v-if="editable" class='p-2 md:p-4 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12'>
                         <Card theme="blue" :modelValue="{ title: '新增书签', icon: 'add-line' }" @cardClick="() => appendBook(portal)" />
                     </li>
                 </div>

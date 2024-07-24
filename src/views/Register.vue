@@ -1,10 +1,10 @@
 <template>
     <div class="h-screen flex items-center justify-center">
-        <div class="min-h-80 w-80 p-4 flex flex-col bg-slate-50 rounded-lg shadow-md">
+        <div class="min-h-80 w-80 p-4 flex flex-col bg-slate-50 rounded-lg shadow-md dark:bg-transparent">
             <span class="font-sans font-semibold text-3xl leading-10 text-slate-300">I Want Progress</span>
-            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="text" v-model="name" placeholder="输入用户名" />
-            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="password" v-model="password" placeholder="输入大于6位密码">
-            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" type="password" v-model="checkPassword" placeholder="再次输入大于6位密码">
+            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="text" v-model="name" placeholder="输入用户名" />
+            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="password" v-model="password" placeholder="输入大于6位密码">
+            <input class="px-4 py-3 my-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="password" v-model="checkPassword" placeholder="再次输入大于6位密码">
             <span class="text-red-400 text-sm">{{ errorMessage }}</span>
             <button class="py-3 px-4 my-2 bg-slate-400 text-white font-semibold rounded-md shadow-md hover:bg-slate-700"
                 @click="onRegister">注册</button>

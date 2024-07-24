@@ -1,7 +1,7 @@
 <template>
-    <a class="relative w-[4.5rem] h-[4.5rem] lg:w-28 lg:h-28 p-1 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg dark:border dark:border-slate-50/10 dark:bg-slate-700/20 dark:text-slate-400 dark:hover:text-slate-700"
+    <a class="relative w-full h-[4.5rem] lg:w-28 lg:h-28 p-1 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg dark:border dark:border-slate-50/20 dark:bg-neutral-800 dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50"
         :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="open"
-        @mouseover="onMouseover" @mouseleave="onMouseleave">
+        @mouseenter="onMouseenter" @mouseleave="onMouseleave">
         <RemixIcon class="text-2xl lg:text-4xl lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
         <span class="text-xs lg:text-base break-all text-center">{{ modelValue.title }}</span>
         <div v-if="editable && active" class="absolute bottom-0 left-0 right-0 z-10 bg-slate-300/10 flex justify-center py-2 text-xl backdrop-blur-lg">
@@ -72,7 +72,7 @@ const cancelRemove = ()=>{
 const confirmRemove = ()=>{
     emits('remove', props.modelValue);
 }
-const onMouseover = () => {
+const onMouseenter = () => {
     active.value = true;
 }
 const onMouseleave = () => {

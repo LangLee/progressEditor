@@ -1,13 +1,13 @@
 <template>
-    <div class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
+    <div class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 lg:bg-transparent dark:bg-neutral-900/40  w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
-        <nav class="flex-1 p-2 sm:p-3 xl:p-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent">
+        <nav class="flex-1 p-2 sm:p-3 xl:p-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/40 ">
             <ul>
                 <li v-for="(contact, index) in contacts" :key="contact._id" @click="chatTo(contact._id)" class="relative cursor-pointer">
                     <Avatar size="md" />
                     <span v-if="contact.noReadCount > 0" class="absolute left-8 top-0 block w-4 h-4 bg-red-600 text-slate-50 text-center rounded-xl text-xs">{{ contact.noReadCount }}</span>
                     <span
-                        :class="chatter === contact._id ? 'text-blue-500 font-bold' : 'text-slate-500 hover:text-blue-300'">{{
+                        :class="chatter === contact._id ? 'text-blue-500 font-bold' : 'text-slate-500 hover:text-blue-300 dark:text-slate-300'">{{
                         contact.name }}</span>
                 </li>
             </ul>

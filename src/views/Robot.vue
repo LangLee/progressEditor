@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col w-full h-screen">
         <Header @toggleFold="toggleFold" :fold="fold">
-            <ProSelect class="w-48" v-model="LLMKey" palaceHolder="请选择模型" :options="LLM_SELECT_OPTIONS"
+            <ProSelect class="w-32 lg:w-48 mx-2" v-model="LLMKey" palaceHolder="请选择模型" :options="LLM_SELECT_OPTIONS"
                 @update:modelValue="onChangeLLM"></ProSelect>
         </Header>
         <Menu fixedType="chat" :defaultGroup="true" :fold="fold" :defaultSelected="false" @toggleFold="toggleFold" @menuChange="onMenuChange">

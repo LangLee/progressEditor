@@ -1,5 +1,5 @@
 <template>
-    <button class="text-slate-400 px-4 py-3 my-2" @click="onSearch" @keydown.meta.key="handleKeyDown">
+    <button class="text-slate-400 px-2 lg:px-4 py-3 my-2" @click="onSearch" @keydown.meta.key="handleKeyDown">
         <RemixIcon name="search-line"></RemixIcon>
         <span class="px-3 text-normal">搜索一切</span>
         <span class="px-1 text-normal bg-slate-200 rounded">⌘K</span>

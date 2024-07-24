@@ -32,10 +32,10 @@ const updateUser = (data)=>{
         }
     })
 }
-const uploadAvatar = (userId, file) => {
+const uploadAvatar = (userId, avatar) => {
     let formData = new FormData();
     formData.append("userId", userId);
-    formData.append("file", file);
+    formData.append("avatar", avatar);
     return axios.post("/users/uploadAvatar", formData, {headers: {
         'Content-Type': 'multipart/form-data',
         'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.name)}`

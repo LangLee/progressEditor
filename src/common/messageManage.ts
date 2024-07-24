@@ -48,9 +48,9 @@ class MessageManage {
                 this.socket.send(this.sender.value);
             } else {
                 getLoginUser().then((data) => {
-                    this.sender.value = data.userId;
+                    this.sender.value = data._id;
                     setUserInfo(data);
-                    this.socket.send(data.userId);
+                    this.socket.send(data._id);
                 })
             }
         });

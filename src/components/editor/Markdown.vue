@@ -110,7 +110,6 @@ const editor = useEditor({
       onDrop: (currentEditor, files, pos) => {
         files.forEach(file => {
           const fileReader = new FileReader()
-
           fileReader.readAsDataURL(file)
           fileReader.onload = () => {
             currentEditor.chain().insertContentAt(pos, {
@@ -132,7 +131,6 @@ const editor = useEditor({
           }
 
           const fileReader = new FileReader()
-
           fileReader.readAsDataURL(file)
           fileReader.onload = () => {
             currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {

@@ -5,7 +5,7 @@
             <ul class="lg:w-1/2 mx-auto">
                 <li v-for="(book, index) in books" :key="index" class="relative flex h-28">
                     <div class="inline-block w-1/2 px-4 lg:text-right">
-                        <span class="text-normal text-slate-500">{{ book.createTime }}</span>
+                        <span class="text-normal text-slate-500 dark:text-slate-300">{{ book.createTime }}</span>
                     </div>
                     <div
                         :class="`absolute w-4 h-4 start-1/2 top-1 bg-slate-50 border-4 rounded-lg  border-${COLOR_MAP[Math.floor(Math.random() * 10)]}-500`">
@@ -17,7 +17,7 @@
                         <div class="w-0.5 mx-auto bg-slate-300 h-full"></div>
                     </div>
                     <div class="inline-block w-1/2 pl-8">
-                        <a class="text-normal font-bold text-slate-700 cursor-pointer" @click.stop="openBook(book)">{{ book.title
+                        <a class="text-normal font-bold text-slate-700 dark:text-slate-50 cursor-pointer" @click.stop="openBook(book)">{{ book.title
                             }}</a>
                     </div>
                 </li>

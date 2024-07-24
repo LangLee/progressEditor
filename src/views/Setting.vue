@@ -19,7 +19,7 @@ import {uploadAvatar, removeAvatar} from '@/api/user.ts'
 const user = useUserInfo();
 const imgUrl = computed(() => {
     if (user.value && user.value.avatar) {
-        return `${baseUrl}/file/download?file=${user.value.avatar}&token=${localStorage.getItem('me_token')}`
+        return `${baseUrl}/file/download?file=${user.value.avatar}`
     }
 })
 const uploader = (file) => {
