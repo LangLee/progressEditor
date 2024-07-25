@@ -4,7 +4,7 @@
         </Header>
         <Contacts class="lg: border-r dark:border-slate-50/20" @chatTo="chatTo" :fold="fold" :contacts="contacts" @toggleFold="toggleFold"></Contacts>
         <div class="flex-1 flex flex-col w-full lg:pl-80 overflow-y-auto">
-            <ChatPanel placeholder="咱们开始聊天吧..." :editable="true" :messages="messages" :loading="loading" @chart="onChat" :owner="userId" roleProperty="from"></ChatPanel>
+            <ChatPanel placeholder="咱们开始聊天吧..." :editable="editable" :messages="messages" :loading="loading" @chart="onChat" :owner="userId" roleProperty="from"></ChatPanel>
         </div>
     </div>
 </template>
@@ -22,6 +22,7 @@ const loading = ref(false);
 const contacts = messageManage.useContacts();
 const messages = messageManage.useMessages();
 const userId = messageManage.useUserId();
+const editable = ref(false);
 const toggleFold = (float) => {
     if (float !== undefined) {
         fold.value = float;
@@ -32,7 +33,7 @@ const toggleFold = (float) => {
 const chatTo = (userId) => {
     // 切换聊天对象
     messageManage.changeRecipient(userId);
-    // 更新聊天记录为已读
+    editable.value = true;
 }
 const onChat = (question) => {
     messageManage.onChat(question);

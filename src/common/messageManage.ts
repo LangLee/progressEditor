@@ -1,7 +1,7 @@
 
 import { ref } from 'vue';
 import { getUserId, setUserInfo } from './userInfo';
-import {getContactMessages, updateContactMessageStatus} from '@/api/message'
+import { getContactMessages, updateContactMessageStatus } from '@/api/message'
 import { getContactList, getLoginUser } from '@/api/user'
 const WS_URL = import.meta.env.VITE_API_BASE_WS
 class MessageManage {
@@ -28,10 +28,13 @@ class MessageManage {
     appendMessage(message, isReceive = false) {
         let { from, to } = message;
         let chatter = isReceive ? from : to;
-        this.messages.value = this.messages.value.concat([message]);
-        let contact = this.contacts.value.find(({ _id }) => _id === chatter);
-        if (contact && !isReceive) {
-            contact.unreadCount = contact.unreadCount ? contact.unreadCount + 1 : 1;
+        if (chatter === this.recipient) {
+            this.messages.value = this.messages.value.concat([message]);
+        } else {
+            let contact = this.contacts.value.find(({ _id }) => _id === chatter);
+            if (contact) {
+                contact.noReadCount = contact.noReadCount ? contact.noReadCount + 1 : 1;
+            }
         }
         // contact && contact.messages && contact.messages.push(message)
     }
@@ -79,10 +82,10 @@ class MessageManage {
     useContacts() {
         return this.contacts;
     }
-    useMessages = ()=> {
+    useMessages = () => {
         return this.messages;
     }
-    useUserId = ()=>{
+    useUserId = () => {
         return this.sender;
     }
     setContacts(contacts) {
@@ -104,7 +107,7 @@ class MessageManage {
             updateContactMessageStatus(userId, this.sender.value, 'read').then(() => {
                 contact.noReadCount = 0;
             })
-        } 
+        }
     }
     onChat(content) {
         this.sendMessage({
