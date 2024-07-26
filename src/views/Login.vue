@@ -1,9 +1,14 @@
 <template>
     <div class="h-screen flex items-center justify-center">
         <div class="w-80 p-4 flex flex-col bg-transparent">
-            <span class="animate-bounce font-sans font-medium lg:font-semibold text-2xl lg:text-3xl leading-10 text-slate-500 mt-2">
-                I Want Progress
-            </span>
+            <div class="font-sans font-medium lg:font-semibold text-2xl lg:text-3xl leading-10 text-slate-500 mt-2">
+                <span class="inline-block">
+                    {{ typeWriter }}
+                </span>
+                <span class="blink pl-1 border-r-2 border-slate-500">
+
+                </span>
+            </div>
             <input
                 class="px-4 py-3 my-2 lg:my-3 bg-transparent text-slate-300 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                 type="text" v-model="name" placeholder="请输入用户名" />
@@ -14,7 +19,8 @@
                 <button
                     class="w-1/2 py-3 mr-2 bg-blue-300 text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                     @click="onLogin">登录</button>
-                <button class="w-1/2 py-3 ml-2 bg-red-300 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                <button
+                    class="w-1/2 py-3 ml-2 bg-red-300 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
                     @click="onRegister">注册</button>
             </div>
             <!-- <div class="my-2 text-slate-300">
@@ -25,16 +31,17 @@
     </div>
 </template>
 <script setup>
-import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
+import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
 import md5 from 'md5'
 import { login, register } from '../api/user'
 import { useRouter } from 'vue-router'
 import message from '../components/feedback/message'
 import Stars from '@/common/starts'
-import {setUserInfo} from '@/common/userInfo'
+import { setUserInfo } from '@/common/userInfo'
 const name = ref('');
 const password = ref('');
 const router = useRouter();
+const typeWriter = ref('');
 let starsInstance = null;
 const onLogin = () => {
     console.log(name.value, password.value, md5(password.value));
@@ -42,11 +49,11 @@ const onLogin = () => {
         console.log(result);
         if (result && result.data) {
             if (result.data.success) {
-                let {token, _id, name, avatar} = result.data.data;
+                let { token, _id, name, avatar } = result.data.data;
                 if (token) {
                     localStorage.setItem('me_token', token);
                     // 缓存个人信息
-                    setUserInfo({_id, name, avatar});
+                    setUserInfo({ _id, name, avatar });
                     router.push("/home");
                 } else {
                     result.data.message && message.error(result.data.message);
@@ -71,10 +78,26 @@ onBeforeUnmount(() => {
     // starsInstance.canvas.remove();
     // starsInstance = null;
 })
+onMounted(() => {
+    const word = 'I Want Progress';
+    let reverse = false;
+    setInterval(() => {
+        typeWriter.value = word.substring(0, typeWriter.value.length + (reverse ? -1 : 1));
+        if (typeWriter.value === '') {
+            reverse = false;
+        } else if (typeWriter.value === word) {
+            reverse = true;
+        }
+    }, 300);
+})
 </script>
 
 
 <style lang='scss'>
+.blink {
+    animation: blink .8s step-end infinite;
+}
+
 // .me-form-item {
 //     height: 2rem;
 //     line-height: 1.5;
