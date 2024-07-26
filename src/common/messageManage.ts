@@ -28,15 +28,16 @@ class MessageManage {
     appendMessage(message, isReceive = false) {
         let { from, to } = message;
         let chatter = isReceive ? from : to;
-        if (chatter === this.recipient) {
+        if (chatter === this.recipient || !isReceive) {
             this.messages.value = this.messages.value.concat([message]);
-        } else {
-            let contact = this.contacts.value.find(({ _id }) => _id === chatter);
-            if (contact) {
-                contact.noReadCount = contact.noReadCount ? contact.noReadCount + 1 : 1;
+        }
+        let contact = this.contacts.value.find(({ _id }) => _id === chatter);
+        if (contact) {
+            contact.noReadCount = contact.noReadCount ? contact.noReadCount + 1 : 1;
+            if (contact.messages) {
+                contact.messages.push(message);
             }
         }
-        // contact && contact.messages && contact.messages.push(message)
     }
     close() {
         this.socket.close();
