@@ -17,7 +17,11 @@ const debounce = (fn, delay) => {
         }, delay);
     };
 }
+const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
 export {
     throttle,
-    debounce
+    debounce,
+    isMobile
 }

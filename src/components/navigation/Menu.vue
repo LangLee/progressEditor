@@ -104,6 +104,7 @@ import BookModal from '../feedback/BookModal.vue'
 import GroupModal from '../feedback/GroupModal.vue'
 import message from '../feedback/message';
 import RemixIcon from '@/components/common/RemixIcon.vue'
+import {isMobile} from '@/common/utils'
 const router = useRouter();
 const route = useRoute();
 const groups = ref([]);
@@ -298,9 +299,11 @@ const scrollToBook = (bookId) => {
     }
 }
 const onItemMouseover = (id) => {
+    if (isMobile()) return false;
     hoverItem.value = id;
 }
 const onItemMouseleave = (id) => {
+    if (isMobile()) return false;
     hoverItem.value = '';
 }
 const handleTouchStart = (e, id) => {
@@ -351,7 +354,7 @@ watch(() => props.fold, (value, oldValue) => {
 <style lang='scss' scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.3s ease-in;
+    transition: opacity 0.1s ease-in;
 }
 
 .fade-enter,
@@ -361,7 +364,7 @@ watch(() => props.fold, (value, oldValue) => {
 
 .slide-enter-active,
 .slide-leave-active {
-    transition: transform 0.3s ease-in;
+    transition: transform 0.1s ease-in;
 }
 
 .slide-enter-from,
