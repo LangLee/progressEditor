@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex">
+  <div class="w-full h-full flex" :class="{ 'select-none': !editable }">
     <component :editable='editing' :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
     <div v-if="editable"
       class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-50 cursor-pointer"
@@ -22,7 +22,7 @@ const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
-const editable = ref(true);
+const editable = ref(false);
 const editing = ref(false);
 let previousContent = '';
 const id = ref('')
@@ -123,6 +123,8 @@ watch(() => route.params.id, (newVal, oldValue) => {
       previousContent = data.content || "";
       editable.value = data.editable || false;
       setCurrentComponent(data.type);
+    }).catch((msg)=>{
+      message.error(msg);
     })
   }
 }, { immediate: true })

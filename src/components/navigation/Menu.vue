@@ -2,7 +2,8 @@
     <div id="sideBar"
         class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 dark:bg-transparent lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
-        <div v-if="editable" class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
+        <div v-if="editable"
+            class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <button
                 class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
                 @click.stop="onCreateGroup">
@@ -16,7 +17,8 @@
                 <span>笔记</span>
             </button>
         </div>
-        <nav class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
+        <nav
+            class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
@@ -71,15 +73,20 @@
                                 <transition name="fade">
                                     <div v-if="editable && book.id === hoverItem"
                                         class="absolute right-0 top-3 font-sans text-slate-50">
-                                        <span class="cursor-pointer bg-blue-300 hover:bg-blue-700 p-2"
+                                        <span class="cursor-pointer bg-slate-300 hover:bg-slate-500 p-2"
+                                            @click.stop="onShareBook(book)">
+                                            <RemixIcon :name="book.share?'eye-off-line':'share-line'" />
+                                            <!-- <span>分享</span> -->
+                                        </span>
+                                        <span class="cursor-pointer bg-blue-300 hover:bg-blue-500 p-2"
                                             @click.stop="onEditBook(book)">
                                             <RemixIcon name="edit-line" />
-                                            <span>编辑</span>
+                                            <!-- <span>编辑</span> -->
                                         </span>
-                                        <span class="cursor-pointer bg-red-300 hover:bg-red-700 p-2"
+                                        <span class="cursor-pointer bg-red-300 hover:bg-red-500 p-2"
                                             @click.stop="onRemoveBook(group.books, idx)">
                                             <RemixIcon name="delete-bin-line" />
-                                            <span>删除</span>
+                                            <!-- <span>删除</span> -->
                                         </span>
                                     </div>
                                 </transition>
@@ -104,7 +111,7 @@ import BookModal from '../feedback/BookModal.vue'
 import GroupModal from '../feedback/GroupModal.vue'
 import message from '../feedback/message';
 import RemixIcon from '@/components/common/RemixIcon.vue'
-import {isMobile} from '@/common/utils'
+import { isMobile, copyTextToClipboard } from '@/common/utils'
 const router = useRouter();
 const route = useRoute();
 const groups = ref([]);
@@ -330,6 +337,19 @@ const handleTouchEnd = (e, id) => {
         hoverItem.value = '';
     }
     touchStart = null;
+}
+const onShareBook = (book) => {
+    book.share = !book.share;
+    updateBook(book).then((data) => {
+        if (book.share) {
+            const url = `${window.location.origin}/#/book/${book.id}`;
+            const text = `标题：${book.title}\n链接：${url}\n`;
+            copyTextToClipboard(text);
+            message.success("已经复制到剪切板！");
+        } else {
+            message.success("取消分享成功！");
+        }
+    })
 }
 watch(() => route.params.id, (value, oldValue) => {
     if (value !== oldValue) {

@@ -1,10 +1,10 @@
 <template>
     <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pb-6 top-18">
         <ul v-if="anchors && anchors.length > 0" class="text-slate-600 text-sm leading-6 px-4">
-            <p class="font-semibold text-gray-900 leading-8">概要</p>
+            <p class="font-semibold text-grey-900 dark:text-slate-300 leading-8">概要</p>
             <li v-for="item in anchors" key="item.id" class="border-l-2" :style="{ paddingLeft: item.level + 'rem' }">
                 <a class="block py-1 font-medium cursor-pointer"
-                    :class="{ 'text-blue-500': item.isActive, 'hover:text-blue-300': !item.isActive, 'text-slate-400': item.isScrolledOver && !item.isActive }"
+                    :class="{ 'text-blue-500': item.isActive, 'hover:text-blue-300': !item.isActive, 'text-slate-400 dark:text-slate-200': item.isScrolledOver && !item.isActive }"
                     @click.stop=onItemClick(item)>
                     <RemixIcon v-if="item.level > 1" name="arrow-right-s-line" />
                     {{ item.textContent }}

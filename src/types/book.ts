@@ -11,6 +11,7 @@ interface Book {
     category?: string,
     type?: string,
     appId?: string,
-    editable?: boolean
+    editable?: boolean,
+    share?: boolean
 }
 export default Book;

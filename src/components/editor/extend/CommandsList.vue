@@ -1,8 +1,8 @@
 <template>
-    <div class="relative border rounded-md overflow-hidden p-1 bg-white shadow-md text-slate-700 min-w-28">
+    <div class="relative border rounded-md overflow-hidden p-1 bg-white shadow-md text-slate-950 min-w-36">
       <template v-if="items.length">
         <button
-          class="block px-2 w-full border rounded-md text-left"
+          class="block px-2 my-1 lg:py-1 w-full border rounded-md text-left font-mono text-sm hover:text-blue-700"
           :class="{ 'border-transparent': index !== selectedIndex, 'border-blue-500': index === selectedIndex }"
           v-for="(item, index) in items"
           :key="index"
@@ -45,6 +45,7 @@
   
     methods: {
       onKeyDown({ event }) {
+        event.stopPropagation();
         if (event.key === 'ArrowUp') {
           this.upHandler()
           return true

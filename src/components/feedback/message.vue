@@ -4,10 +4,10 @@
       v-if="visible"
       class="flex w-full align-middle justify-center p-4"
     >
-      <div class="flex items-center text-sm min-w-28 px-4 py-2 rounded bg-white shadow shadow-slate-300">
+      <div class="flex items-center min-w-28 px-4 py-2 rounded bg-white shadow shadow-slate-300">
         <IconSvg :name="config.type" class="mr-2"></IconSvg>
-        <p :class="config.type" class="mr-2">{{ config.content }}</p>
-        <button @click="close" class=" text-slate-400 hover:text-slate-700">
+        <p :class="config.type" class="mr-2 text-sm">{{ config.content }}</p>
+        <button @click="close" class="text-lg text-slate-400 hover:text-slate-700">
         &times;
       </button>
       </div>
@@ -36,15 +36,15 @@ const close = () => {
 </script>
 <style lang='scss' scoped>
 .info {
-    color: rgb(37 99 235);
+    color: #1377EB;
 }
 .success {
-    color: rgb(22 163 74);
+    color: #40BD48;
 }
 .warning {
-    color: rgb(202 138 4);
+    color: #FFB829;
 }
 .error {
-    color: rgb(220 38 38);
+    color: #F54645;
 }
 </style>

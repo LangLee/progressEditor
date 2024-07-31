@@ -53,22 +53,7 @@ import { getDailyEnglish, createWord } from '@/api/word'
 import message from '@/components/feedback/message.ts'
 import Header from '@/components/navigation/Header.vue'
 import Loading from '@/components/common/Loading.vue'
-const fallbackCopyTextToClipboard = (text) => {
-  var textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-
-  try {
-    var successful = document.execCommand('copy');
-    var msg = successful ? '成功拷贝!' : '拷贝失败!';
-    console.log(msg);
-  } catch (err) {
-    console.error('拷贝到剪贴板失败:', err);
-  }
-  document.body.removeChild(textArea);
-}
+import {copyTextToClipboard} from '@/common/utils.ts'
 const word = ref('');
 const question = ref('');
 const queSpeakUrl = ref('');
@@ -78,14 +63,7 @@ const loading = ref(false);
 const dictUrl = ref('');
 const dailyNote = ref();
 const copyText = () => {
-  // 判断Clipboard API的支持情况
-  if (!response.value) return;
-  if (!navigator.clipboard) {
-    navigator.clipboard = {
-      writeText: fallbackCopyTextToClipboard
-    };
-  }
-  navigator.clipboard.writeText(response.value);
+  copyTextToClipboard(response.value);
   message.success("复制成功！")
 }
 const addText = () => {

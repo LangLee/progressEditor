@@ -7,7 +7,8 @@ export default {
   items: ({ query }) => {
     return [
       {
-        title: 'H1',
+        title: '标题1',
+        key: 'H1',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -18,7 +19,8 @@ export default {
         },
       },
       {
-        title: 'H2',
+        title: '标题2',
+        key: 'H2',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -29,7 +31,8 @@ export default {
         },
       },
       {
-        title: 'H3',
+        title: '标题3',
+        key: 'H3',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -40,40 +43,8 @@ export default {
         },
       },
       {
-        title: 'H4',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleHeading({ level: 4 })
-            .run()
-        },
-      },
-      {
-        title: 'H5',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleHeading({ level: 5 })
-            .run()
-        },
-      },
-      {
-        title: 'H6',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleHeading({ level: 6 })
-            .run()
-        },
-      },
-      {
-        title: 'bold',
+        title: '加粗',
+        key: 'bold',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -84,7 +55,8 @@ export default {
         },
       },
       {
-        title: 'italic',
+        title: '斜体',
+        key: 'italic',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -95,7 +67,8 @@ export default {
         },
       },
       {
-        title: 'strike',
+        title: '下划线',
+        key: 'strike',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -106,7 +79,44 @@ export default {
         },
       },
       {
-        title: 'paragraph',
+        title: '标题4',
+        key: 'H4',
+        command: ({ editor, range }) => {
+          editor
+            .chain()
+            .focus()
+            .deleteRange(range)
+            .toggleHeading({ level: 4 })
+            .run()
+        },
+      },
+      {
+        title: '标题5',
+        key: 'H5',
+        command: ({ editor, range }) => {
+          editor
+            .chain()
+            .focus()
+            .deleteRange(range)
+            .toggleHeading({ level: 5 })
+            .run()
+        },
+      },
+      {
+        title: '标题6',
+        key: 'H6',
+        command: ({ editor, range }) => {
+          editor
+            .chain()
+            .focus()
+            .deleteRange(range)
+            .toggleHeading({ level: 6 })
+            .run()
+        },
+      },
+      {
+        title: '换行',
+        key: 'paragraph',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -117,7 +127,8 @@ export default {
         },
       },
       {
-        title: 'highlight',
+        title: '高亮',
+        key: 'highlight',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -128,7 +139,8 @@ export default {
         },
       },
       {
-        title: 'bulletList',
+        title: '无序列表',
+        key: 'bulletList',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -139,7 +151,8 @@ export default {
         },
       },
       {
-        title: 'orderedList',
+        title: '有序列表',
+        key: 'orderedList',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -150,7 +163,8 @@ export default {
         },
       },
       {
-        title: 'code',
+        title: '代码行',
+        key: 'code',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -161,7 +175,8 @@ export default {
         },
       },
       {
-        title: 'codeBlock',
+        title: '代码块',
+        key: 'codeBlock',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -172,7 +187,8 @@ export default {
         },
       },
       {
-        title: 'blockquote',
+        title: '引用',
+        key: 'blockquote',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -183,7 +199,8 @@ export default {
         },
       },
       {
-        title: 'horizontal',
+        title: '水平线',
+        key: 'horizontal',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -194,7 +211,8 @@ export default {
         },
       },
       {
-        title: 'hardBreak',
+        title: '强制换行',
+        key: 'hardBreak',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -205,7 +223,8 @@ export default {
         },
       },
       {
-        title: 'task',
+        title: '待办',
+        key: 'task',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -216,7 +235,8 @@ export default {
         },
       },
       {
-        title: 'insertTable',
+        title: '插入表格',
+        key: 'insertTable',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -227,7 +247,8 @@ export default {
         },
       },
       {
-        title: 'addTableColumnBefore',
+        title: '前面插入列',
+        key: 'addTableColumnBefore',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -238,7 +259,8 @@ export default {
         },
       },
       {
-        title: 'addTableColumnAfter',
+        title: '后面插入列',
+        key: 'addTableColumnAfter',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -249,7 +271,8 @@ export default {
         },
       },
       {
-        title: 'deleteTableColumn',
+        title: '删除列',
+        key: 'deleteTableColumn',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -260,7 +283,8 @@ export default {
         },
       },
       {
-        title: 'addTableRowBefore',
+        title: '前面插入行',
+        key: 'addTableRowBefore',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -271,7 +295,8 @@ export default {
         },
       },
       {
-        title: 'addTableRowAfter',
+        title: '后面插入行',
+        key: 'addTableRowAfter',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -282,7 +307,8 @@ export default {
         },
       },
       {
-        title: 'deleteTableRow',
+        title: '删除行',
+        key: 'deleteTableRow',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -293,7 +319,8 @@ export default {
         },
       },
       {
-        title: 'deleteTable',
+        title: '删除表格',
+        key: 'deleteTable',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -304,7 +331,8 @@ export default {
         },
       },
       {
-        title: 'deleteNode',
+        title: '删除节点',
+        key: 'deleteNode',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -315,7 +343,8 @@ export default {
         },
       },
       {
-        title: 'clearMarks',
+        title: '清除属性',
+        key: 'clearMarks',
         command: ({ editor, range }) => {
           editor
             .chain()
@@ -325,7 +354,7 @@ export default {
             .run()
         },
       }
-    ].filter(item => item.title.toLowerCase().includes(query.toLowerCase())).slice(0, 10)
+    ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.key.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
   },
 
   render: () => {

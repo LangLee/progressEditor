@@ -58,6 +58,7 @@ const updateContent = debounce((editor) => {
   emits('update:modelValue', editor.getHTML());
 }, 300);
 const editor = useEditor({
+  autofocus: true,
   editable: props.editable,
   content: props.modelValue,
   editorProps: {
@@ -173,6 +174,10 @@ watch(() => props.editable, (value, oldValue) => {
     return;
   }
   editor.value && editor.value.setEditable(value)
+  // autofocus
+  if (value) {
+    editor.value && editor.value.commands.focus();
+  }
 })
 onBeforeUnmount(() => {
   editor.value && editor.value.destroy()
@@ -191,12 +196,21 @@ onBeforeUnmount(() => {
   </div>
 </template>
 <style lang="scss">
+// 去掉code的引号
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before {
   content: '';
 }
 
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
   content: '';
+}
+// 去掉quote的引号
+.prose :where(blockquote p:first-of-type):not(:where([class~="not-prose"],[class~="not-prose"] *))::before {
+  content: '';
+}
+
+.prose :where(blockquote p:last-of-type):not(:where([class~="not-prose"],[class~="not-prose"] *))::after {
+    content: '';
 }
 
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -319,63 +333,56 @@ onBeforeUnmount(() => {
     padding-left: 1rem;
     border-left: 2px solid rgba(#0D0D0D, 0.1);
   }
-
+  /* Table-specific styling */
   table {
     border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
     margin: 0;
     overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
 
     td,
     th {
-      min-width: 1em;
-      border: 2px solid #ced4da;
-      padding: 3px 5px;
-      vertical-align: top;
+      border: 1px solid #ced4da;
       box-sizing: border-box;
+      min-width: 1em;
+      padding: 6px 8px;
       position: relative;
+      vertical-align: top;
 
-      >* {
+      > * {
         margin-bottom: 0;
       }
     }
 
     th {
+      background-color: #f1f3f5;
       font-weight: bold;
       text-align: left;
-      background-color: #f1f3f5;
     }
 
     .selectedCell:after {
-      z-index: 2;
-      position: absolute;
-      content: "";
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
       background: rgba(200, 200, 255, 0.4);
+      content: "";
+      left: 0; right: 0; top: 0; bottom: 0;
       pointer-events: none;
+      position: absolute;
+      z-index: 2;
     }
 
     .column-resize-handle {
+      background-color: #adf;
+      bottom: -2px;
+      pointer-events: none;
       position: absolute;
       right: -2px;
       top: 0;
-      bottom: -2px;
       width: 4px;
-      background-color: #adf;
-      pointer-events: none;
-    }
-
-    p {
-      margin: 0;
     }
   }
 
   .tableWrapper {
-    padding: 1rem 0;
+    margin: 1.5rem 0;
     overflow-x: auto;
   }
 

@@ -16,7 +16,7 @@
         </div>
         <div class="flex-auto flex items-center justify-end pr-4 sm:pr-6 xl:pr-8 dark:text-slate-50">
             <RemixIcon :name="dark?'moon-fill':'sun-fill'" class="text-2xl cursor-pointer" @click="toggleDark"/>
-            <tippy trigger="mouseenter click" placement="bottom-end" :offset="[10, 0]" animation="slide" :interactive="true">
+            <tippy trigger="mouseenter click" placement="bottom-end" :offset="[10, 0]" animation="slide" :interactive="true" :appendTo="appendToBody">
                 <Avatar class="cursor-pointer" size="sm" :img="userAvatar"></Avatar>
                 <span class="text-sm font-bold cursor-pointer">{{ user && user.name }}</span>
                 <template #content>
@@ -41,6 +41,7 @@ import Avatar from '@/components/common/Avatar.vue';
 import { useUserInfo, getUserInfo, setUserInfo } from '@/common/userInfo'
 import { getLoginUser } from '@/api/user'
 import {baseUrl} from '@/api/globalConfig'
+const appendToBody = () => document.body;
 const user = useUserInfo();
 const userAvatar = computed(() => {
     return user.value && user.value.avatar?`${baseUrl}/file/download?file=${user.value.avatar}`: '';
@@ -65,7 +66,7 @@ const toggleFold = () => {
     emits("toggleFold");
 }
 const exit = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('me_token');
     router.push('/login');
 }
 const mine = () => {

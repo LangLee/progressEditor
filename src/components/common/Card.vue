@@ -7,7 +7,7 @@
         <span class="text-xs lg:text-base break-all text-center">{{ modelValue.title }}</span>
         <transition name="slide">
             <div v-if="editable && active"
-            class="absolute bottom-0 top-0 right-0 z-10 bg-slate-300/10 border-l border-slate-500/20 flex flex-col justify-center px-1 lg:px-2 text-lg lg:text-xl backdrop-blur-lg">
+            class="absolute bottom-0 top-0 right-0 z-10 bg-slate-300/10 border-l border-slate-300/10 flex flex-col justify-center px-1 lg:px-2 text-lg lg:text-xl backdrop-blur-lg">
             <RemixIcon class="my-1 lg:my-2" :class="`text-${theme}-400 hover:text-${theme}-700`" name="edit-line"
                 @click.stop="edit"></RemixIcon>
             <RemixIcon class="my-1 lg:my-2" :class="`text-${theme}-400 hover:text-${theme}-700`" name="delete-bin-line"
