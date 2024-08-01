@@ -1,29 +1,53 @@
 <template>
-    <div
-        class="flex px-2 py-1 lg:py-2 bg-white text-slate-600 dark:text-slate-100 dark:bg-neutral-800 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+    <div ref="select"
+        class="flex p-2 bg-white text-slate-600 dark:text-slate-100 dark:bg-neutral-800 placeholder-slate-300 shadow-sm border rounded-md text-base"
+        :class="{ 'outline-none ring-2 ring-purple-600 border-transparent': !hidden }" @click="showModal">
         <div class="flex-1 pr-4">
             <span v-if="display">{{ display }}</span>
             <span v-else class="text-slate-300">{{ palaceHolder }}</span>
         </div>
-        <tippy class="w-0" ref="dropdown" trigger="click" placement="bottom-end" :offset="[0, 10]" animation="fade" :interactive="true" :arrow="false">
-            <RemixIcon class="float-right hover:text-blue-500" name="arrow-down-s-line" />
+        <tippy v-if="!mobile" ref="dropdown" trigger="click" placement="bottom-end" :offset="[10, 12]" animation="fade"
+            :interactive="true" :arrow="false" :triggerTarget="select" :onShow="dropdownShow" :onHide="dropdownHide">
+            <RemixIcon class="float-right hover:text-blue-500" :name="hidden ? 'arrow-down-s-fill' : 'arrow-up-s-fill'" />
             <template #content>
-                <div class="p-2 bg-white dark:bg-neutral-800 shadow-xl rounded">
-                    <div v-for="(item, index) in options" :key="index"
-                        class="w-full px-2 py-1 cursor-pointer hover:bg-blue-100 dark:border-b dark:border-slate-50/20" @click="selectItem(item)">
+                <div class="py-1 bg-white dark:bg-neutral-800 shadow-lg drop-shadow-lg rounded"
+                    :style="{ width: dropdownWidth }">
+                    <div v-if="options && options.length" v-for="(item, index) in options" :key="index"
+                        class="w-full px-2 py-1 cursor-pointer hover:bg-slate-200 dark:border-b dark:border-slate-50/20 rounded"
+                        @click="selectItem(item)">
                         {{ item.label }}
+                    </div>
+                    <div v-else class="w-full px-2 py-1">
+                        暂无数据
                     </div>
                 </div>
             </template>
         </tippy>
+        <Modal v-else :visible="!hidden" :zIndex="100" :footer="false" @update:visible="dropdownHide">
+            <div class="w-full bg-white dark:bg-neutral-800">
+                <div v-if="options && options.length" v-for="(item, index) in options" :key="index"
+                    class="py-2 cursor-pointer hover:bg-blue-400 hover:text-slate-50 text-center dark:text-slate-100 rounded"
+                    @click="selectItem(item)">
+                    {{ item.label }}
+                </div>
+                <div v-else class="w-full py-2 text-center">
+                    暂无数据
+                </div>
+            </div>
+        </Modal>
     </div>
-
 </template>
 <script setup>
 
-import { ref, reactive, watch, defineProps, defineEmits } from 'vue'
+import { ref, reactive, watch, defineProps, defineEmits, onMounted } from 'vue'
 import RemixIcon from './RemixIcon.vue';
-const dropdown = ref()
+import Modal from '@/components/feedback/Modal.vue'
+import { isMobile } from '@/common/utils'
+const hidden = ref(true);
+const dropdown = ref();
+const select = ref();
+const dropdownWidth = ref('');
+const mobile = ref(isMobile());
 const props = defineProps({
     options: {
         type: Array,
@@ -40,7 +64,22 @@ const display = ref('')
 const selectItem = (item) => {
     display.value = item.label;
     emits('update:modelValue', item.value);
-    dropdown.value.hide();
+    hidden.value = true;
+    dropdown?.value?.hide();
+}
+const dropdownShow = () => {
+    hidden.value = false;
+    return true;
+}
+const dropdownHide = () => {
+    hidden.value = true;
+    return true;
+}
+const showModal = () => {
+    if (!isMobile()) {
+        return true;
+    }
+    hidden.value = false;
 }
 watch(() => props.modelValue, (newVal) => {
     props.options.map(({ value, label }) => {
@@ -48,7 +87,10 @@ watch(() => props.modelValue, (newVal) => {
             display.value = label;
         }
     })
-}, {immediate: true})
+}, { immediate: true })
+onMounted(() => {
+    dropdownWidth.value = `${select.value.clientWidth + 4}px`;
+})
 </script>
 
 

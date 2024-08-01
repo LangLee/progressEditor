@@ -218,7 +218,7 @@ const onRemoveGroup = (group, index) => {
 
 const onCreateBook = () => {
     isNew.value = true;
-    editBook.value = { title: "新增笔记", type: props.fixedType || "markdown" };
+    editBook.value = { title: "新增笔记", type: props.fixedType || "markdown", category: groups?.value[0]?.id};
 }
 const finishEditBook = () => {
     if (editBook && isNew.value) {

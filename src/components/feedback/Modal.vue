@@ -1,8 +1,8 @@
 <template>
   <div
-    class="flex flex-col lg:justify-center justify-end fixed top-0 left-0 inset-0 z-50 backdrop-blur bg-black/20 dark:bg-black/20 transition-transform duration-500 ease-in-out delay-200"
-    :class="visible ? 'translate-y-0' : 'translate-y-[100%]'">
-    <div class="flex flex-col w-full lg:w-80 mx-auto max-h-full lg:max-h-[60%] shadow-lg rounded-lg bg-white dark:bg-neutral-800">
+    class="flex flex-col lg:justify-center justify-end fixed top-0 left-0 inset-0 backdrop-blur bg-black/20 dark:bg-transparent transition-transform duration-500 ease-in-out delay-200"
+    :class="{'translate-y-0': visible, 'translate-y-[100%]': !visible}" :style="{zIndex: zIndex}" @click.stop="closeModal">
+    <div class="flex flex-col w-full lg:w-80 mx-auto max-h-full lg:max-h-[60%] shadow-lg rounded-lg bg-white dark:bg-neutral-800" @click.stop>
       <div v-if="title || !closable" class="flex p-4 border-b border-slate-100 dark:border-slate-50/20">
         <div class="flex flex-1 items-center">
           <span class="text-lg font-semibold">{{ title }}</span>
@@ -15,7 +15,7 @@
       <div class="flex flex-1 flex-col p-4 overflow-auto">
         <slot></slot>
       </div>
-      <div class="flex border-t border-slate-100 dark:border-slate-50/20 shadow-lg rounded-lg">
+      <div v-if="footer" class="flex border-t border-slate-100 dark:border-slate-50/20 shadow-lg rounded-lg">
         <button class="basis-1/2 py-3 bg-blue-400 text-white font-medium hover:bg-blue-700"
           @click.stop="confirm">确定</button>
         <button class="basis-1/2 py-3 font-medium bg-white hover:bg-slate-50 dark:bg-transparent" @click.stop="cancel">取消</button>
@@ -47,6 +47,14 @@ const props = defineProps({
     // 允许传入一个选择器字符串或DOM引用
     type: [String, Object],
     default: 'body'
+  },
+  zIndex: {
+    type: Number,
+    default: 50
+  },
+  footer: {
+    type: Boolean,
+    default: true
   }
 })
 const emits = defineEmits(['update:visible', 'confirm', 'cancel']);

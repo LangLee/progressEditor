@@ -3,22 +3,22 @@
         <Header :hiddenFold="true">
             <div v-if="editable">
             <button
-                class="px-2 lg:py-1 lg:px-4 mx-1 lg:mx-2 text-basic lg:text-lg font-normal lg:font-medium rounded-md text-slate-50 bg-blue-400 hover:bg-blue-700"
+                class="mx-1 lg:mx-2 text-xl lg:text-3xl text-blue-400 hover:text-blue-700"
                 @click="appendPortal">
-                <span>新增</span>
-                <RemixIcon name="add-line" />
+                <!-- <span>新增</span> -->
+                <RemixIcon name="add-fill" />
             </button>
             <button
-                class="px-2 lg:py-1 lg:px-4 mx-1 lg:mx-2 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-blue-400 border-blue-400 hover:text-blue-700 hover:border-blue-700"
+                class="mx-1 lg:mx-2 text-xl lg:text-3xl font-normal text-blue-400 border-blue-400 hover:text-blue-700"
                 @click="importPortal">
-                <span>导入</span>
-                <RemixIcon name="add-line" />
+                <!-- <span>导入</span> -->
+                <RemixIcon name="import-fill" />
             </button>
             <button
-                class="px-2 lg:py-1 lg:px-4 mx-1 lg:mx-2 text-basic lg:text-lg font-normal lg:font-medium border rounded-md text-blue-400 border-blue-400 hover:text-blue-700 hover:border-blue-700"
+                class="mx-1 lg:mx-2 text-xl lg:text-3xl font-normal  text-blue-400 border-blue-400 hover:text-blue-700"
                 @click="exportPortal">
-                <span>导出</span>
-                <RemixIcon name="add-line" />
+                <!-- <span>导出</span> -->
+                <RemixIcon name="export-fill" />
             </button>
         </div>
         </Header>
