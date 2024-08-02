@@ -23,25 +23,25 @@
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
                         v-model="group.name" @keyup.enter="onUpdateGroup(group)" />
-                    <div v-else class="px-3 py-2 relative font-medium text-gray-900 dark:text-gray-50 cursor-pointer"
-                        @dblclick.stop="onInputEditGroup(group.id)" @mouseover="onItemMouseover(group.id)"
-                        @mouseleave="onItemMouseleave(group.id)"
+                    <div v-else class="px-3 py-2 leading-none relative font-medium text-gray-900 dark:text-gray-50 cursor-pointer"
+                        @dblclick.stop="onInputEditGroup(group.id)" @mouseover.stop="onItemMouseover(group.id)"
+                        @mouseleave.stop="onItemMouseleave(group.id)"
                         @touchstart.passive="(e) => handleTouchStart(e, group.id)"
                         @touchend.passive="(e) => handleTouchEnd(e, group.id)">
                         <span class="text-base mr-2">{{ group.name }}</span>
-                        <transition name="fade">
+                        <transition name="slide">
                             <div v-if="hoverItem === group.id" class="absolute right-0 top-3 font-sans text-slate-50">
                                 <span v-if="editable && !group.readonly"
                                     class="cursor-pointer bg-blue-300 hover:bg-blue-700 p-2"
                                     @click.stop="onEditGroup(group)">
                                     <RemixIcon name="edit-line" />
-                                    <span>编辑</span>
+                                    <!-- <span>编辑</span> -->
                                 </span>
                                 <span v-if="editable && !group.readonly && (!group.books || group.books.length <= 0)"
                                     class="cursor-pointer bg-red-300 hover:bg-red-700 p-2"
                                     @click.stop="onRemoveGroup(group, index)">
                                     <RemixIcon name="delete-bin-line" />
-                                    <span>删除</span>
+                                    <!-- <span>删除</span> -->
                                 </span>
                             </div>
                         </transition>
@@ -54,11 +54,16 @@
                                 @mouseover="onItemMouseover(book.id)" @mouseleave="onItemMouseleave(book.id)"
                                 @touchstart.passive="(e) => handleTouchStart(e, book.id)"
                                 @touchend.passive="(e) => handleTouchEnd(e, book.id)"
-                                class="px-3 py-2 transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer">
+                                class="px-3 py-2 leading-none transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer">
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->
-                                <tippy placement="top-start" trigger="hover">
+                                <span
+                                    class="relative inline-block text-base text-ellipsis whitespace-nowrap overflow-hidden"
+                                    :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
+                                    {{ book.title }}
+                                </span>
+                                <!-- <tippy placement="top-start" trigger="hover">
                                     <span
                                         class="relative inline-block text-base text-ellipsis whitespace-nowrap overflow-hidden"
                                         :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
@@ -69,13 +74,12 @@
                                             {{ book.title }}
                                         </span>
                                     </template>
-                                </tippy>
-                                <transition name="fade">
-                                    <div v-if="editable && book.id === hoverItem"
-                                        class="absolute right-0 top-3 font-sans text-slate-50">
+                                </tippy> -->
+                                <transition name="slide">
+                                    <div v-if="editable && hoverItem === book.id" class="absolute right-0 top-3 font-sans text-slate-50">
                                         <span class="cursor-pointer bg-slate-300 hover:bg-slate-500 p-2"
                                             @click.stop="onShareBook(book)">
-                                            <RemixIcon :name="book.share?'eye-off-line':'share-line'" />
+                                            <RemixIcon :name="book.share ? 'eye-off-line' : 'share-line'" />
                                             <!-- <span>分享</span> -->
                                         </span>
                                         <span class="cursor-pointer bg-blue-300 hover:bg-blue-500 p-2"
@@ -218,7 +222,7 @@ const onRemoveGroup = (group, index) => {
 
 const onCreateBook = () => {
     isNew.value = true;
-    editBook.value = { title: "新增笔记", type: props.fixedType || "markdown", category: groups?.value[0]?.id};
+    editBook.value = { title: "新增笔记", type: props.fixedType || "markdown", category: groups?.value[0]?.id };
 }
 const finishEditBook = () => {
     if (editBook && isNew.value) {
@@ -317,17 +321,17 @@ const handleTouchStart = (e, id) => {
     touchStart = { x: e.touches[0].clientX, target: id };
 }
 const handleTouchEnd = (e, id) => {
-    if (!touchStart) return;
+    if (!touchStart) return true;
     let { x, target } = touchStart;
     if (target !== id) {
         touchStart = null;
-        return;
+        return true;
     }
     let touchEnd = e.changedTouches[0].clientX;
     let distance = Math.abs(x - touchEnd);
     if (distance < 10) {
         touchStart = null;
-        return;
+        return true;
     }
     if (x > touchEnd) {
         // 左移

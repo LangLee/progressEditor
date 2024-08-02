@@ -6,6 +6,7 @@ import "./assets/iconfont/iconfont.js"
 import 'remixicon/fonts/remixicon.css'
 
 import 'tippy.js/themes/light-border.css';
+import 'tippy.js/animations/scale.css'
 import router from './router'
 import VueTippy from 'vue-tippy'
 const app = createApp(App)

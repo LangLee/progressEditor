@@ -1,11 +1,33 @@
 <template>
     <a class="relative w-full h-[4.5rem] lg:w-28 lg:h-28 p-1 lg:p-4 flex flex-col items-center rounded shadow-md hover:shadow-lg dark:border dark:border-slate-50/20 dark:bg-neutral-800 dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50"
-        :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="open" @mouseenter="onMouseenter"
-        @mouseleave="onMouseleave" @touchstart.passive="(e) => handleTouchStart(e)"
-        @touchend.passive="(e) => handleTouchEnd(e)">
+        :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="open">
+        <!-- @mouseenter="onMouseenter"
+        @mouseleave="onMouseleave"> -->
+        <!-- @touchstart.passive="(e) => handleTouchStart(e)"
+        @touchend.passive="(e) => handleTouchEnd(e)"> -->
         <RemixIcon class="text-2xl lg:text-4xl lg:mb-2" :name="modelValue.icon || 'book-2-line'"></RemixIcon>
         <span class="text-xs lg:text-base break-all text-center">{{ modelValue.title }}</span>
-        <transition name="slide">
+        <tippy v-if="editable" ref="dropdown" class="absolute top-0 right-0 z-10 px-0 lg:px-2"
+            trigger="mouseenter click" placement="bottom-start" :offset="[0, 0]" animation="scale" :interactive="true"
+            :arrow="true" :appendTo="appendToBody" @click.stop>
+            <RemixIcon class="dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50"
+                :class="`text-${theme}-400 hover:text-${theme}-700`" name="more-fill" />
+            <template #content>
+                <div class="bg-white dark:bg-neutral-600 shadow-lg drop-shadow-lg rounded px-2 text-sm lg:text-normal">
+                    <div class="p-1 dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50"
+                        :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="edit">
+                        <RemixIcon class="mr-1" name="edit-line"></RemixIcon>
+                        <span>编辑</span>
+                    </div>
+                    <div class="p-1 dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50"
+                        :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="remove">
+                        <RemixIcon class="mr-1" name="delete-bin-line"></RemixIcon>
+                        <span>删除</span>
+                    </div>
+                </div>
+            </template>
+        </tippy>
+        <!-- <transition name="slide">
             <div v-if="editable && active"
             class="absolute bottom-0 top-0 right-0 z-10 bg-slate-300/10 border-l border-slate-300/10 flex flex-col justify-center px-1 lg:px-2 text-lg lg:text-xl backdrop-blur-lg">
             <RemixIcon class="my-1 lg:my-2" :class="`text-${theme}-400 hover:text-${theme}-700`" name="edit-line"
@@ -13,7 +35,7 @@
             <RemixIcon class="my-1 lg:my-2" :class="`text-${theme}-400 hover:text-${theme}-700`" name="delete-bin-line"
                 @click.stop="remove"></RemixIcon>
         </div>
-        </transition>
+        </transition> -->
     </a>
     <!-- 预加载主题颜色 -->
     <span v-if="false"
@@ -28,7 +50,9 @@ import { ref, defineProps, defineEmits } from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { useRouter } from 'vue-router'
 import Modal from '@/components/feedback/Modal.vue'
-import { isMobile } from '@/common/utils'
+// import { isMobile } from '@/common/utils'
+const dropdown = ref();
+const appendToBody = () => document.body;
 const router = useRouter();
 const props = defineProps({
     modelValue: {
@@ -49,9 +73,9 @@ const props = defineProps({
         default: false
     }
 })
-const active = ref(false);
+// const active = ref(false);
 const removing = ref(false);
-let touchStart = 0;
+// let touchStart = 0;
 const emits = defineEmits(['update:modelValue', 'cardClick', 'edit', 'remove']);
 const open = () => {
     if (!props.modelValue || !props.modelValue.url) {
@@ -68,9 +92,11 @@ const edit = () => {
         return;
     }
     emits('edit', props.modelValue);
+    dropdown?.value?.hide();
 }
 const remove = () => {
     removing.value = true;
+    dropdown?.value?.hide();
 }
 const cancelRemove = () => {
     removing.value = false;
@@ -78,41 +104,42 @@ const cancelRemove = () => {
 const confirmRemove = () => {
     emits('remove', props.modelValue);
 }
-const onMouseenter = () => {
-    if (isMobile()) return false;
-    active.value = true;
-}
-const onMouseleave = () => {
-    if (isMobile()) return false;
-    active.value = false;
-}
-const handleTouchStart = (e) => {
-    touchStart = e.touches[0].clientX;
-}
-const handleTouchEnd = (e) => {
-    if (!touchStart) return;
-    let touchEnd = e.changedTouches[0].clientX;
-    let distance = Math.abs(touchStart - touchEnd);
-    if (distance < 10) {
-        touchStart = 0;
-        return;
-    }
-    if (touchStart > touchEnd) {
-        // 左移
-        active.value = true;
-    } else if (touchStart < touchEnd) {
-        // 右移
-        active.value = false;
-    }
-    touchStart = 0;
-} 
+// const onMouseenter = () => {
+//     if (isMobile()) return false;
+//     active.value = true;
+// }
+// const onMouseleave = () => {
+//     if (isMobile()) return false;
+//     active.value = false;
+// }
+// const handleTouchStart = (e) => {
+//     touchStart = e.touches[0].clientX;
+// }
+// const handleTouchEnd = (e) => {
+//     message.error(`${touchStart}`);
+//     if (!touchStart) return;
+//     let touchEnd = e.changedTouches[0].clientX;
+//     let distance = Math.abs(touchStart - touchEnd);
+//     if (distance < 10) {
+//         touchStart = 0;
+//         return;
+//     }
+//     if (touchStart > touchEnd) {
+//         // 左移
+//         active.value = true;
+//     } else if (touchStart < touchEnd) {
+//         // 右移
+//         active.value = false;
+//     }
+//     touchStart = 0;
+// } 
 </script>
 
 
 <style lang='scss' scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.1s ease-in;
+    transition: opacity 0.3s ease-in;
 }
 
 .fade-enter,
@@ -122,7 +149,7 @@ const handleTouchEnd = (e) => {
 
 .slide-enter-active,
 .slide-leave-active {
-    transition: transform 0.1s ease-in;
+    transition: transform 0.3s ease-in;
 }
 
 .slide-enter-from,

@@ -10,7 +10,7 @@
         <div class="text-normal lg:text-lg p-2">{{ dailyNote.english || '' }}</div>
       </div>
       <div v-if="question" class="rounded shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
-        <div class="font-bold text-lg lg:text-xl text-blue-700 py-1">{{ question }}</div>
+        <div class="font-bold text-lg lg:text-xl text-blue-700 dark:text-blue-300 py-1">{{ question }}</div>
         <span class="text-lg text-slate-300">
           <!-- <RemixIcon class="mr-2 hover:text-blue-400" name="volume-up-line" @click="playAudio(true)" /> -->
           <RemixIcon class="hover:text-blue-400" name="clipboard-line" @click.stop="copyText(question)" />
@@ -20,7 +20,7 @@
         </audio> -->
       </div>
       <div v-if="response" class="rounded shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
-        <div class="font-bold text-lg lg:text-xl text-blue-700">{{ response }}</div>
+        <div class="font-bold text-lg lg:text-xl text-blue-700 dark:text-blue-300">{{ response }}</div>
         <span class="text-lg text-slate-300">
           <RemixIcon class="mr-2 hover:text-blue-400" name="volume-up-line" @click="playAudio(false)" />
           <RemixIcon class="mr-2 hover:text-blue-400" name="clipboard-line" @click.stop="copyText()" />
@@ -34,7 +34,7 @@
     </div>
     <div class="relative h-24 lg:h-28 w-full text-lg px-2 lg:px-4 mb-4 lg:mb-8">
       <textarea ref="questionInput" :rows="3"
-        class="w-full border rounded-lg shadow-sm py-2 lg:py-4 pl-4 pr-20 text-slate-600 placeholder-slate-300 font-normal text-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:bg-neutral-800 dark:focus:ring-slate-300 dark:border-slate-600"
+        class="w-full border rounded-lg shadow-sm py-2 lg:py-4 pl-4 pr-20 text-slate-600 dark:text-slate-50 placeholder-slate-300 font-normal text-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:bg-neutral-800 dark:focus:ring-slate-300 dark:border-slate-600"
         v-model="word" type="text" placeholder="开始对话" @keyup.enter.stop="onTranslate" />
       <button class="absolute top-2 lg:top-4 right-4 lg:right-8 w-16 text-blue-300 hover:text-blue-600 dark:text-slate-300 dark:hover:text-slate-50"
         @click="onTranslate">

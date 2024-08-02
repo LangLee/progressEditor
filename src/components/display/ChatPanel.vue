@@ -17,7 +17,7 @@
     </div>
     <div v-if="editable" class="relative h-24 lg:h-28 w-full text-lg px-2 lg:px-4 mb-4 lg:mb-8">
         <textarea ref="questionInput" :rows="3"
-            class="w-full border rounded-lg shadow-sm py-2 lg:py-4 pl-4 pr-20 text-slate-600 placeholder-slate-300 font-normal text-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:bg-neutral-800 dark:focus:ring-slate-300 dark:border-slate-600"
+            class="w-full border rounded-lg shadow-sm py-2 lg:py-4 pl-4 pr-20 text-slate-600 dark:text-slate-50 placeholder-slate-300 font-normal text-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:bg-neutral-800 dark:focus:ring-slate-300 dark:border-slate-600"
             v-model="question" type="text" placeholder="开始对话" @keyup.enter.stop="onChart" />
         <button class="absolute top-2 lg:top-4 right-4 lg:right-8 w-16 text-blue-300 hover:text-blue-600 dark:text-slate-300 dark:hover:text-slate-50"
             @click.stop="onChart">
