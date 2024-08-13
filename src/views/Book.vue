@@ -2,7 +2,7 @@
   <div class="w-full h-full flex" :class="{ 'select-none': !editable }">
     <component :editable='editing' :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
     <div v-if="editable"
-      class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-50 cursor-pointer"
+      class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-40 cursor-pointer"
       @click="doAction">
       <RemixIcon class="text-slate-50 text-lg" :name="editing ? 'save-line' : 'file-edit-line'" />
     </div>

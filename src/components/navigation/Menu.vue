@@ -1,6 +1,6 @@
 <template>
     <div id="sideBar"
-        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-20 bg-black/20 dark:bg-transparent lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
+        class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-50 bg-black/20 dark:bg-transparent lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
         <div v-if="editable"
             class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
@@ -54,7 +54,7 @@
                                 @mouseover="onItemMouseover(book.id)" @mouseleave="onItemMouseleave(book.id)"
                                 @touchstart.passive="(e) => handleTouchStart(e, book.id)"
                                 @touchend.passive="(e) => handleTouchEnd(e, book.id)"
-                                class="px-3 py-2 leading-none transition-colors duration-200 relative block text-grey-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer">
+                                class="px-3 py-2 leading-none transition-colors duration-200 relative block font-normal text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer">
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->

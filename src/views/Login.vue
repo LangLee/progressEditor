@@ -6,21 +6,20 @@
                     {{ typeWriter }}
                 </span>
                 <span class="blink pl-1 border-r-2 border-slate-500">
-
                 </span>
             </div>
             <input
-                class="px-4 py-3 my-2 lg:my-3 bg-transparent text-slate-300 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                class="px-4 py-2 lg:py-3 my-2 lg:my-3 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                 type="text" v-model="name" placeholder="请输入用户名" />
             <input
-                class="px-4 py-3 my-2 lg:my-3 bg-transparent text-slate-300 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                class="px-4 py-2 my-2 lg:py-3 lg:my-3 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                 type="password" v-model="password" placeholder="请输入密码">
             <div class="flex flex-row justify-between my-2 lg:my-3">
                 <button
-                    class="w-1/2 py-3 mr-2 bg-blue-300 text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+                    class="w-1/2 py-2 lg:py-3 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                     @click="onLogin">登录</button>
                 <button
-                    class="w-1/2 py-3 ml-2 bg-red-300 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                    class="w-1/2 py-2 lg:py-3 ml-2 bg-red-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-red-600"
                     @click="onRegister">注册</button>
             </div>
             <!-- <div class="my-2 text-slate-300">

@@ -1,5 +1,5 @@
 <template>
-    <div class="inline-block rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-center m-2 leading-none" :class="sizeClasses">
+    <div class="inline-block rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-center leading-none" :class="sizeClasses">
         <img v-if="img" :src="img" class="inline-block w-full h-full object-cover">
         <RemixIcon v-else class="text-slate-50" :name="icon" :class="textClasses"></RemixIcon>
     </div>

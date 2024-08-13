@@ -1,19 +1,10 @@
 <template>
-    <div id="chatContent" class="flex-1 text-base p-2 lg:p-4 text-slate-900 font-normal overflow-y-auto">
+    <div id="chatContent" class="w-full flex-1 text-base p-2 lg:p-4 text-slate-900 font-normal overflow-y-auto">
         <div v-if="messages && messages.length > 0" class="flex flex-col content-space-between">
-            <div v-for="(item, index) in messages" :key="index"
-                :class="`my-3 text-slate-700 dark:text-slate-50 ${item[roleProperty]!==owner ? 'self-start lg:mr-8' : 'self-end lg: ml-8'}`">
-                <Avatar v-if="item[roleProperty]!==owner" icon="robot-2-fill" />
-                <span class="inline-block px-4 py-2 rounded-xl shadow-md"
-                    :class="item[roleProperty]!==owner ? 'dark:bg-neutral-800' : 'bg-blue-50 dark:bg-neutral-800'">{{
-                        item.content }}</span>
-                <Avatar v-if="item[roleProperty]===owner" />
-            </div>
+            <ChatCard v-for="(item, index) in messages" :key="index" :content="item.content" :position="item[roleProperty]===owner?'right':'left'" :toolbar="item[roleProperty]!==owner"></ChatCard>
+            <ChatCard v-if="response" :content="response"></ChatCard>
         </div>
-        <div v-else class="inline-block my-3 self-start lg:mr-8">
-            <Avatar icon="robot-2-fill" />
-            <span class="px-4 py-2 text-slate-700 dark:text-slate-50 bg-blue-50 dark:bg-neutral-800 rounded-xl shadow-md">{{ placeholder }}</span>
-        </div>
+        <ChatCard v-else :content="placeholder"></ChatCard>
     </div>
     <div v-if="editable" class="relative h-24 lg:h-28 w-full text-lg px-2 lg:px-4 mb-4 lg:mb-8">
         <textarea ref="questionInput" :rows="3"
@@ -33,7 +24,7 @@ import RemixIcon from '@/components/common/RemixIcon.vue'
 import Loading from '@/components/common/Loading.vue'
 import ProSelect from '@/components/common/Select.vue'
 import Header from '@/components/navigation/Header.vue'
-import Avatar from '@/components/common/Avatar.vue'
+import ChatCard from '@/components/display/ChatCard.vue'
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     editable: {
@@ -59,6 +50,10 @@ const props = defineProps({
     roleProperty: {
         type: String,
         default: 'role'
+    },
+    response: {
+        type: String,
+        default: ''
     }
 })
 const emits = defineEmits(['chart'])
@@ -77,7 +72,15 @@ watch(()=>props.messages, (newVal, oldVal) => {
         })
     }
 })
+watch(()=>props.response, (newVal, oldVal) => {
+    if (newVal && newVal !== oldVal) {
+        proxy.$nextTick(() => {
+            const aiChatContent = document.getElementById('chatContent');
+            chatContent && chatContent.scrollTo({ top: chatContent.scrollHeight, behavior: 'smooth' });
+        })
+    }
+})
 </script>
 
 
-<style lang='scss' scoped></style>
+<style lang='scss'></style>

@@ -1,104 +1,113 @@
 <template>
-  <BubbleMenu v-if="editor" :editor="editor" class="flex flex-col flex-wrap shadow-lg p-2 bg-white">
-    <div class="flex flex-row flex-wrap">
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()"
-        :class="{ 'bg-gray-300': editor.isActive('bold'), 'bg-gray-50': !editor.isActive('bold') }">
-        <RemixIcon name="bold" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleItalic().run()"
-        :disabled="!editor.can().chain().focus().toggleItalic().run()"
-        :class="{ 'bg-gray-300': editor.isActive('italic'), 'bg-gray-50': !editor.isActive('italic') }">
-        <RemixIcon name="italic" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleStrike().run()"
-        :disabled="!editor.can().chain().focus().toggleStrike().run()"
-        :class="{ 'bg-gray-300': editor.isActive('strike'), 'bg-gray-50': !editor.isActive('strike') }">
-        <RemixIcon name="strikethrough" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().setParagraph().run()"
-        :class="{ 'bg-gray-300': editor.isActive('paragraph'), 'bg-gray-50': !editor.isActive('paragraph') }">
-        <RemixIcon name="paragraph" />
-      </div>
+  <BubbleMenu v-if="editor" :editor="editor" class="flex flex-wrap shadow-lg p-1 rounded-md bg-white text-gray-500 font-semibold"
+    :tippyOptions="{ maxWidth: 'none' }">
+    <!-- <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="aiOptions">
+      <template #title>
+        <RemixIcon class="mr-1 text-purple-500" name="robot-2-line"></RemixIcon>
+        <span class="text-purple-500">Ai Tools</span>
+      </template>
+      <template #item="{ item }">
+        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+          @click="editor.chain().focus().toggleHeading({ level: item.level }).run()"
+          :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown> -->
+    <!-- <div class="my-2 border-l border-gray-300"></div> -->
+    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="headingOptions">
+      <template #title>
+        <RemixIcon name="heading"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+          @click="editor.chain().focus().toggleHeading({ level: item.level }).run()"
+          :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
+    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="listOptions">
+      <template #title>
+        <RemixIcon name="menu-line"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+          @click="editor.chain().focus()[item.command]().run()" :class="{ 'bg-gray-200': editor.isActive(item.value) }">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
+    <div class="my-2 border-l border-gray-300"></div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()"
+      :class="{ 'bg-gray-200': editor.isActive('bold') }">
+      <RemixIcon name="bold" />
     </div>
-    <div class="flex flex-row flex-wrap">
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-        :class="{ 'bg-gray-300': editor.isActive('heading', { level: 1 }), 'bg-gray-50': !editor.isActive('heading', { level: 1 }) }">
-        <RemixIcon name="h-1" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-        :class="{ 'bg-gray-300': editor.isActive('heading', { level: 2 }), 'bg-gray-50': !editor.isActive('heading', { level: 2 }) }">
-        <RemixIcon name="h-2" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-        :class="{ 'bg-gray-300': editor.isActive('heading', { level: 3 }), 'bg-gray-50': !editor.isActive('heading', { level: 3 }) }">
-        <RemixIcon name="h-3" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
-        :class="{ 'bg-gray-300': editor.isActive('heading', { level: 4 }), 'bg-gray-50': !editor.isActive('heading', { level: 4 }) }">
-        <RemixIcon name="h-4" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleHeading({ level: 5 }).run()"
-        :class="{ 'bg-gray-300': editor.isActive('heading', { level: 5}), 'bg-gray-50': !editor.isActive('heading', { level: 5 }) }">
-        <RemixIcon name="h-5" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
-        :class="{ 'bg-gray-300': editor.isActive('heading', { level: 6 }), 'bg-gray-50': !editor.isActive('heading', { level: 6 }) }">
-        <RemixIcon name="h-6" />
-      </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleItalic().run()"
+      :disabled="!editor.can().chain().focus().toggleItalic().run()"
+      :class="{ 'bg-gray-200': editor.isActive('italic') }">
+      <RemixIcon name="italic" />
     </div>
-    <div class="flex flex-row flex-wrap">
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleBulletList().run()"
-        :class="{ 'bg-gray-300': editor.isActive('bulletList'), 'bg-gray-50': !editor.isActive('bulletList') }">
-        <RemixIcon name="list-unordered" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleOrderedList().run()"
-        :class="{ 'bg-gray-300': editor.isActive('orderedList'), 'bg-gray-50': !editor.isActive('orderedList') }">
-        <RemixIcon name="list-ordered" />
-      </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleUnderline().run()"
+      :disabled="!editor.can().chain().focus().toggleUnderline().run()"
+      :class="{ 'bg-gray-200': editor.isActive('underline') }">
+      <RemixIcon name="underline" />
     </div>
-    <div class="flex flex-row flex-wrap">
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleCode().run()" :disabled="!editor.can().chain().focus().toggleCode().run()"
-        :class="{ 'bg-gray-300': editor.isActive('code'), 'bg-gray-50': !editor.isActive('code') }">
-        <RemixIcon name="code-view" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleCodeBlock().run()"
-        :class="{ 'bg-gray-300': editor.isActive('codeBlock'), 'bg-gray-50': !editor.isActive('codeBlock') }">
-        <RemixIcon name="code-block" />
-      </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleStrike().run()"
+      :disabled="!editor.can().chain().focus().toggleStrike().run()"
+      :class="{ 'bg-gray-200': editor.isActive('strike') }">
+      <RemixIcon name="strikethrough" />
     </div>
-    <div class="flex flex-row flex-wrap">
-      <div class="m-1 px-1 rounded-sm shadow bg-gray-50 hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().toggleBlockquote().run()">
-        <RemixIcon name="quote-text" />
+    <tippy ref="linkDropdown" trigger="click" placement="bottom" :offset="[0, 10]" animation="scale" :interactive="true"
+      :appendTo="appendToBody" :onShow="setLinkShow" :onHide="setLinkHide" maxWidth="none">
+      <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+        :class="{ 'bg-gray-200': editor.isActive('link') }">
+        <RemixIcon name="link" />
       </div>
-      <div class="m-1 px-1 rounded-sm shadow bg-gray-50 hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().setHorizontalRule().run()">
-        <RemixIcon name="separator" />
-      </div>
-      <div class="m-1 px-1 rounded-sm shadow bg-gray-50 hover:bg-gray-300 cursor-pointer"
-        @click="editor.chain().focus().setHardBreak().run()">
-        <RemixIcon name="text-wrap" />
-      </div>
+      <template #content>
+        <div class="flex flex-row shadow-lg bg-white rounded-lg p-1">
+          <label for="link" class="mr-2">
+            <input type="text" id="link" v-model="link" class="p-2 rounded-lg" placeholder="https://" />
+          </label>
+          <button class="w-full px-2 my-1 rounded-lg bg-purple-500 text-white" @click="setLink">set</button>
+        </div>
+      </template>
+    </tippy>
+
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().setParagraph().run()" :class="{ 'bg-gray-200': editor.isActive('paragraph') }">
+      <RemixIcon name="paragraph" />
     </div>
-    <div class="flex flex-row flex-wrap">
-      <div class="m-1 px-1 rounded-sm shadow bg-gray-50 hover:bg-gray-300 cursor-pointer"
-        @mousedown="onTranslate">
-        <RemixIcon name="translate" />
-      </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleCode().run()" :disabled="!editor.can().chain().focus().toggleCode().run()"
+      :class="{ 'bg-gray-200': editor.isActive('code') }">
+      <RemixIcon name="code-view" />
+    </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-gray-200': editor.isActive('codeBlock') }">
+      <RemixIcon name="code-block" />
+    </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().toggleBlockquote().run()">
+      <RemixIcon name="quote-text" />
+    </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().setHorizontalRule().run()">
+      <RemixIcon name="separator" />
+    </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+      @click="editor.chain().focus().setHardBreak().run()">
+      <RemixIcon name="text-wrap" />
+    </div>
+    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" @mousedown="onTranslate">
+      <RemixIcon name="translate" />
     </div>
   </BubbleMenu>
 </template>
@@ -106,8 +115,10 @@
 import { ref, reactive, defineProps, defineComponent, onMounted, proxyRefs } from 'vue'
 import RemixIcon from '../common/RemixIcon.vue'
 import { BubbleMenu } from '@tiptap/vue-3';
-import {getYouDaoAiTranslate} from "@/api/ai"
+import { getYouDaoAiTranslate } from "@/api/ai"
 import message from '../feedback/message';
+import Dropdown from '@/components/navigation/Dropdown.vue'
+const appendToBody = ()=>document.body;
 defineComponent({
   BubbleMenu,
   RemixIcon
@@ -118,16 +129,145 @@ const props = defineProps({
     default: null
   }
 })
-const onTranslate = ()=>{
-  let {doc, selection} = props.editor?.view?.state || {};
-  let {from, to} = selection || {};
+const link = ref('');
+const linkDropdown = ref();
+const aiOptions = [{
+  value: 'Simplify',
+  label: "Simplify",
+  icon: 'edit-circle-line',
+  command: 'aiSimplify'
+}, {
+  value: 'Fix spelling & grammar',
+  label: "Fix spelling & grammar",
+  icon: 'eraser-line',
+  command: 'aiFixSpellingAndGrammar'
+}, {
+  value: 'Make shorter',
+  label: "Make shorter",
+  icon: 'expand-left-line',
+  command: 'aiShorten'
+}, {
+  value: 'Make longer',
+  label: "Make longer",
+  icon: 'expand-right-line',
+  command: 'aiExtend'
+}, {
+  value: 'Change tone',
+  label: "Change tone",
+  icon: 'mic-line',
+  subMenu: true,
+  options: [],
+  command: 'aiAdjustTone'
+}, {
+  value: 'TI;dr:',
+  label: "TI;dr:",
+  icon: 'more-line',
+  command: 'aiTldr'
+}, {
+  value: 'Emojify',
+  label: "Emojify",
+  icon: 'emotion-line',
+  command: 'aiDeEmojify'
+}, {
+  value: 'Translate',
+  label: "Translate",
+  icon: 'translate-2',
+  subMenu: true,
+  options: [],
+  command: 'aiTranslate'
+}, {
+  value: 'Complete sentence',
+  label: "Complete sentence",
+  icon: 'edit-2-line',
+  command: 'aiComplete'
+},];
+const headingOptions = [{
+  value: 'heading1',
+  label: "Heading 1",
+  level: 1,
+  icon: 'h-1'
+}, {
+  value: 'heading2',
+  label: "Heading 2",
+  level: 2,
+  icon: 'h-2'
+}, {
+  value: 'heading3',
+  label: "Heading 3",
+  level: 3,
+  icon: 'h-3'
+}, {
+  value: 'heading4',
+  label: "Heading 4",
+  level: 4,
+  icon: 'h-4'
+}, {
+  value: 'heading5',
+  label: "Heading 5",
+  level: 5,
+  icon: 'h-5'
+}, {
+  value: 'heading6',
+  label: "Heading 6",
+  level: 6,
+  icon: 'h-6'
+}];
+const listOptions = [{
+  value: 'bulletList',
+  label: "Bullet list",
+  icon: 'list-unordered',
+  command: 'toggleBulletList'
+}, {
+  value: 'orderedList',
+  label: "Ordered list",
+  icon: 'list-ordered-2',
+  command: 'toggleOrderedList'
+}, {
+  value: 'taskList',
+  label: "Task list",
+  icon: 'list-check-3',
+  command: 'toggleTaskList'
+}];
+const setLinkShow = () => {
+  let linkStr = props.editor.getAttributes('link').href;
+  link.value = linkStr;
+  return true;
+};
+const setLinkHide = () => {
+  return true;
+}
+const setLink = () => {
+  let url = link.value;
+  // empty
+  if (url === '') {
+    props.editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .unsetLink()
+      .run()
+  } else {
+    // update link
+    props.editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .setLink({ href: url })
+      .run()
+  }
+  link.value = '';
+  linkDropdown?.value?.hide();
+}
+const onTranslate = () => {
+  let { doc, selection } = props.editor?.view?.state || {};
+  let { from, to } = selection || {};
   let text = doc.textBetween(selection.from, selection.to, '\n');
   if (from === to || !text) {
     message.warning("请选择要翻译的文本！")
   }
   const reg = new RegExp(/^[a-zA-Z/s]*$/);
   const isEnglish = reg.test(text);
-  getYouDaoAiTranslate({query: text, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS": "en"}).then((data) => {
+  getYouDaoAiTranslate({ query: text, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS" : "en" }).then((data) => {
     let translation = data.translation;
     if (translation !== text) {
       // 在翻译单词后插入翻译结果

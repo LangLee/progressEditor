@@ -11,8 +11,8 @@
                 </a>
             </li>
         </ul>
-        <div v-else class="text-slate-300 text-sm">
-            <p>写点啥才能有概要...</p>
+        <div v-else class="text-slate-400 text-sm">
+            <p>nothing</p>
         </div>
     </div>
 </template>

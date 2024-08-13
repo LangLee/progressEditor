@@ -5,7 +5,7 @@
         <div class="flex p-2 lg:p-4 flex-wrap justify-start">
             <div v-for="(app, index) in apps" :key="app._id"
                 class="flex flex-col items-center p-2 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12">
-                <Card class="w-full h-full" :editable="(app.system && editable) || !app.system" :modelValue="app" theme="blue"
+                <Card :editable="(app.system && editable) || !app.system" :modelValue="app" theme="blue"
                     @edit="onEditApp(app, index)" @remove="onRemoveApp(app._id)" />
             </div>
             <div class="flex flex-col items-center p-2 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12">

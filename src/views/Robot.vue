@@ -1,13 +1,13 @@
 <template>
     <div class="flex flex-col w-full h-screen">
         <Header @toggleFold="toggleFold" :fold="fold">
-            <ProSelect class="w-32 lg:w-48 mx-2" v-model="LLMKey" palaceHolder="请选择模型" :options="LLM_SELECT_OPTIONS"
-                @update:modelValue="onChangeLLM"></ProSelect>
+            <!-- <ProSelect class="w-32 lg:w-48 mx-2" v-model="LLMKey" palaceHolder="请选择模型" :options="LLM_SELECT_OPTIONS"
+                @update:modelValue="onChangeLLM"></ProSelect> -->
         </Header>
         <Menu fixedType="chat" :defaultGroup="true" :fold="fold" :defaultSelected="false" @toggleFold="toggleFold" @menuChange="onMenuChange">
         </Menu>
         <div class="flex-1 flex flex-col w-full lg:pl-80 overflow-y-auto">
-            <ChatPanel :editable="true" :messages="messages" :loading="loading" @chart="onChat"></ChatPanel>
+            <ChatPanel :editable="true" :messages="messages" :loading="loading" @chart="onChat" :response="response"></ChatPanel>
         </div>
     </div>
 </template>
@@ -18,7 +18,7 @@ import Header from '@/components/navigation/Header.vue'
 import ChatPanel from '@/components/display/ChatPanel.vue'
 import Menu from '@/components/navigation/Menu.vue'
 import { LLM_SELECT_OPTIONS } from '@/common/constants'
-import { getAiChat } from '@/api/ai'
+import { getAiChat, getAiChatStream } from '@/api/ai'
 import { useRouter, useRoute } from 'vue-router'
 import { getBookById } from '@/api/book'
 const router = useRouter();
@@ -29,6 +29,7 @@ const loading = ref(false);
 const LLMKey = ref('tongyi');
 const AiId = ref('');
 const fold = ref(true);
+const response = ref('')
 const toggleFold = (float) => {
     if (float !== undefined) {
         fold.value = float;
@@ -54,15 +55,27 @@ const onMenuChange = (id, appId) => {
     }
 }
 const onChat = (question) => {
-    loading.value = true;
-    getAiChat(AiId.value, LLMKey.value, question).then((data) => {
-        let { id, response } = data;
-        AiId.value = id;
-        loading.value = false;
-        messages.value = messages.value.concat([{ role: "user", content: question }, { role: "assistant", content: response }]);
-    }).catch((e) => {
-        loading.value = false;
-        messages.value = messages.value.concat([{ role: "assistant", content: e.message }]);
+    // loading.value = true;
+    // getAiChat().then((data) => {
+    //     let { id, response } = data;
+    //     AiId.value = id;
+    //     loading.value = false;
+    //     messages.value = messages.value.concat([{ role: "user", content: question }, { role: "assistant", content: response }]);
+    // }).catch((e) => {
+    //     loading.value = false;
+    //     messages.value = messages.value.concat([{ role: "assistant", content: e.message }]);
+    // })
+    messages.value = messages.value.concat([{ role: "user", content: question }]);
+    let result = "";
+    getAiChatStream({appId: route.query.appId, id: AiId.value, mode: LLMKey.value, question}, (content)=>{
+        result += content;
+        response.value = result;
+    }, (id)=>{
+        if (id) {
+            AiId.value = id;
+        }
+        response.value = '';
+        messages.value = messages.value.concat([{ role: "assistant", content: result }]);
     })
 }
 const onChangeLLM = (value, role) => {

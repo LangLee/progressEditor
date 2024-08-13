@@ -37,12 +37,13 @@ const fallbackCopyTextToClipboard = (text) => {
     }
     document.body.removeChild(textArea);
 }
-const copyTextToClipboard = (text) => {
+const copyTextToClipboard = (text, cb) => {
     if (!navigator.clipboard) {
         fallbackCopyTextToClipboard(text);
         return;
     }
     navigator.clipboard.writeText(text).then(function () {
+        cb && cb();
         console.log('成功拷贝!');
     }, function (err) {
         console.error('拷贝到剪贴板失败:', err);
