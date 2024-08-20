@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pb-6 top-18 text-base">
-        <p class="font-semibold text-grey-900 dark:text-gray-300 leading-8 px-1">目录大纲</p>
+        <p v-if="anchors && anchors.length > 0" class="font-semibold text-grey-900 dark:text-gray-300 leading-8 px-1">目录大纲</p>
         <ul v-if="anchors && anchors.length > 0" class="text-gray-600 leading-8 px-2">
             <li v-for="item in anchors" key="item.id" class="border-l dark:border-gray-500" :style="{ paddingLeft: item.level + 'rem' }">
                 <a class="block cursor-pointer"
@@ -11,9 +11,9 @@
                 </a>
             </li>
         </ul>
-        <div v-else class="text-slate-400">
+        <!-- <div v-else class="text-slate-400 px-2">
             <p>nothing</p>
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup>

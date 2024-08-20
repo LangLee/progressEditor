@@ -1,5 +1,5 @@
 <template>
-    <div class="flex shadow-lg p-2 lg:p-4 rounded-lg dark:border-b dark:border-slate-50/20">
+    <div class="flex p-2 lg:p-4 shadow-lg rounded-lg dark:border-b bg-white dark:border-slate-50/20">
         <div class="flex-1">
             <p class="font-bold text-blue-700 dark:text-slate-400">{{ modelValue.chinese }}</p>
             <p class="text-blue-900 dark:text-slate-50">{{ modelValue.english }}</p>

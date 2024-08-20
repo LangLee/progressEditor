@@ -157,6 +157,7 @@ const finishEditBook = () => {
                     return portal;
                 })
             }
+            currentBook.value = undefined;
         });
     }
 }

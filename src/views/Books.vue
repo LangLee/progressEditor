@@ -30,7 +30,7 @@ const onMenuChange = (id, appId) => {
   </Header>
   <div id="content" class="w-full max-w-screen-2xl mx-auto">
     <div class="lg:flex">
-      <Menu :editable="true" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange"></Menu>
+      <Menu :editable="true" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange" :defaultSelected="false"></Menu>
       <div id="contentWrapper" class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible lg:pl-80">
         <router-view></router-view>
       </div>

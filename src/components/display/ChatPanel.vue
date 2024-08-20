@@ -14,7 +14,7 @@
             <div class="flex flex-col w-full justify-center items-center p-10 overflow-y-auto">
                 <!-- <img class="h-48 lg:h-60 rounded-2xl mb-2" src="@/assets/fish.png" alt="我是李进步，我要进步"> -->
                  <FishGlass />
-                <span class="text-gray-500 dark:text-gray-300">子非鱼，安知鱼之乐？</span>
+                <span class="text-gray-500 dark:text-gray-300 italic">子非鱼，安知鱼之乐？</span>
             </div>
         </slot>
         <div v-if="editable" class="relative w-full text-lg px-2 lg:px-4 mb-2 lg:mb-4">

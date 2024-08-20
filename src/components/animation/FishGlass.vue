@@ -1,5 +1,5 @@
 <template>
-    <div class="fish-container relative w-full max-w-[20rem] min-h-[10rem] bg-sky-500 dark:bg-sky-700/10 rounded-lg overflow-hidden">
+    <div class="fish-container relative w-full max-w-[20rem] min-h-[10rem] bg-sky-500 dark:bg-transparent dark:border-slate-300/20 dark:border rounded-lg overflow-hidden">
         <div class="fish absolute flex flex-row fish w-12 h-6">
             <div class="fish-head w-3 h-6 bg-purple-300">
                 <div class="fish-eye w-2 h-2 bg-white rounded-full absolute top-1 left-1"></div>
