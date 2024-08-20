@@ -1,17 +1,17 @@
 <template>
-    <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pb-6 top-18">
-        <ul v-if="anchors && anchors.length > 0" class="text-slate-600 text-sm leading-6 px-4">
-            <p class="font-semibold text-grey-900 dark:text-slate-300 leading-8">概要</p>
-            <li v-for="item in anchors" key="item.id" class="border-l-2" :style="{ paddingLeft: item.level + 'rem' }">
-                <a class="block py-1 font-medium cursor-pointer"
-                    :class="{ 'text-blue-500': item.isActive, 'hover:text-blue-300': !item.isActive, 'text-slate-400 dark:text-slate-200': item.isScrolledOver && !item.isActive }"
+    <div class="flex flex-col justify-between overflow-y-auto sticky max-h-(screen-18) pb-6 top-18 text-base">
+        <p class="font-semibold text-grey-900 dark:text-gray-300 leading-8 px-1">目录大纲</p>
+        <ul v-if="anchors && anchors.length > 0" class="text-gray-600 leading-8 px-2">
+            <li v-for="item in anchors" key="item.id" class="border-l dark:border-gray-500" :style="{ paddingLeft: item.level + 'rem' }">
+                <a class="block cursor-pointer"
+                    :class="{ 'text-blue-600 font-bold': item.isActive, 'hover:text-blue-400': !item.isActive, 'text-gray-500 dark:text-gray-500': item.isScrolledOver && !item.isActive, 'text-gray-700 dark:text-gray-400': !item.isScrolledOver && !item.isActive }"
                     @click.stop=onItemClick(item)>
                     <RemixIcon v-if="item.level > 1" name="arrow-right-s-line" />
                     {{ item.textContent }}
                 </a>
             </li>
         </ul>
-        <div v-else class="text-slate-400 text-sm">
+        <div v-else class="text-slate-400">
             <p>nothing</p>
         </div>
     </div>

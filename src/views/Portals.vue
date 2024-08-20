@@ -3,28 +3,28 @@
         <Header :hiddenFold="true">
             <div v-if="editable">
             <button
-                class="mx-1 lg:mx-2 text-xl lg:text-3xl text-blue-400 hover:text-blue-700"
+                class="px-2 py-1 text-2xl text-gray-500 hover:bg-gray-100 rounded"
                 @click="appendPortal">
                 <!-- <span>新增</span> -->
-                <RemixIcon name="add-fill" />
+                <RemixIcon name="add-line" />
             </button>
             <button
-                class="mx-1 lg:mx-2 text-xl lg:text-3xl font-normal text-blue-400 border-blue-400 hover:text-blue-700"
+                class="px-2 py-1 text-2xl text-gray-500 hover:bg-gray-100 rounded"
                 @click="importPortal">
                 <!-- <span>导入</span> -->
-                <RemixIcon name="import-fill" />
+                <RemixIcon name="import-line" />
             </button>
             <button
-                class="mx-1 lg:mx-2 text-xl lg:text-3xl font-normal  text-blue-400 border-blue-400 hover:text-blue-700"
+                class="px-2 py-1 text-2xl text-gray-500 hover:bg-gray-100 rounded"
                 @click="exportPortal">
                 <!-- <span>导出</span> -->
-                <RemixIcon name="export-fill" />
+                <RemixIcon name="export-line" />
             </button>
         </div>
         </Header>
         <div class="flex-1 p-2 lg:p-4 overflow-y-auto">
             <ul v-for="(portal, index) in portals" :key="index">
-                <p class="m-2 lg:m-4 text-basic lg:text-lg text-blue-900 dark:text-slate-200 font-medium" @mouseover="onItemMouseover(portal.id)"
+                <p class="m-2 text-gray-600 dark:text-gray-200 font-medium" @mouseover="onItemMouseover(portal.id)"
                 @mouseleave="onItemMouseleave()">
                     <span class="mr-2">{{ portal.name }}</span>
                     <RemixIcon v-if="editable && hoverItem===portal.id" class="shadow-sm rounded-sm text-blue-300 hover:text-blue-700" name="edit-line" @click.stop="onEditPortal(portal)"></RemixIcon>

@@ -1,46 +1,38 @@
 <template>
   <div class="flex flex-col h-screen w-full justify-center items-center text-slate-700 dark:text-slate-300">
     <Header></Header>
-    <div class="flex-1 w-full p-2 lg:p-4 overflow-y-auto">
-      <!-- {{ response }} -->
-      <!-- <iframe v-if="dictUrl" :src="dictUrl" frameborder="0" width="100%" height="100%"></iframe> -->
-      <div v-if="dailyNote" class="rounded-lg shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
-        <div class="font-bold text-normal lg:text-lg py-2"><span class="bg-blue-600 text-slate-50 rounded-xl px-2 py-1">每日一句</span></div>
-        <div class="text-normal lg:text-lg p-2">{{ dailyNote.chinese || '' }}</div>
-        <div class="text-normal lg:text-lg p-2">{{ dailyNote.english || '' }}</div>
-      </div>
-      <div v-if="question" class="rounded shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
-        <div class="font-bold text-lg lg:text-xl text-blue-700 dark:text-blue-300 py-1">{{ question }}</div>
-        <span class="text-lg text-slate-300">
-          <!-- <RemixIcon class="mr-2 hover:text-blue-400" name="volume-up-line" @click="playAudio(true)" /> -->
-          <RemixIcon class="hover:text-blue-400" name="clipboard-line" @click.stop="copyText(question)" />
-        </span>
-        <!-- <audio v-show="false" controls id="questionAudioPlayer">
-          <source :src="queSpeakUrl" type="audio/mpeg">
-        </audio> -->
-      </div>
-      <div v-if="response" class="rounded shadow-lg p-4 lg:p-8 mb-4 lg:mb-8">
-        <div class="font-bold text-lg lg:text-xl text-blue-700 dark:text-blue-300">{{ response }}</div>
-        <span class="text-lg text-slate-300">
-          <RemixIcon class="mr-2 hover:text-blue-400" name="volume-up-line" @click="playAudio(false)" />
-          <RemixIcon class="mr-2 hover:text-blue-400" name="clipboard-line" @click.stop="copyText()" />
-          <RemixIcon class="hover:text-blue-400" name="add-line" @click.stop="addText()"/>
-        </span>
-        <audio id="responseAudioPlayer" :src="resSpeakUrl"></audio> 
-        <!-- <audio v-show="false" controls id="responseAudioPlayer">
+    <div class="flex-1 w-full bg-slate-300/20 overflow-hidden">
+      <div class="flex flex-col w-full h-full max-w-screen-md mx-auto p-2">
+        <div class="flex-1 flex-col">
+          <div v-if="dailyNote" class="border border-slate-300/20 rounded-lg p-2 lg:p-4 mb-2 lg:mb-4 bg-white dark:bg-neutral-800">
+            <div class="font-bold py-2">
+              <span class="bg-blue-500 text-slate-50 rounded-xl px-4 py-1">每日一句</span>
+            </div>
+            <div class="lg:text-lg p-2">{{ dailyNote.chinese || '' }}</div>
+            <div class="italic lg:text-lg p-2">{{ dailyNote.english || '' }}</div>
+          </div>
+          <div v-if="question" class="border border-slate-300/20 rounded-lg p-2 lg:p-4 mb-2 lg:mb-4 bg-white dark:bg-neutral-800">
+            <div class="font-bold text-lg lg:text-xl text-blue-700 dark:text-blue-300 py-1">{{ question }}</div>
+            <span class="text-lg text-slate-300">
+              <RemixIcon class="hover:text-blue-400" name="clipboard-line" @click.stop="copyText(question)" />
+            </span>
+          </div>
+          <div v-if="response" class="border border-slate-300/20 rounded-lg p-2 lg:p-4 mb-2 lg:mb-4 bg-white dark:bg-neutral-800">
+            <div class="font-bold text-lg lg:text-xl text-blue-700 dark:text-blue-300">{{ response }}</div>
+            <span class="text-lg text-slate-300">
+              <RemixIcon class="mr-2 hover:text-blue-400" name="volume-up-line" @click="playAudio(false)" />
+              <RemixIcon class="mr-2 hover:text-blue-400" name="clipboard-line" @click.stop="copyText()" />
+              <RemixIcon class="hover:text-blue-400" name="add-line" @click.stop="addText()" />
+            </span>
+            <audio id="responseAudioPlayer" :src="resSpeakUrl"></audio>
+            <!-- <audio v-show="false" controls id="responseAudioPlayer">
           <source :src="resSpeakUrl" type="audio/mpeg">
         </audio> -->
+          </div>
+        </div>
+        <Question @send="onTranslate" placeholder="输入中文/英文"></Question>
       </div>
-    </div>
-    <div class="relative h-24 lg:h-28 w-full text-lg px-2 lg:px-4 mb-4 lg:mb-8">
-      <textarea ref="questionInput" :rows="3"
-        class="w-full border rounded-lg shadow-sm py-2 lg:py-4 pl-4 pr-20 text-slate-600 dark:text-slate-50 placeholder-slate-300 font-normal text-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent dark:bg-neutral-800 dark:focus:ring-slate-300 dark:border-slate-600"
-        v-model="word" type="text" placeholder="开始对话" @keyup.enter.stop="onTranslate" />
-      <button class="absolute top-2 lg:top-4 right-4 lg:right-8 w-16 text-blue-300 hover:text-blue-600 dark:text-slate-300 dark:hover:text-slate-50"
-        @click="onTranslate">
-        <span class="mr-1">发送</span>
-        <RemixIcon name="send-plane-fill"></RemixIcon>
-      </button>
+
     </div>
   </div>
   <Loading v-if="loading"></Loading>
@@ -53,8 +45,8 @@ import { getDailyEnglish, createWord } from '@/api/word'
 import message from '@/components/feedback/message.ts'
 import Header from '@/components/navigation/Header.vue'
 import Loading from '@/components/common/Loading.vue'
-import {copyTextToClipboard} from '@/common/utils.ts'
-const word = ref('');
+import { copyTextToClipboard } from '@/common/utils.ts'
+import Question from '@/components/entry/Question.vue'
 const question = ref('');
 const queSpeakUrl = ref('');
 const resSpeakUrl = ref('');
@@ -76,17 +68,15 @@ const addText = () => {
     message.error(msg)
   })
 }
-const onTranslate = () => {
-  if (!word.value) {
+const onTranslate = (query) => {
+  if (!query) {
     message.warning("请输入要翻译的文本！")
   }
-  let query = word.value.replace(/[\r\n]/g, "");
   const reg = new RegExp(/^[A-Za-z\s]*$/);
   const isEnglish = reg.test(query);
   loading.value = true;
   getYouDaoAiTranslate({ query, from: isEnglish ? "en" : "zh-CHS", to: isEnglish ? "zh-CHS" : "en" }).then((data) => {
     let { translation, speakUrl, tSpeakUrl, dict, tDict } = data || {};
-    word.value = '';
     question.value = query;
     response.value = translation;
     // dictUrl.value = mTerminalDict?.url;

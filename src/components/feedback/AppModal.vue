@@ -12,11 +12,17 @@
         <input
             class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             type="text" v-model="app.icon" placeholder="应用图标" />
-        <div class="px-2">
-            <label class="mr-2" for="inner">是否内置</label>
-            <span>
-                <input id="inner" type="checkbox" v-model="app.inner" />
-            </span>
+        <div class="flex flex-row items-center px-2 mb-4">
+            <span class="mr-2">是否内置</span>
+            <Switch v-model="app.inner"></Switch>
+        </div>
+        <div class="flex flex-row items-center px-2">
+            <span class="mr-2">快捷应用</span>
+            <Switch v-model="app.quick"></Switch>
+        </div>
+        <div v-if="system" class="flex flex-row items-center px-2 mt-4">
+            <span class="mr-2">系统应用</span>
+            <Switch v-model="app.system"></Switch>
         </div>
     </Modal>
 </template>
@@ -24,7 +30,7 @@
 import { ref, reactive, defineProps, watch, computed } from 'vue'
 import Modal from './Modal.vue'
 import { Classification } from '@/types/enum'
-import ProSelect from '../common/Select.vue'
+import Switch from '@/components/common/Switch.vue'
 const props = defineProps({
     title: {
         type: String,
@@ -41,9 +47,15 @@ const props = defineProps({
                 title: '',
                 url: '',
                 icon: '',
-                inner: false
+                inner: false,
+                quick: false,
+                system: false
             }
         }
+    },
+    system: {
+        type: Boolean,
+        default: false
     }
 })
 const emits = defineEmits(['update:app', 'confirm', 'cancel']);

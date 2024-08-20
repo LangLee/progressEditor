@@ -14,47 +14,53 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // import Setting from '@/views/Setting.vue'
 // import Words from '@/views/Words.vue'
 // import Chat from '@/views/Chat.vue'
-const Login = defineAsyncComponent(()=>{
+const Login = defineAsyncComponent(() => {
     return import('@/views/Login.vue')
 })
-const Home = defineAsyncComponent(()=>{
+const Home = defineAsyncComponent(() => {
     return import('@/views/Home.vue')
 })
-const Register = defineAsyncComponent(()=>{
+const Register = defineAsyncComponent(() => {
     return import('@/views/Register.vue')
 })
-const Books = defineAsyncComponent(()=>{
+const Books = defineAsyncComponent(() => {
     return import('@/views/Books.vue')
 })
-const Book = defineAsyncComponent(()=>{
+const Empty = defineAsyncComponent(() => {
+    return import('@/views/Empty.vue')
+})
+const Book = defineAsyncComponent(() => {
     return import('@/views/Book.vue')
 })
-const Schedule = defineAsyncComponent(()=>{
+const Schedule = defineAsyncComponent(() => {
     return import('@/views/Schedule.vue')
 })
-const Robot = defineAsyncComponent(()=>{
+const Robot = defineAsyncComponent(() => {
     return import('@/views/Robot.vue')
 })
-const Translation = defineAsyncComponent(()=>{
+const Translation = defineAsyncComponent(() => {
     return import('@/views/Translation.vue')
 })
-const Portals = defineAsyncComponent(()=>{
+const Portals = defineAsyncComponent(() => {
     return import('@/views/Portals.vue')
 })
-const Coding = defineAsyncComponent(()=>{
+const Coding = defineAsyncComponent(() => {
     return import('@/views/Coding.vue')
 })
-const Setting = defineAsyncComponent(()=>{
+const Setting = defineAsyncComponent(() => {
     return import('@/views/Setting.vue')
 })
-const Words = defineAsyncComponent(()=>{
+const Words = defineAsyncComponent(() => {
     return import('@/views/Words.vue')
 })
-const Chat = defineAsyncComponent(()=>{
+const Chat = defineAsyncComponent(() => {
     return import('@/views/Chat.vue')
 })
-const Board = defineAsyncComponent(()=>{
+const Board = defineAsyncComponent(() => {
     return import('@/views/Board.vue')
+})
+const Apps = defineAsyncComponent(() => {
+    return import('@/views/Apps.vue')
 })
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
@@ -86,6 +92,10 @@ const routes = [
             {
                 path: ':id',
                 component: Book
+            },
+            {
+                path: '',
+                component: Empty
             }
         ]
     },
@@ -144,6 +154,11 @@ const routes = [
         name: 'board',
         path: '/board',
         component: Board
+    },
+    {
+        name: 'apps',
+        path: '/apps',
+        component: Apps
     }
 ]
 
@@ -153,16 +168,16 @@ const router = createRouter({
     routes,
     scrollBehavior(to) {
         if (to.hash) {
-          return {
-            el: to.hash,
-          }
+            return {
+                el: to.hash,
+            }
         }
     }
 })
 // permission.js
 router.beforeEach(async (to, from, next) => {
-	console.log("route", to, from)
-	next();
+    console.log("route", to, from)
+    next();
 });
 
 // 4.声明,为路由提供外部引用的入口

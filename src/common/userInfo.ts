@@ -1,4 +1,5 @@
 import {ref} from 'vue';
+import { download } from '@/api/file';
 // import User from '@/types/user.ts'
 const _userInfo = ref();
 const setUserInfo = (info)=>{
@@ -13,9 +14,23 @@ const getUserId = ()=>{
 const useUserInfo = ()=>{
     return _userInfo;
 }
+const _avatarCache = {};
+const getAvatarCache = (avatar)=>{
+    if(_avatarCache[avatar] == undefined) {
+        _avatarCache[avatar] = download(avatar).then((data)=>{
+            _avatarCache[avatar] = data || '';
+            return data;
+        }).catch(()=>{
+            _avatarCache[avatar] = '';
+            return '';
+        });
+    };
+    return _avatarCache[avatar];
+}
 export {
     useUserInfo,
     setUserInfo,
     getUserInfo,
-    getUserId
+    getUserId,
+    getAvatarCache
 }

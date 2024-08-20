@@ -1,8 +1,10 @@
 <template>
     <div class="h-screen w-full flex flex-col overflow-y-auto">
         <Header :hiddenFold="true"></Header>
-        <div class="flex p-2 lg:p-4 flex-wrap justify-start">
-            <BookCard v-for="book in books" :key="book._id" :book="book"></BookCard>
+        <div class="flex p-2 lg:p-4 flex-wrap justify-start bg-gray-300/20">
+            <div class="flex flex-col w-full max-w-screen-md mx-auto">
+                <BookCard v-for="book in books" :key="book._id" :book="book"></BookCard>
+            </div>
         </div>
     </div>
 </template>

@@ -3,42 +3,38 @@
         class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-50 bg-black/20 dark:bg-transparent lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
         <div v-if="editable"
-            class="flex h-14 px-1 sm:px-3 xl:px-5 py-1 pt-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
-            <button
-                class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
-                @click.stop="onCreateGroup">
-                <RemixIcon name="add-line" />
+            class="flex lg:mx-4 py-2 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60 font-sans-serif font-medium">
+            <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 mx-2" @click.stop="onCreateGroup">
+                <RemixIcon class="mr-1" name="folder-add-line" />
                 <span>分类</span>
             </button>
-            <button
-                class="font-sans-serif text-base text-blue-300 hover:text-blue-700 border border-blue-300 hover:border-blue-700 rounded px-2 mx-2"
-                @click.stop="onCreateBook">
-                <RemixIcon name="add-line" />
+            <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 mx-2" @click.stop="onCreateBook">
+                <RemixIcon class="mr-1" name="sticky-note-add-line" />
                 <span>笔记</span>
             </button>
         </div>
-        <nav
-            class="flex-1 px-1 sm:px-3 xl:px-5 lg:text-sm pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
+        <nav v-if="groups && groups.length > 0" class="flex-1 px-1 sm:px-3 xl:px-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
                         v-model="group.name" @keyup.enter="onUpdateGroup(group)" />
-                    <div v-else class="px-3 py-2 leading-none relative font-medium text-gray-900 dark:text-gray-50 cursor-pointer"
+                    <div v-else
+                        class="px-1 h-10 leading-10 relative font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                         @dblclick.stop="onInputEditGroup(group.id)" @mouseover.stop="onItemMouseover(group.id)"
                         @mouseleave.stop="onItemMouseleave(group.id)"
                         @touchstart.passive="(e) => handleTouchStart(e, group.id)"
                         @touchend.passive="(e) => handleTouchEnd(e, group.id)">
-                        <span class="text-base mr-2">{{ group.name }}</span>
+                        <span class="mr-2">{{ group.name }}</span>
                         <transition name="slide">
-                            <div v-if="hoverItem === group.id" class="absolute right-0 top-3 font-sans text-slate-50">
+                            <div v-if="hoverItem === group.id" class="absolute right-2 top-0 font-sans text-slate-50">
                                 <span v-if="editable && !group.readonly"
-                                    class="cursor-pointer bg-blue-300 hover:bg-blue-700 p-2"
+                                    class="rounded cursor-pointer bg-blue-300 hover:bg-blue-700 mr-1"
                                     @click.stop="onEditGroup(group)">
                                     <RemixIcon name="edit-line" />
                                     <!-- <span>编辑</span> -->
                                 </span>
                                 <span v-if="editable && !group.readonly && (!group.books || group.books.length <= 0)"
-                                    class="cursor-pointer bg-red-300 hover:bg-red-700 p-2"
+                                    class="rounded cursor-pointer bg-red-300 hover:bg-red-700"
                                     @click.stop="onRemoveGroup(group, index)">
                                     <RemixIcon name="delete-bin-line" />
                                     <!-- <span>删除</span> -->
@@ -46,21 +42,21 @@
                             </div>
                         </transition>
                     </div>
-                    <ul class="ml-3">
-                        <li :id="`book-${book.id}`" v-for="(book, idx) in group.books" :key="book.id">
+                    <ul class="ml-2 px-2 border-l border-gray-200 dark:border-gray-500">
+                        <li class="mb-1" :id="`book-${book.id}`" v-for="(book, idx) in group.books" :key="book.id">
                             <input ref="titleInput" v-if="book.id === editItem" class="p-2 w-full rounded-md"
                                 type="text" v-model="book.title" @keyup.enter="onUpdateBook(book)" />
                             <a v-else @click.stop="onMenuChange(book)" @dblclick.stop="onEditBookTitle(book.id)"
                                 @mouseover="onItemMouseover(book.id)" @mouseleave="onItemMouseleave(book.id)"
                                 @touchstart.passive="(e) => handleTouchStart(e, book.id)"
                                 @touchend.passive="(e) => handleTouchEnd(e, book.id)"
-                                class="px-3 py-2 leading-none transition-colors duration-200 relative block font-normal text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 cursor-pointer">
+                                class="h-8 leading-8 block px-2 rounded-md transition-colors duration-200 relative text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-100 cursor-pointer">
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->
-                                <span
-                                    class="relative inline-block text-base text-ellipsis whitespace-nowrap overflow-hidden"
+                                <span class="relative inline-block text-ellipsis whitespace-nowrap overflow-hidden"
                                     :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
+                                    <RemixIcon class="text-blue-500" :name="getIconByType(book.type)"></RemixIcon>
                                     {{ book.title }}
                                 </span>
                                 <!-- <tippy placement="top-start" trigger="hover">
@@ -74,20 +70,21 @@
                                             {{ book.title }}
                                         </span>
                                     </template>
-                                </tippy> -->
+</tippy> -->
                                 <transition name="slide">
-                                    <div v-if="editable && hoverItem === book.id" class="absolute right-0 top-3 font-sans text-slate-50">
-                                        <span class="cursor-pointer bg-slate-300 hover:bg-slate-500 p-2"
+                                    <div v-if="editable && hoverItem === book.id"
+                                        class="absolute right-2 top-0 font-sans text-slate-50">
+                                        <span class="rounded cursor-pointer bg-slate-300 hover:bg-slate-500 mr-1"
                                             @click.stop="onShareBook(book)">
                                             <RemixIcon :name="book.share ? 'eye-off-line' : 'share-line'" />
                                             <!-- <span>分享</span> -->
                                         </span>
-                                        <span class="cursor-pointer bg-blue-300 hover:bg-blue-500 p-2"
+                                        <span class="rounded cursor-pointer bg-blue-300 hover:bg-blue-500 mr-1"
                                             @click.stop="onEditBook(book)">
                                             <RemixIcon name="edit-line" />
                                             <!-- <span>编辑</span> -->
                                         </span>
-                                        <span class="cursor-pointer bg-red-300 hover:bg-red-500 p-2"
+                                        <span class="rounded cursor-pointer bg-red-300 hover:bg-red-500"
                                             @click.stop="onRemoveBook(group.books, idx)">
                                             <RemixIcon name="delete-bin-line" />
                                             <!-- <span>删除</span> -->
@@ -100,6 +97,10 @@
                 </li>
             </ul>
         </nav>
+        <div v-else class="h-1/2 flex flex-col justify-center text-center text-gray-500 text-sm">
+            <RemixIcon name="folder-6-line" class="text-2xl"></RemixIcon>
+                <p class="mt-1 italic">暂无数据<a src="#" class="text-blue-500 mt-2 underline cursor-pointer hover:text-blue-700" @click="onCreateGroup">创建</a></p>
+            </div>
         <BookModal :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook"
             @confirm="finishEditBook" @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
         <GroupModal :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editGroup" :group="editGroup"
@@ -159,6 +160,26 @@ const props = defineProps({
 })
 const foldState = ref(true);
 const emits = defineEmits(['toggleFold', 'menuChange']);
+const getIconByType = (type) => {
+    switch (type) {
+        case 'markdown':
+            return 'markdown-line';
+        case 'text':
+            return 'draft-line';
+        case 'chat':
+            return 'message-2-line';
+        case 'link':
+            return 'links-line';
+        case 'todo':
+            return 'todo-line';
+        case 'drawing':
+            return 'image-edit-line'
+        case 'code':
+            return 'file-code-line'
+        default:
+            return 'markdown-line';
+    }
+}
 const doFold = () => {
     foldState.value = true;
     emits('toggleFold', true);

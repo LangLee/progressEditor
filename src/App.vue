@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute z-20 top-0 lg:top-0 inset-x-0 flex justify-center lg:justify-end overflow-hidden pointer-events-none">
+  <div class="absolute z-20 top-0 lg:top-0 inset-x-0 flex justify-center lg:justify-end overflow-hidden pointer-events-none bg-slate-300">
     <div class="w-[80rem] lg:w-[100rem] flex-none flex justify-end">
       <!-- <picture>
         <source srcset="./assets/bg-01.avif" type="image/avif">

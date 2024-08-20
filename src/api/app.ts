@@ -1,8 +1,8 @@
 import axios from "axios";
 import App from "@/types/app";
 import message from "@/components/feedback/message";
-const getApps = () => {
-    return axios.get("/app/getApps").then((res) => {
+const getApps = (type) => {
+    return axios.get("/app/getApps", {params: {type}}).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {

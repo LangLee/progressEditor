@@ -96,7 +96,7 @@ export const getAiChatStream = ({ appId, id, mode, question, autoSave }, onUpdat
                 return;
             }
             onUpdate(content);
-            console.log(content)
+            // console.log(content)
         },
         onclose() {
             console.log('close')

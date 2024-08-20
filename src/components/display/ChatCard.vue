@@ -1,11 +1,11 @@
 <template>
    <div class="flex flex-row mb-4">
         <div class="w-10 py-2 pr-2">
-            <Avatar v-if="left" icon="robot-2-fill" />
+            <Avatar v-if="left" icon="robot-2-fill" :file="avatar" />
         </div>
-        <div class="flex flex-1" :class="left ? 'justify-start' : 'justify-end'">
-            <div class="border border-slate-300/20 inline-block px-4 py-2 rounded-xl shadow-md dark:bg-neutral-800">
-                <span class="prose dark:prose-invert tiptap"  v-html="markdown"></span>
+        <div class="flex flex-1 overflow-hidden" :class="left ? 'justify-start' : 'justify-end'">
+            <div class="max-w-full border border-slate-300/20 inline-block px-4 py-2 rounded-lg" :class="left ? 'bg-white dark:bg-neutral-800' : 'bg-blue-100 dark:bg-neutral-700'">
+                <span class="prose prose-sm dark:prose-invert tiptap" v-html="markdown"></span>
                 <div v-if="toolbar" class="text-slate-400 dark:text-neutral-500 text-sm mt-2 cursor-pointer">
                     <span class="mr-2 hover:text-slate-700 dark:hover:text-neutral-300" @click.stop="onAdd">
                         <RemixIcon  name="add-box-line" />
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="w-10 py-2 pl-2">
-            <Avatar v-if="!left" />
+            <Avatar v-if="!left" :file="avatar"/>
         </div>
    </div>
 </template>
@@ -31,11 +31,14 @@ import RemixIcon from '@/components/common/RemixIcon.vue'
 import { copyTextToClipboard } from '@/common/utils'
 import message from '@/components/feedback/message.ts'
 const props = defineProps({
+    avatar: {
+        type: String,
+        default: ''
+    },
     content: {
         type: String,
         default: ''
     },
-    roleProperty: String,
     position: {
         type: String,
         default: 'left'

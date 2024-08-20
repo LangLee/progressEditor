@@ -2,9 +2,11 @@
     <div class="flex flex-col w-full h-screen">
         <Header @toggleFold="toggleFold" :fold="fold">
         </Header>
-        <Contacts class="lg: border-r dark:border-slate-50/20" @chatTo="chatTo" :fold="fold" :contacts="contacts" @toggleFold="toggleFold"></Contacts>
-        <div class="flex-1 flex flex-col w-full lg:pl-80 overflow-y-auto">
-            <ChatPanel placeholder="咱们开始聊天吧..." :editable="editable" :messages="messages" :loading="loading" @chart="onChat" :owner="userId" roleProperty="from"></ChatPanel>
+        <Contacts class="" @chatTo="chatTo" :fold="fold" :contacts="contacts" @toggleFold="toggleFold"></Contacts>
+        <div class="flex-1 flex flex-col w-full lg:pl-80 bg-slate-300/20 overflow-hidden">
+            <ChatPanel placeholder="咱们开始聊天吧..." :editable="editable" :messages="messages" :loading="loading"
+                @chart="onChat" :owner="userId" roleProperty="from" :chatter="chatter">
+            </ChatPanel>
         </div>
     </div>
 </template>
@@ -23,6 +25,7 @@ const contacts = messageManage.useContacts();
 const messages = messageManage.useMessages();
 const userId = messageManage.useUserId();
 const editable = ref(false);
+const chatter = ref();
 const toggleFold = (float) => {
     if (float !== undefined) {
         fold.value = float;
@@ -30,9 +33,10 @@ const toggleFold = (float) => {
     }
     fold.value = !fold.value;
 }
-const chatTo = (userId) => {
+const chatTo = ({ _id: userId, avatar }) => {
     // 切换聊天对象
     messageManage.changeRecipient(userId);
+    chatter.value = { userId, avatar };
     editable.value = true;
 }
 const onChat = (question) => {
@@ -46,5 +50,21 @@ onBeforeUnmount(() => {
 
 
 <style lang='scss' scoped>
+@keyframes fish-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100px);
+  }
+}
 
+@keyframes fish-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100px);
+  }
+}
 </style>
