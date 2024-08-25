@@ -55,6 +55,15 @@ const removeAvatar = (user) => {
         }
     })
 }
+const getQRCode = (scene) => {
+    return axios.get("/users/getQRCode", {params: {scene: scene}}).then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
 export {
     login,
     register,
@@ -62,5 +71,6 @@ export {
     getContactList,
     updateUser,
     uploadAvatar,
-    removeAvatar
+    removeAvatar,
+    getQRCode
 }

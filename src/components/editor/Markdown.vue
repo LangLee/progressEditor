@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
     <editor-content class="h-full" :editor="editor" />
   </div>
   <div id="tableOfContent"
-    class="fixed z-20 top-[3.8125rem] bottom-0 right-0 py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-80 px-8">
+    class="fixed z-20 top-16 bottom-0 right-0 py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-80 px-8">
     <TableOfContent :editor=editor :anchors="anchors" />
   </div>
 </template>

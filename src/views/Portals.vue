@@ -24,7 +24,7 @@
         </Header>
         <div class="flex-1 p-2 lg:p-4 overflow-y-auto">
             <ul v-for="(portal, index) in portals" :key="index">
-                <p class="m-2 text-gray-600 dark:text-gray-200 font-medium" @mouseover="onItemMouseover(portal.id)"
+                <p class="mx-2 md:mx-4 lg:mx-4 text-gray-600 dark:text-gray-200 font-medium" @mouseover="onItemMouseover(portal.id)"
                 @mouseleave="onItemMouseleave()">
                     <span class="mr-2">{{ portal.name }}</span>
                     <RemixIcon v-if="editable && hoverItem===portal.id" class="shadow-sm rounded-sm text-blue-300 hover:text-blue-700" name="edit-line" @click.stop="onEditPortal(portal)"></RemixIcon>

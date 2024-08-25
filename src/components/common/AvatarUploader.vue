@@ -13,9 +13,9 @@
             <input type="file" id="avatar" class="hidden" accept="image/*" @change="onFileChange"
                 accept-charset="utf-8" />
         </label>
-        <button v-if="avatarPreview" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        <button v-if="avatarPreview" class="mt-4 px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
             @click="removeAvatar">
-            删除
+            删除头像
         </button>
         <p class="mt-2 text-sm text-gray-500">
             {{ statusMessage }}

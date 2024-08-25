@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row w-full h-36 rounded-lg shadow-lg m-2 p-2 bg-white dark:bg-neutral-800">
+    <div class="flex flex-row w-full h-28 rounded-lg shadow-lg mb-2 lg:mb-4 p-2 bg-white dark:bg-neutral-800">
         <div class="w-24 h-24 mr-2">
             <img v-if="book.image" class="w-full h-full rounded-lg" :src="book.image" alt="">
             </img>

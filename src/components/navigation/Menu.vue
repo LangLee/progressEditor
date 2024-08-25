@@ -2,7 +2,7 @@
     <div id="sideBar"
         class="flex flex-col fixed top-16 bottom-0 backdrop-blur overflow-y-auto z-50 bg-black/20 dark:bg-transparent lg:bg-transparent w-full lg:w-80 pr-24 lg:pr-0 transition-transform duration-300 ease-out delay-100 lg:translate-x-0"
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
-        <div v-if="editable"
+        <div v-if="editable && groups && groups.length > 0"
             class="flex lg:mx-4 py-2 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60 font-sans-serif font-medium">
             <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 mx-2" @click.stop="onCreateGroup">
                 <RemixIcon class="mr-1" name="folder-add-line" />
@@ -54,7 +54,7 @@
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->
-                                <span class="relative inline-block text-ellipsis whitespace-nowrap overflow-hidden"
+                                <span class="relative w-full inline-block text-ellipsis whitespace-nowrap overflow-hidden"
                                     :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
                                     <RemixIcon class="text-blue-500" :name="getIconByType(book.type)"></RemixIcon>
                                     {{ book.title }}
@@ -97,9 +97,9 @@
                 </li>
             </ul>
         </nav>
-        <div v-else class="h-1/2 flex flex-col justify-center text-center text-gray-500 text-sm">
+        <div v-else class="h-full flex flex-col justify-center text-center text-gray-500 text-sm bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <RemixIcon name="folder-6-line" class="text-2xl"></RemixIcon>
-                <p class="mt-1 italic">暂无数据<a src="#" class="text-blue-500 mt-2 underline cursor-pointer hover:text-blue-700" @click="onCreateGroup">创建</a></p>
+                <p class="mt-1 italic">暂无数据<a v-if="editable" src="#" class="text-blue-500 mt-2 underline cursor-pointer hover:text-blue-700" @click="onCreateGroup">创建</a></p>
             </div>
         <BookModal :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook"
             @confirm="finishEditBook" @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>

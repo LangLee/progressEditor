@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute w-full h-full top-0 left-0 flex justify-center items-center bg-slate-50 opacity-60 z-[100]">
+    <div class="absolute w-full h-full top-0 left-0 flex justify-center items-center opacity-60 z-[100]">
         <div class="loading">
         <span></span>
         <span></span>

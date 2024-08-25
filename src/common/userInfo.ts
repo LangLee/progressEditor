@@ -1,7 +1,7 @@
 import {ref} from 'vue';
 import { download } from '@/api/file';
 // import User from '@/types/user.ts'
-const _userInfo = ref();
+const _userInfo = ref({_id: '', name: '', avatar: '',mobile: '', email: ''});
 const setUserInfo = (info)=>{
     _userInfo.value = info;
 }
