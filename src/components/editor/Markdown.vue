@@ -173,7 +173,8 @@ const editor = useEditor({
   }
 })
 
-watch(() => props.modelValue, (value) => {
+watch(() => props.modelValue, (value, oldValue) => {
+  if (value === oldValue) return;
   const isSame = editor.value && editor.value.getHTML() === value;
   // JSON
   // const isSame = JSON.stringify(editor.getJSON()) === JSON.stringify(value)

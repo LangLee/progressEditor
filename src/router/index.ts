@@ -15,7 +15,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // import Words from '@/views/Words.vue'
 // import Chat from '@/views/Chat.vue'
 const Login = defineAsyncComponent(() => {
-    return import('@/views/Login.vue')
+    return import('@/views/login/Login.vue')
 })
 const Home = defineAsyncComponent(() => {
     return import('@/views/Home.vue')

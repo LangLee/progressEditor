@@ -1,6 +1,5 @@
 <template>
-    <tippy ref="dropdown" :trigger="trigger" :placement="placement" :offset="offset" animation="scale" :interactive="true"
-        :appendTo="appendToBody" :onShow="dropdownShow" :onHide="dropdownHide">
+    <tippy ref="dropdown" :trigger="trigger" :placement="placement" :offset="offset" animation="scale" :interactive="true" :onShow="dropdownShow" :onHide="dropdownHide">
         <div>
             <slot name="title">
                 <span class="cursor-pointer">{{ title }}</span>
@@ -9,11 +8,11 @@
         </div>
         <template #content>
             <slot name="content">
-                <div class="shadow-lg bg-white rounded-lg p-1 w-min-48">
+                <div class="shadow-lg bg-white rounded-lg p-1 w-min-48 font-normal">
                     <ul>
                         <li v-for="item in options" :key="item.value">
                             <slot name="item" :item="item">
-                                <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500" @click.stop="onSelect(item)">{{ item.label }}</div>
+                                <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500" @click="onSelect(item)">{{ item.label }}</div>
                             </slot>
                         </li>
                     </ul>

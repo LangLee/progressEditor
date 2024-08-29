@@ -7,8 +7,14 @@
           class="inline-block w-full max-w-full max-h-80 bg-white p-2 border border-slate-300/20 rounded-md prose dark:prose-invert tiptap overflow-y-auto"
           v-html="response"></span>
       </div>
-      <label class="mt-1" for="question">
+      <label class="mt-1" for="prompt">
         <div class="text-gray-600 mb-2 px-1 text-sm">Prompt</div>
+        <textarea id="prompt" name="prompt"
+          class="px-2 rounded-md w-full border border-slate-300/20 focus:outline-none focus:ring-none"
+          rows="2" v-model="prompt"></textarea>
+      </label>
+      <label class="mt-1" for="question">
+        <div class="text-gray-600 mb-2 px-1 text-sm">Qsuestion</div>
         <textarea id="question" name="question"
           class="px-2 rounded-md w-full border border-slate-300/20 font-medium focus:outline-none focus:ring-none"
           rows="3" v-model="question"></textarea>
@@ -40,12 +46,14 @@
 
 <script setup>
 import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { getAiChatStream } from '@/api/ai'
 import { marked } from 'marked'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 const props = defineProps(nodeViewProps)
-const question = ref('')
+const attrs = props?.node?.attrs;
+const question = ref(attrs?.question || '')
+const prompt = ref(attrs?.prompt || '')
 const response = ref('')
 const loading = ref(false)
 const onGenerate = () => {
@@ -70,6 +78,11 @@ const onAdd = () => {
 const onDiscard = () => {
   props.deleteNode();
 }
+onMounted(() => {
+  if (question.value) {
+    onGenerate();
+  }
+})
 </script>
 
 <style lang="scss"></style>

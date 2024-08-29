@@ -13,7 +13,8 @@
                 <span>笔记</span>
             </button>
         </div>
-        <nav v-if="groups && groups.length > 0" class="flex-1 px-1 sm:px-3 xl:px-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
+        <nav v-if="groups && groups.length > 0"
+            class="flex-1 px-1 sm:px-3 xl:px-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
@@ -54,10 +55,11 @@
                                 <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
                                 </span> -->
                                 <!-- <span class="inline-block">M</span> -->
-                                <span class="relative w-full inline-block text-ellipsis whitespace-nowrap overflow-hidden"
+                                <span
+                                    class="relative w-full flex flex-row"
                                     :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
-                                    <RemixIcon class="text-blue-500" :name="getIconByType(book.type)"></RemixIcon>
-                                    {{ book.title }}
+                                    <RemixIcon class="text-blue-500 mr-1" :name="getIconByType(book.type)"></RemixIcon>
+                                    <span class="flex-1 text-ellipsis whitespace-nowrap overflow-hidden">{{ book.title }}</span>
                                 </span>
                                 <!-- <tippy placement="top-start" trigger="hover">
                                     <span
@@ -97,10 +99,13 @@
                 </li>
             </ul>
         </nav>
-        <div v-else class="h-full flex flex-col justify-center text-center text-gray-500 text-sm bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
+        <div v-else
+            class="h-full flex flex-col justify-center text-center text-gray-500 text-sm bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <RemixIcon name="folder-6-line" class="text-2xl"></RemixIcon>
-                <p class="mt-1 italic">暂无数据<a v-if="editable" src="#" class="text-blue-500 mt-2 underline cursor-pointer hover:text-blue-700" @click="onCreateGroup">创建</a></p>
-            </div>
+            <p class="mt-1 italic">暂无数据<a v-if="editable" src="#"
+                    class="text-blue-500 mt-2 underline cursor-pointer hover:text-blue-700"
+                    @click="onCreateGroup">创建</a></p>
+        </div>
         <BookModal :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook"
             @confirm="finishEditBook" @cancel="closeModal" :book="editBook" :categories="groups"></BookModal>
         <GroupModal :title="`${isNew ? '新增分类' : '编辑分类'}`" :visible="!!editGroup" :group="editGroup"
@@ -112,11 +117,12 @@ import { ref, reactive, onMounted, watch, getCurrentInstance, computed } from 'v
 import { useRouter, useRoute } from 'vue-router'
 import { createBook, removeBook, updateBook } from '../../api/book'
 import { getGroupAndBooks, createGroup, updateGroup, removeGroup } from '../../api/group'
-import BookModal from '../feedback/BookModal.vue'
-import GroupModal from '../feedback/GroupModal.vue'
-import message from '../feedback/message';
+import BookModal from '@/components/feedback/BookModal.vue'
+import GroupModal from '@/components/feedback/GroupModal.vue'
+import message from '@/components/feedback/message';
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { isMobile, copyTextToClipboard } from '@/common/utils'
+import modal from '@/components/feedback/modal'
 const router = useRouter();
 const route = useRoute();
 const groups = ref([]);
@@ -274,11 +280,17 @@ const onRemoveBook = (books, index) => {
     if (!book || !book.id) {
         return;
     }
-    removeBook(book.id).then(() => {
-        books.splice(index, 1);
-        let activeIdx = books && books.length > index ? index : books.length - 1;
-        onMenuChange(activeIdx < 0 ? null : books[activeIdx]);
-        message.success("删除书籍成功!")
+    modal.confirm({
+        title: '确认删除',
+        content: '确认删除该内容？',
+        onOk: () => {
+            removeBook(book.id).then(() => {
+                books.splice(index, 1);
+                let activeIdx = books && books.length > index ? index : books.length - 1;
+                onMenuChange(activeIdx < 0 ? null : books[activeIdx]);
+                message.success("删除书籍成功!");
+            })
+        }
     })
 }
 const onEditBookTitle = (id) => {

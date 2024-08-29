@@ -61,7 +61,7 @@ export const getAiChat = (id, mode, question) => {
         }
     });
 }
-export const getAiChatStream = ({ appId, id, mode, question, autoSave }, onUpdate, onEnd) => {
+export const getAiChatStream = ({ appId, id, mode, question, autoSave, prompt }, onUpdate, onEnd) => {
     let ctrl = new AbortController();
     const Authorization = localStorage.getItem("me_token") || "";
     return fetchEventSource(`${baseUrl}/ai/getAiChatStream`, {
@@ -72,7 +72,7 @@ export const getAiChatStream = ({ appId, id, mode, question, autoSave }, onUpdat
             "appId": appId
         },
         openWhenHidden: true,
-        body: JSON.stringify({ id, mode, question, autoSave }),
+        body: JSON.stringify({ id, mode, question, autoSave, prompt }),
         signal: ctrl?.signal,
         onmessage: (event) => {
             const data = event.data || ''

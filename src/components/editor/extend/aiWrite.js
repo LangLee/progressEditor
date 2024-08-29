@@ -12,9 +12,14 @@ export default Node.create({
 
     addAttributes() {
         return {
-            // count: {
-            //     default: 0,
-            // },
+            // 提词器
+            prompt: {
+                default: ''
+            },
+            // 问题
+            question: {
+                default: ''
+            }
         }
     },
 

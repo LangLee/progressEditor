@@ -1,20 +1,21 @@
 <template>
-  <BubbleMenu v-if="editor" :editor="editor" class="flex flex-wrap shadow-lg p-1 rounded-md bg-white text-gray-500 font-semibold"
+  <BubbleMenu v-if="editor" :editor="editor"
+    class="flex flex-wrap shadow-lg p-1 rounded-md bg-white text-gray-500 font-semibold"
     :tippyOptions="{ maxWidth: 'none' }">
-    <!-- <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="aiOptions">
+    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="aiOptions">
       <template #title>
         <RemixIcon class="mr-1 text-purple-500" name="robot-2-line"></RemixIcon>
         <span class="text-purple-500">Ai Tools</span>
       </template>
       <template #item="{ item }">
         <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
-          @click="editor.chain().focus().toggleHeading({ level: item.level }).run()"
+          @click="handleAIWrite(item.value)"
           :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
       </template>
-    </Dropdown> -->
+    </Dropdown>
     <!-- <div class="my-2 border-l border-gray-300"></div> -->
     <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="headingOptions">
       <template #title>
@@ -112,13 +113,14 @@
   </BubbleMenu>
 </template>
 <script setup>
-import { ref, reactive, defineProps, defineComponent, onMounted, proxyRefs } from 'vue'
+import { ref, reactive, defineProps, defineComponent, onMounted, defineEmits } from 'vue'
 import RemixIcon from '../common/RemixIcon.vue'
 import { BubbleMenu } from '@tiptap/vue-3';
-import { getYouDaoAiTranslate } from "@/api/ai"
+import { getYouDaoAiTranslate, getAiChatStream } from "@/api/ai"
 import message from '../feedback/message';
 import Dropdown from '@/components/navigation/Dropdown.vue'
-const appendToBody = ()=>document.body;
+import { marked } from 'marked'
+const appendToBody = () => document.body;
 defineComponent({
   BubbleMenu,
   RemixIcon
@@ -129,58 +131,67 @@ const props = defineProps({
     default: null
   }
 })
+// const emits = defineEmits(['updateState']);
 const link = ref('');
 const linkDropdown = ref();
 const aiOptions = [{
-  value: 'Simplify',
+  value: 'complete',
+  label: "Complete",
+  icon: 'edit-2-line',
+  command: 'aiWrite'
+}, {
+  value: 'simplify',
   label: "Simplify",
   icon: 'edit-circle-line',
   command: 'aiSimplify'
-}, {
-  value: 'Fix spelling & grammar',
-  label: "Fix spelling & grammar",
-  icon: 'eraser-line',
-  command: 'aiFixSpellingAndGrammar'
-}, {
-  value: 'Make shorter',
-  label: "Make shorter",
-  icon: 'expand-left-line',
-  command: 'aiShorten'
-}, {
-  value: 'Make longer',
-  label: "Make longer",
-  icon: 'expand-right-line',
-  command: 'aiExtend'
-}, {
-  value: 'Change tone',
-  label: "Change tone",
-  icon: 'mic-line',
-  subMenu: true,
-  options: [],
-  command: 'aiAdjustTone'
-}, {
-  value: 'TI;dr:',
-  label: "TI;dr:",
+},
+{
+  value: 'summarize',
+  label: "Summarize",
   icon: 'more-line',
   command: 'aiTldr'
 }, {
-  value: 'Emojify',
-  label: "Emojify",
-  icon: 'emotion-line',
-  command: 'aiDeEmojify'
-}, {
-  value: 'Translate',
-  label: "Translate",
-  icon: 'translate-2',
-  subMenu: true,
-  options: [],
-  command: 'aiTranslate'
-}, {
-  value: 'Complete sentence',
-  label: "Complete sentence",
-  icon: 'edit-2-line',
-  command: 'aiComplete'
-},];
+  value: 'correction',
+  label: "Correction",
+  icon: 'eraser-line',
+  command: 'aiFixSpellingAndGrammar'
+},
+{
+  value: 'longer',
+  label: "Longer",
+  icon: 'expand-right-line',
+  command: 'aiExtend'
+}];
+
+// {
+//   value: 'changTone',
+//   label: "Change tone",
+//   icon: 'mic-line',
+//   subMenu: true,
+//   options: [],
+//   command: 'aiAdjustTone'
+// }
+// {
+//   value: 'Emojify',
+//   label: "Emojify",
+//   icon: 'emotion-line',
+//   command: 'aiDeEmojify'
+// },  
+// {
+//   value: 'translate',
+//   label: "Translate",
+//   icon: 'translate-2',
+//   subMenu: true,
+//   options: [
+//     {
+//       value: 'translate-en',
+//       label: "en",
+//     }, {
+//       value: 'translate-ch',
+//       label: "zh",
+//     }  ],
+//   command: 'aiTranslate'
+// }
 const headingOptions = [{
   value: 'heading1',
   label: "Heading 1",
@@ -239,7 +250,7 @@ const setLinkHide = () => {
 const setLink = () => {
   let url = link.value;
   // empty
-  if (url === '') {
+  if (!url) {
     props.editor
       .chain()
       .focus()
@@ -274,6 +285,34 @@ const onTranslate = () => {
       props.editor.commands.insertContentAt(to, `<em>[翻译：${translation}]</em>`);
     }
   })
+}
+const handleAIWrite = (key) => {
+  let prompt = '';
+  switch (key) {
+    case 'simplify':
+      prompt = '将以下文本简化为更易懂的表达方式，尽量使用简单的词汇和短句，同时保持原意不变。'
+      break;
+    case 'translate':
+      prompt = '将以下文本从[源语言]翻译成[目标语言]。'
+      break;
+    case 'summarize':
+      prompt = '阅读以下文章，并提供一个简短的摘要。'
+      break;
+    case 'correction':
+      prompt = '检查这段文本中的语法和拼写错误，并进行修正。'
+      break;
+    case 'longer':
+      prompt = '使用更多的细节或例证来扩写这段文本。'
+      break;
+    case 'complete':
+      prompt = '根据以下提示或关键词，生成一段新的文本。'
+      break;
+    default: break
+  }
+  let { doc, selection, tr } = props.editor?.view?.state || {};
+  let { from, to } = selection || {};
+  let text = doc.textBetween(from, to, '\n');
+  props.editor.chain().focus().setAiWrite({question: text, prompt}).run();
 }
 </script>
 

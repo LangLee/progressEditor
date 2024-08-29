@@ -17,17 +17,17 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import Header from '@/components/navigation/Header.vue'
 import ProInput from '@/components/entry/ProInput.vue'
 // import Switch from '@/components/common/Switch.vue'
 import AvatarUploader from '@/components/common/AvatarUploader.vue'
 // import { upload, remove } from '@/api/file'
-import { useUserInfo, setUserInfo } from '@/common/userInfo'
+import { getUserInfo, setUserInfo } from '@/common/userInfo'
 import { baseUrl } from '@/api/globalConfig'
 import { updateUser } from '@/api/user.ts'
-import { uploadAvatar, removeAvatar } from '@/api/user.ts'
-const user = useUserInfo();
+import { uploadAvatar, removeAvatar, getLoginUser } from '@/api/user.ts'
+const user = ref(getUserInfo() || {});
 const imgUrl = computed(() => {
     if (user.value && user.value.avatar) {
         return `${baseUrl}/file/preview?file=${user.value.avatar}`
@@ -63,7 +63,19 @@ const remove = () => {
     })
 }
 const save = () => {
-    updateUser(user.value);
+    updateUser(user.value).then((data) => {
+        if (data) {
+            setUserInfo(data);
+        }
+    });
 }
+onMounted(() => {
+    if (!user.value || !user.value._id) {
+        getLoginUser().then((data) => {
+            setUserInfo(data);
+            user.value = data;
+        })
+    }
+})
 </script>
 <style lang='scss' scoped></style>

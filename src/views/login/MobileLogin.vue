@@ -6,9 +6,6 @@
             <p>Progress</p>
         </div>
         <ProInput name="mobile" v-model="password" placeholder="请输入手机号"/>
-        <!-- <input
-            class="w-full px-4 py-2 lg:py-3 my-2 lg:my-3 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
-            type="text" v-model="mobile" placeholder="输入手机号" /> -->
         <div class="w-full my-2 lg:my-3 flex flex-row justify-between">
             <!-- <ProInput class="w-48" name="verification" v-model="verification" placeholder="请输入验证码"/> -->
             <input
@@ -18,6 +15,7 @@
         </div>
         <button class="w-full py-2 lg:py-3 my-2 lg:my-3 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                 @click="onLogin">登录</button>
+        <UserPrivacy v-model="privacy"></UserPrivacy>
     </div>
 </template>
 <script setup>
@@ -30,11 +28,17 @@ import Stars from '@/common/starts'
 import { setUserInfo } from '@/common/userInfo'
 import Fish from '@/components/animation/Fish.vue'
 import ProInput from '@/components/entry/ProInput.vue'
+import UserPrivacy from './UserPrivacy.vue'
 const mobile = ref('');
 const verification = ref('');
 const router = useRouter();
 let starsInstance = null;
+const privacy = ref(false);
 const onLogin = () => {
+    if (!privacy.value) {
+        message.error('请先阅读并同意隐私协议');
+        return;
+    }
     console.log(mobile.value, verification.value);
     login({ mobile: mobile.value, verification: verification.value }).then((result) => {
         console.log(result);

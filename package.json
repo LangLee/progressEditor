@@ -67,6 +67,7 @@
   "devDependencies": {
     "@types/node": "^20.12.12",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
     "autoprefixer": "^10.4.19",
     "less": "^4.2.0",
     "postcss": "^8.4.38",

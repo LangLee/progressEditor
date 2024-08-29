@@ -34,6 +34,7 @@ import RemixIcon from '@/components/common/RemixIcon.vue'
 import Modal from '@/components/feedback/Modal.vue'
 import { updateBook, removeBook } from '@/api/book'
 import message from '@/components/feedback/message'
+import { isMobile } from '@/common/utils'
 const editing = ref(false)
 let touchStart = 0;
 const props = defineProps({
@@ -49,9 +50,15 @@ const skipTo = () => {
     emits('skip', props.book._id)
 }
 const onItemMouseover = () => {
+    if (isMobile()) {
+        return true;
+    }
     active.value = true
 }
 const onItemMouseleave = () => {
+    if (isMobile()) {
+        return true;
+    }
     active.value = false
 }
 const handleTouchStart = (e) => {
