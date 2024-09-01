@@ -13,8 +13,8 @@
                 <span>笔记</span>
             </button>
         </div>
-        <nav v-if="groups && groups.length > 0"
-            class="flex-1 px-1 sm:px-3 xl:px-5 pb-10 lg:pb-14 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
+        <nav id="navBar" v-if="groups && groups.length > 0"
+            class="flex-1 px-1 sm:px-3 xl:px-5 pb-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60 overflow-y-auto">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"
@@ -43,7 +43,7 @@
                             </div>
                         </transition>
                     </div>
-                    <ul class="ml-2 px-2 border-l border-gray-200 dark:border-gray-500">
+                    <ul class="ml-2 px-1 border-l border-gray-200 dark:border-gray-500">
                         <li class="mb-1" :id="`book-${book.id}`" v-for="(book, idx) in group.books" :key="book.id">
                             <input ref="titleInput" v-if="book.id === editItem" class="p-2 w-full rounded-md"
                                 type="text" v-model="book.title" @keyup.enter="onUpdateBook(book)" />
@@ -51,31 +51,15 @@
                                 @mouseover="onItemMouseover(book.id)" @mouseleave="onItemMouseleave(book.id)"
                                 @touchstart.passive="(e) => handleTouchStart(e, book.id)"
                                 @touchend.passive="(e) => handleTouchEnd(e, book.id)"
-                                class="h-8 leading-8 block px-2 rounded-md transition-colors duration-200 relative text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-100 cursor-pointer">
-                                <!-- <span v-if="book.id === activeItem" class="rounded-md absolute inset-0 bg-blue-300">
-                                </span> -->
-                                <!-- <span class="inline-block">M</span> -->
-                                <span
-                                    class="relative w-full flex flex-row"
+                                class="p-1 block rounded-md transition-colors duration-200 relative text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-100 cursor-pointer">
+                                <span class="w-full h-full flex flex-row"
                                     :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
                                     <RemixIcon class="text-blue-500 mr-1" :name="getIconByType(book.type)"></RemixIcon>
-                                    <span class="flex-1 text-ellipsis whitespace-nowrap overflow-hidden">{{ book.title }}</span>
+                                    <span class="break-all">{{ book.title }}</span>
                                 </span>
-                                <!-- <tippy placement="top-start" trigger="hover">
-                                    <span
-                                        class="relative inline-block text-base text-ellipsis whitespace-nowrap overflow-hidden"
-                                        :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
-                                        {{ book.title }}
-                                    </span>
-                                    <template #content>
-                                        <span class="p-2 bg-slate-700 text-white text-sm rounded shadow-md">
-                                            {{ book.title }}
-                                        </span>
-                                    </template>
-</tippy> -->
                                 <transition name="slide">
                                     <div v-if="editable && hoverItem === book.id"
-                                        class="absolute right-2 top-0 font-sans text-slate-50">
+                                        class="absolute right-2 top-1 font-sans text-slate-50">
                                         <span class="rounded cursor-pointer bg-slate-300 hover:bg-slate-500 mr-1"
                                             @click.stop="onShareBook(book)">
                                             <RemixIcon :name="book.share ? 'eye-off-line' : 'share-line'" />
@@ -318,24 +302,24 @@ const onUpdateBook = (book) => {
 onMounted(() => {
     getGroupAndBooks(props.defaultGroup).then(data => {
         groups.value = data || [];
-        if (props.defaultSelected) {
-            if (!route.params.id && groups.value[0] && groups.value[0].books && groups.value[0].books[0]) {
-                onMenuChange(groups.value[0].books[0]);
-            }
-        }
         if (route.params.id) {
+            // 激活菜单
+            activeItem.value = route.params.id;
+            editItem.value = '';
             proxy.$nextTick(() => {
-                scrollToBook(route.params.id || groups.value[0].books[0].id)
+                scrollToBook(route.params.id)
             })
+        } else if (props.defaultSelected && groups.value[0]?.books[0]) {
+            onMenuChange(groups.value[0].books[0]);
         }
     })
 })
 const scrollToBook = (bookId) => {
-    let sideBar = document.getElementById('sideBar');
-    if (sideBar && bookId) {
+    let sideBar = document.getElementById('navBar');
+    if (navBar && bookId) {
         let book = document.getElementById(`book-${bookId}`);
         if (book) {
-            sideBar.scrollTo({
+            navBar.scrollTo({
                 top: book.offsetTop,
                 behavior: "smooth"
             })
@@ -388,16 +372,16 @@ const onShareBook = (book) => {
         }
     })
 }
-watch(() => route.params.id, (value, oldValue) => {
-    if (value !== oldValue) {
-        activeItem.value = value;
-        editItem.value = '';
-        doFold();
-        proxy.$nextTick(() => {
-            scrollToBook(value);
-        });
-    }
-}, { immediate: true })
+// watch(() => route.params.id, (value, oldValue) => {
+//     if (value !== oldValue) {
+//         activeItem.value = value;
+//         editItem.value = '';
+//         doFold();
+//         if (!oldValue) {
+
+//         }
+//     }
+// }, { immediate: true })
 watch(() => route.query.appId, (value) => {
     appId.value = value;
     console.log(value);

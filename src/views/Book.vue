@@ -6,7 +6,6 @@
       @click="doAction">
       <RemixIcon class="text-slate-50 text-lg" :name="editing ? 'save-line' : 'file-edit-line'" />
     </div>
-    <Loading v-if="showLoading"></Loading>
   </div>
 </template>
 
@@ -19,14 +18,13 @@ import Book from "@/types/book"
 import Anchor from "@/types/anchor";
 import message from '@/components/feedback/message'
 import RemixIcon from "@/components/common/RemixIcon.vue"
-import Loading from '@/components/common/Loading.vue'
+import loading from '@/components/feedback/loading.ts'
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
 const editable = ref(false);
 const editing = ref(false);
-const showLoading = ref(false);
 let previousContent = '';
 const id = ref('')
 // let intervalSave: NodeJS.Timeout | number;
@@ -124,17 +122,17 @@ watch(() => route.params.id, (newVal, oldValue) => {
     if (typeof (newVal) === 'string') {
       id.value = newVal || '';
     }
-    showLoading.value = true;
+    loading.show();
     getBookById(id.value).then((data: Book) => {
       content.value = data.content || '';
       anchors.value = data.anchors || [];
       previousContent = data.content || "";
       editable.value = (data.editable && data.type !== 'chat') || false;
       setCurrentComponent(data.type);
-      showLoading.value = false;
+      loading.hide();
     }).catch((msg) => {
       message.error(msg);
-      showLoading.value = false;
+      loading.hide();
     })
   }
 }, { immediate: true })

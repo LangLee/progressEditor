@@ -8,14 +8,10 @@
         </div>
         <template #content>
             <slot name="content">
-                <div class="shadow-lg bg-white rounded-lg p-1 w-min-48 font-normal">
-                    <ul>
-                        <li v-for="item in options" :key="item.value">
-                            <slot name="item" :item="item">
-                                <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500" @click="onSelect(item)">{{ item.label }}</div>
-                            </slot>
-                        </li>
-                    </ul>
+                <div class="shadow-lg bg-white rounded-lg p-1 min-w-36 font-normal">
+                    <div v-for="item in options" :key="item.value" class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500" @click="onSelect(item)">
+                        {{ item.label }}
+                    </div>
                 </div>
             </slot>
         </template>
@@ -53,7 +49,7 @@ const emits = defineEmits(['select'])
 const onSelect = (item) => {
     emits('select', item);
     dropdown?.value?.hide();
-    console.log(item)
+    // console.log(item)
 }
 const dropdownShow = () => {
     hidden.value = false;
