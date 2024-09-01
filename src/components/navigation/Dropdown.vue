@@ -1,5 +1,6 @@
 <template>
-    <tippy ref="dropdown" :trigger="trigger" :placement="placement" :offset="offset" animation="scale" :interactive="true" :onShow="dropdownShow" :onHide="dropdownHide">
+    <tippy ref="dropdown" :trigger="trigger" :placement="placement" :offset="offset" animation="scale"
+        :interactive="true" :onShow="dropdownShow" :onHide="dropdownHide">
         <div>
             <slot name="title">
                 <span class="cursor-pointer">{{ title }}</span>
@@ -9,8 +10,11 @@
         <template #content>
             <slot name="content">
                 <div class="shadow-lg bg-white rounded-lg p-1 min-w-36 font-normal">
-                    <div v-for="item in options" :key="item.value" class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500" @click="onSelect(item)">
-                        {{ item.label }}
+                    <div v-for="item in options" :key="item.value" @click.stop="hideDropdown">
+                        <slot name="item" :item="item">
+                            <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+                                @click="onSelect(item)">{{ item.label }}</div>
+                        </slot>
                     </div>
                 </div>
             </slot>
@@ -43,12 +47,16 @@ const props = defineProps({
     offset: {
         type: Array,
         default: () => [0, 10]
+    },
+    selectAndHide: {
+        type: Boolean,
+        default: true
     }
 })
 const emits = defineEmits(['select'])
 const onSelect = (item) => {
     emits('select', item);
-    dropdown?.value?.hide();
+    
     // console.log(item)
 }
 const dropdownShow = () => {
@@ -58,6 +66,13 @@ const dropdownShow = () => {
 const dropdownHide = () => {
     hidden.value = true;
     return true;
+}
+const hideDropdown = ()=>{
+    if (!props.selectAndHide) {
+        return true;
+    }
+    dropdown?.value?.hide();
+    hidden.value = true;
 }
 </script>
 

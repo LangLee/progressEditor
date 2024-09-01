@@ -19,6 +19,7 @@ import Anchor from "@/types/anchor";
 import message from '@/components/feedback/message'
 import RemixIcon from "@/components/common/RemixIcon.vue"
 import loading from '@/components/feedback/loading.ts'
+import {change} from '@/common/status'
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
@@ -112,6 +113,7 @@ const doAction = () => {
     // 保存
     autoSave().then(() => {
       editing.value = false;
+      change(false);
     });
   } else {
     editing.value = editable.value;
@@ -129,6 +131,7 @@ watch(() => route.params.id, (newVal, oldValue) => {
       previousContent = data.content || "";
       editable.value = (data.editable && data.type !== 'chat') || false;
       setCurrentComponent(data.type);
+      editing.value = editable.value;
       loading.hide();
     }).catch((msg) => {
       message.error(msg);

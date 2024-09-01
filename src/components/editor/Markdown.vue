@@ -39,6 +39,7 @@ import suggestion from './extend/suggestion'
 import { debounce } from '@/common/utils.ts'
 
 import aiWrite from './extend/aiWrite'
+import {change} from '@/common/status'
 // const CustomDocument = Document.extend({
 //   content: 'heading block*',
 // })
@@ -61,6 +62,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue', 'update:anchors']);
 const updateContent = debounce((editor) => {
   emits('update:modelValue', editor.getHTML());
+  change(true);
 }, 300);
 const editor = useEditor({
   autofocus: true,
@@ -111,7 +113,8 @@ const editor = useEditor({
         // if (node.type.name === 'heading') {
         //   return 'What’s the title?'
         // }
-        return 'Type / to browse options'
+        // return 'Type / to browse options'
+        return '输入 / 查看操作'
       }
     }),
     Image.configure({

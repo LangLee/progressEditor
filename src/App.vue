@@ -1,5 +1,6 @@
 <template>
-  <div class="absolute z-20 top-0 lg:top-0 inset-x-0 flex justify-center lg:justify-end overflow-hidden pointer-events-none bg-slate-300">
+  <div
+    class="absolute z-20 top-0 lg:top-0 inset-x-0 flex justify-center lg:justify-end overflow-hidden pointer-events-none bg-slate-300">
     <div class="w-[80rem] lg:w-[100rem] flex-none flex justify-end">
       <!-- <picture>
         <source srcset="./assets/bg-01.avif" type="image/avif">
@@ -14,8 +15,32 @@ import { ref, reactive, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
 import initialize from './api/globalConfig'
+import modal from '@/components/feedback/modal'
+import { isChanged, change } from '@/common/status'
 const router = useRouter();
 const route = useRoute();
+router.beforeEach((to, from, next) => {
+  let reg = new RegExp(/^\/(books|book)/);
+  if (reg.test(from.path)) {
+    if (isChanged()) {
+      modal.confirm({
+        title: '提示',
+        content: '您有未保存的修改，确定离开吗？',
+        onOk: () => {
+          change(false);
+          next();
+        },
+        onCancel: () => {
+          next(false);
+        }
+      })
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+})
 onBeforeMount(() => {
   if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark')
@@ -31,7 +56,6 @@ onBeforeMount(() => {
 
 
 <style lang='scss'>
-
 /* 去掉code的引号 */
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before {
   content: '';
@@ -40,13 +64,14 @@ onBeforeMount(() => {
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
   content: '';
 }
+
 /* 去掉quote的引号 */
-.prose :where(blockquote p:first-of-type):not(:where([class~="not-prose"],[class~="not-prose"] *))::before {
+.prose :where(blockquote p:first-of-type):not(:where([class~="not-prose"], [class~="not-prose"] *))::before {
   content: '';
 }
 
-.prose :where(blockquote p:last-of-type):not(:where([class~="not-prose"],[class~="not-prose"] *))::after {
-    content: '';
+.prose :where(blockquote p:last-of-type):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+  content: '';
 }
 
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -160,6 +185,7 @@ onBeforeMount(() => {
     padding-left: 1rem;
     border-left: 2px solid rgba(#0D0D0D, 0.1);
   }
+
   /* Table-specific styling */
   table {
     border-collapse: collapse;
@@ -177,7 +203,7 @@ onBeforeMount(() => {
       position: relative;
       vertical-align: top;
 
-      > * {
+      >* {
         margin-bottom: 0;
       }
     }
@@ -191,7 +217,10 @@ onBeforeMount(() => {
     .selectedCell:after {
       background: rgba(200, 200, 255, 0.4);
       content: "";
-      left: 0; right: 0; top: 0; bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
       pointer-events: none;
       position: absolute;
       z-index: 2;
@@ -250,6 +279,7 @@ onBeforeMount(() => {
       }
     }
   }
+
   /* Link styles */
   a {
     color: var(--purple);

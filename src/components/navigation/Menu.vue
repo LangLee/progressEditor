@@ -177,8 +177,8 @@ const doFold = () => {
 const onMenuChange = (item) => {
     let { id } = item || {};
     // 激活菜单
-    activeItem.value = id || '';
-    editItem.value = '';
+    // activeItem.value = id || '';
+    // editItem.value = '';
     doFold();
     emits('menuChange', id, route.query.appId);
 }
@@ -372,16 +372,12 @@ const onShareBook = (book) => {
         }
     })
 }
-// watch(() => route.params.id, (value, oldValue) => {
-//     if (value !== oldValue) {
-//         activeItem.value = value;
-//         editItem.value = '';
-//         doFold();
-//         if (!oldValue) {
-
-//         }
-//     }
-// }, { immediate: true })
+watch(() => route.params.id, (value, oldValue) => {
+    if (value !== oldValue) {
+        activeItem.value = value;
+        editItem.value = '';
+    }
+}, { immediate: true })
 watch(() => route.query.appId, (value) => {
     appId.value = value;
     console.log(value);

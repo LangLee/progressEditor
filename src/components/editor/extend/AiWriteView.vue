@@ -8,13 +8,25 @@
           v-html="response"></span>
       </div>
       <label class="mt-1" for="prompt">
-        <div class="text-gray-600 mb-2 px-1 text-sm">Prompt</div>
+        <div class="text-gray-600 mb-2 px-1 flex items-center text-sm">
+          <span class="mr-2">Prompt</span>
+          <button class="text-white bg-slate-400 hover:bg-slate-500 rounded-lg px-1 mr-2" @click.stop="onAddPrompt">
+            <RemixIcon class="mr-1" name="add-line" />
+            <span>创建提词</span>
+          </button>
+          <Dropdown title="选择提词" :options="prompts" @select="onSelectPrompt">
+            <template #item="{ item }">
+              <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+                @click="onSelectPrompt(item)">{{ item.name }}</div>
+            </template>
+          </Dropdown>
+        </div>
         <textarea id="prompt" name="prompt"
-          class="px-2 rounded-md w-full border border-slate-300/20 focus:outline-none focus:ring-none"
-          rows="2" v-model="prompt"></textarea>
+          class="px-2 rounded-md w-full border border-slate-300/20 focus:outline-none focus:ring-none" rows="2"
+          v-model="prompt"></textarea>
       </label>
       <label class="mt-1" for="question">
-        <div class="text-gray-600 mb-2 px-1 text-sm">Qsuestion</div>
+        <div class="text-gray-600 mb-2 px-1 text-sm">Question</div>
         <textarea id="question" name="question"
           class="px-2 rounded-md w-full border border-slate-300/20 font-medium focus:outline-none focus:ring-none"
           rows="3" v-model="question"></textarea>
@@ -36,10 +48,13 @@
             @click="onGenerate" :disabled="loading">
             <RemixIcon v-if="loading" class="inline-block animate-spin duration-300" name="loader-3-fill"></RemixIcon>
             <RemixIcon v-else name="send-plane-fill"></RemixIcon>
-            <span class="ml-2">{{ loading?'process':'generate' }}</span>
+            <span class="ml-2">{{ loading ? 'process' : 'generate' }}</span>
           </button>
         </div>
       </div>
+      <PromptModal :visible="!!editPrompt" v-model:prompt="editPrompt" @confirm="onUpdatePrompt"
+        @cancel="closePromptModal">
+      </PromptModal>
     </div>
   </node-view-wrapper>
 </template>
@@ -50,17 +65,22 @@ import { ref, nextTick, onMounted } from 'vue'
 import { getAiChatStream } from '@/api/ai'
 import { marked } from 'marked'
 import RemixIcon from '@/components/common/RemixIcon.vue'
+import Dropdown from '@/components/navigation/Dropdown.vue'
+import { getPrompts, createPrompt } from '@/api/prompt'
+import PromptModal from '@/components/feedback/PromptModal.vue'
 const props = defineProps(nodeViewProps)
 const attrs = props?.node?.attrs;
 const question = ref(attrs?.question || '')
 const prompt = ref(attrs?.prompt || '')
 const response = ref('')
 const loading = ref(false)
+const prompts = ref([])
+const editPrompt = ref();
 const onGenerate = () => {
   if (!question.value) return;
   let result = '';
   loading.value = true;
-  getAiChatStream({ question: question.value, autoSave: false }, (content) => {
+  getAiChatStream({ question: question.value, prompt: prompt.value, autoSave: false }, (content) => {
     result += content;
     response.value = marked(result);
     nextTick(() => {
@@ -78,10 +98,31 @@ const onAdd = () => {
 const onDiscard = () => {
   props.deleteNode();
 }
+const onAddPrompt = () => {
+  editPrompt.value = {
+    name: '',
+    content: prompt.value || ''
+  }
+}
+const onUpdatePrompt = () => {
+  createPrompt(editPrompt.value).then((data) => {
+    prompts.value.push(data);
+    closePromptModal();
+  })
+}
+const closePromptModal = () => {
+  editPrompt.value = undefined;
+}
+const onSelectPrompt = (item) => {
+  prompt.value = item.content;
+}
 onMounted(() => {
   if (question.value) {
     onGenerate();
   }
+  getPrompts().then((data) => {
+    prompts.value = data;
+  });
 })
 </script>
 
