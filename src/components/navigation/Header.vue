@@ -19,11 +19,11 @@
         </div>
         <div class="flex-auto flex items-center justify-end pr-4 dark:text-slate-50">
             <RemixIcon :name="dark?'moon-fill':'sun-fill'" class="text-2xl cursor-pointer mr-2" @click="toggleDark"/>
-            <tippy trigger="mouseenter click" placement="bottom-end" :offset="[10, 0]" animation="scale" :interactive="true" :appendTo="appendToBody">
+            <tippy trigger="click" placement="bottom-end" animation="scale" :interactive="true" :appendTo="appendToBody">
                 <Avatar class="cursor-pointer mr-2" size="sm" :file=" user && user.avatar"></Avatar>
                 <span class="text-sm font-bold cursor-pointer">{{ user && user.name }}</span>
                 <template #content>
-                    <div class="min-w-20 lg:min-w-24 bg-white dark:bg-neutral-800 shadow-xl border border-slate-100 dark:border-slate-50/20 rounded text-center text-slate-500 dark:text-slate-50">
+                    <div class="min-w-20 lg:min-w-24 bg-white dark:bg-neutral-800 rounded text-center text-slate-500 dark:text-slate-50">
                         <ul>
                             <ol class="px-2 py-1 hover:bg-blue-400 hover:text-slate-50 rounded dark:border-b dark:border-slate-50/20 cursor-pointer"><a
                                     @click.stop="mine">我的</a></ol>

@@ -190,7 +190,7 @@ watch(() => props.editable, (value, oldValue) => {
   if (value === oldValue) {
     return;
   }
-  editor.value && editor.value.setEditable(value)
+  editor.value && editor.value.setEditable(value, false)
   // autofocus
   if (value) {
     editor.value && editor.value.commands.focus();

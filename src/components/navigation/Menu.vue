@@ -14,7 +14,7 @@
             </button>
         </div>
         <nav id="navBar" v-if="groups && groups.length > 0"
-            class="flex-1 px-1 sm:px-3 xl:px-5 pb-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60 overflow-y-auto">
+            class="relative flex-1 px-1 sm:px-3 xl:px-5 pb-4 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60 overflow-y-auto">
             <ul>
                 <li v-for="(group, index) in groups" :key="group.id">
                     <input ref="titleInput" v-if="group.id === editItem" class="p-2 w-full rounded-md" type="text"

@@ -7,11 +7,14 @@
             <span>{{ book.title }}</span>
         </span>
         <span v-if="active" class="h-8 leading-8">
-            <button class="px-1 lg:px-2 rounded hover:bg-gray-200 dark:hover:bg-gray-500 text-gray-500 hover:text-gray-700"
+            <button
+                class="px-1 lg:px-2 rounded hover:bg-gray-200 dark:hover:bg-gray-500 text-gray-500 hover:text-gray-700"
                 @click.stop="editBook">
                 <RemixIcon name="edit-2-fill"></RemixIcon>
             </button>
-            <button class="px-1 lg:px-2 rounded hover:bg-gray-200 dark:hover:bg-gray-500 text-gray-500 hover:text-gray-700" @click.stop="deleteBook">
+            <button
+                class="px-1 lg:px-2 rounded hover:bg-gray-200 dark:hover:bg-gray-500 text-gray-500 hover:text-gray-700"
+                @click.stop="deleteBook">
                 <RemixIcon name="delete-bin-fill"></RemixIcon>
             </button>
         </span>
@@ -35,6 +38,7 @@ import Modal from '@/components/feedback/Modal.vue'
 import { updateBook, removeBook } from '@/api/book'
 import message from '@/components/feedback/message'
 import { isMobile } from '@/common/utils'
+import modal from '@/components/feedback/modal'
 const editing = ref(false)
 let touchStart = 0;
 const props = defineProps({
@@ -96,10 +100,17 @@ const cancel = () => {
     editing.value = false;
 }
 const deleteBook = () => {
-    removeBook(props.book._id).then(() => {
-        emits('delete', props.book._id)
-        message.success('删除成功!')
+    modal.confirm({
+        title: '确认删除',
+        content: '确认删除该内容？',
+        onOk: () => {
+            removeBook(props.book._id).then(() => {
+                emits('delete', props.book._id)
+                message.success('删除成功!')
+            })
+        }
     })
+
 }
 </script>
 

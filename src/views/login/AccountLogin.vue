@@ -7,12 +7,12 @@
         </div>
         <ProInput name="name" v-model="name" placeholder="请输入用户名"/>
         <ProInput type="password" name="password" v-model="password" placeholder="请输入密码"/>
-        <div class="w-full flex flex-row justify-between my-2 lg:my-3">
+        <div class="w-full flex flex-row justify-between my-3">
             <button
-                class="w-1/2 py-2 lg:py-3 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+                class="w-1/2 py-3 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                 @click="onLogin">登录</button>
             <button
-                class="w-1/2 py-2 lg:py-3 ml-2 bg-red-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                class="w-1/2 py-3 ml-2 bg-red-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-red-600"
                 @click="onRegister">注册</button>
         </div>
         <UserPrivacy v-model="privacy" />

@@ -6,14 +6,14 @@
             <p>Progress</p>
         </div>
         <ProInput name="mobile" v-model="password" placeholder="请输入手机号"/>
-        <div class="w-full my-2 lg:my-3 flex flex-row justify-between">
+        <div class="w-full my-3 flex flex-row justify-between">
             <!-- <ProInput class="w-48" name="verification" v-model="verification" placeholder="请输入验证码"/> -->
             <input
-            class="w-48 px-4 py-2 lg:py-3 mr-2 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
+            class="w-48 px-4 py-3 mr-2 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
             type="text" v-model="verification" placeholder="输入验证码" />
-            <button class="px-2 bg-slate-300 text-white font-semibold rounded-md shadow-md hover:bg-slate-600">获取验证码</button>
+            <button class="px-2 bg-slate-300 text-white font-semibold rounded-md hover:bg-slate-600">获取验证码</button>
         </div>
-        <button class="w-full py-2 lg:py-3 my-2 lg:my-3 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+        <button class="w-full py-3 my-3 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                 @click="onLogin">登录</button>
         <UserPrivacy v-model="privacy"></UserPrivacy>
     </div>

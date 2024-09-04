@@ -10,7 +10,7 @@
             :interactive="true" :arrow="false" :triggerTarget="select" :onShow="dropdownShow" :onHide="dropdownHide">
             <RemixIcon class="float-right hover:text-blue-500" :name="hidden ? 'arrow-down-s-fill' : 'arrow-up-s-fill'" />
             <template #content>
-                <div class="py-1 bg-white dark:bg-neutral-800 shadow-lg drop-shadow-lg rounded"
+                <div class="py-1 bg-white dark:bg-neutral-800 shadow-lg drop-shadow-lg rounded-lg"
                     :style="{ width: dropdownWidth }">
                     <div v-if="options && options.length" v-for="(item, index) in options" :key="index"
                         class="w-full px-2 py-1 cursor-pointer hover:bg-slate-200 dark:border-b dark:border-slate-50/20 rounded"
