@@ -31,6 +31,7 @@ import WeChatLogin from '@/views/login/WeChatLogin.vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import ProCheckbox from '@/components/entry/ProCheckbox.vue'
 import modal from '@/components/feedback/modal.ts'
+import message from '@/components/feedback/message'
 const LOGIN_MODE_MAP = {
     1: '账号登录',
     2: '免密登录',
@@ -38,6 +39,7 @@ const LOGIN_MODE_MAP = {
 }
 const loginMode = ref(1)
 const toggleMode = (mode) => {
+    return message.info('暂不支持其它登录，敬请期待！')
     if (mode) {
         if (mode === 3) {
             modal.confirm({

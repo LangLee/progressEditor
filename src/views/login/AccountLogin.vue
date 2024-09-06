@@ -5,9 +5,10 @@
             <Fish />
             <p>Progress</p>
         </div>
-        <ProInput name="name" v-model="name" placeholder="请输入用户名"/>
-        <ProInput type="password" name="password" v-model="password" placeholder="请输入密码"/>
-        <div class="w-full flex flex-row justify-between my-3">
+        <ProInput class="my-2" name="name" v-model="name" placeholder="请输入用户名"/>
+        <ProInput class="my-2" type="password" name="password" v-model="password" placeholder="请输入密码"/>
+        <div class="w-full text-right text-blue-500 hover:text-blue-700 cursor-pointer" @click="onForget">忘记密码？</div>
+        <div class="w-full flex flex-row justify-between my-2">
             <button
                 class="w-1/2 py-3 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                 @click="onLogin">登录</button>
@@ -64,6 +65,9 @@ const onLogin = () => {
 }
 const onRegister = () => {
     router.push('register');
+}
+const onForget = () => {
+    router.push('forget');
 }
 </script>
 

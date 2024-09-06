@@ -4,11 +4,12 @@
         <div class="flex-1 flex flex-wrap justify-start bg-gray-300/20">
             <div class="flex flex-col w-full items-center max-w-screen-sm mx-auto bg-white p-8 lg:px-16">
                 <AvatarUploader :upload="uploader" :img="imgUrl" @remove="remove" />
-                <ProInput class="" name="name" label="用户名称" v-model="user.name" placeholder="请输入用户名称"></ProInput>
-                <ProInput class="" name="email" label="邮箱" v-model="user.email" placeholder="请输入邮箱"></ProInput>
-                <ProInput class="" name="mobile" label="手机号码" v-model="user.mobile" placeholder="请输入手机号码"></ProInput>
+                <ProInput class="mb-4" name="name" label="用户名称" v-model="user.name" placeholder="请输入用户名称" border required></ProInput>
+                <!-- <ProInput class="" name="email" label="邮箱" v-model="user.email" placeholder="请输入邮箱"></ProInput> -->
+                <ThirdBindCard class="mb-4" name="email" label="邮箱" v-model="user.email"></ThirdBindCard>
+                <ThirdBindCard class="mb-4" name="mobile" label="手机号码" v-model="user.mobile"></ThirdBindCard>
                 <button
-                    class="w-full py-2 lg:py-3 my-2 lg:my-3 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+                    class="w-full py-2 lg:py-3 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                     @click="save">
                     保存
                 </button>
@@ -20,6 +21,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import Header from '@/components/navigation/Header.vue'
 import ProInput from '@/components/entry/ProInput.vue'
+import ThirdBindCard from '@/components/display/ThirdBindCard.vue'
 // import Switch from '@/components/common/Switch.vue'
 import AvatarUploader from '@/components/common/AvatarUploader.vue'
 // import { upload, remove } from '@/api/file'

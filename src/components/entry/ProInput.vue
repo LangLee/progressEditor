@@ -1,14 +1,20 @@
 <template>
-    <div class="flex flex-row w-full py-3 items-center">
-        <label v-if="label" :class="labelClass" :for="name">{{ label }}</label>
+    <div class="flex text-base" :class="wrapClass">
+        <label v-if="label" class="px-1 py-2 text-gray-500" :class="labelClass" :for="name">{{ label }}</label>
         <input :id="name"
-            class="flex-1 px-4 py-3 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
-            :type="type" v-model="stateValue" :placeholder="placeholder" @change="update"/>
+            class="flex-1 px-4 py-3 w-0 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 focus:outline-none"
+            :class="inputClass"
+            :type="type" v-model="stateValue" :placeholder="placeholder" @change="update" @focus="focus" @blur="blur"/>
     </div>
 </template>
 <script setup>
-import { ref, watch} from 'vue'
+import { ref, watch, defineProps, defineEmits, computed} from 'vue'
+import { isMobile } from '@/common/utils';
 const props = defineProps({
+    width: {
+        type: String,
+        default: 'full'
+    },
     name: {
         type: String,
         default: ''
@@ -25,19 +31,41 @@ const props = defineProps({
         type: String,
         default: ''
     },
-    labelClass: {
+    labelWidth: {
         type: String,
-        default: 'w-24'
+        default: '24'
     },
     type: {
         type: String,
         default: 'text'
+    },
+    horizontal: {
+        type: Boolean,
+        default: true
+    },
+    required: {
+        type: Boolean,
+        default: false
+    },
+    border: {
+        type: Boolean,
+        default: false
     }
 })
 const emits = defineEmits(['update:modelValue']);
+const isFocus = ref(false);
 const stateValue = ref(props.modelValue);
+const wrapClass = computed(() => `${props.horizontal?'flex-row items-center':'flex-col'} ${isMobile()?'border-b':''} w-${props.width} ${props.border?'border rounded-lg':''} ${isFocus.value?'isFocus':''}`)
+const inputClass = computed(() => `${!isMobile() && !props.border?'border rounded-md focus:ring-1 focus:ring-blue-600 focus:border-transparent':''} ${props.horizontal?'':'w-full'}`)
+const labelClass = computed(() => `w-${props.labelWidth} ${props.required?'required':''}`)
 const update = ()=>{
     emits('update:modelValue', stateValue.value)
+}
+const focus = ()=>{
+    isFocus.value = true;
+}
+const blur = ()=>{
+    isFocus.value = false;
 }
 watch(() => props.modelValue, (newValue) => {
     stateValue.value = newValue;
@@ -45,4 +73,13 @@ watch(() => props.modelValue, (newValue) => {
 </script>
 
 
-<style lang='scss' scoped></style>
+<style lang='scss' scoped>
+.required::after {
+    content: '*';
+    color: rgb(248 113 113);
+    margin-left: 2px;
+}
+.isFocus {
+    border-color: rgb(37 99 235);
+}
+</style>

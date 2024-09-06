@@ -17,8 +17,8 @@
       </div>
       <div v-if="footer" class="flex border-t border-slate-100 dark:border-slate-50/20 shadow-lg rounded-lg">
         <button class="basis-1/2 py-3 bg-blue-400 text-white font-medium hover:bg-blue-700"
-          @click.stop="confirm">确定</button>
-        <button class="basis-1/2 py-3 font-medium bg-white hover:bg-slate-50 dark:bg-transparent" @click.stop="cancel">取消</button>
+          @click.stop="confirm">{{ okText }}</button>
+        <button class="basis-1/2 py-3 font-medium bg-white hover:bg-slate-50 dark:bg-transparent" @click.stop="cancel">{{ cancelText }}</button>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: 480
+    default: 20
   },
   closable: {
     type: Boolean,
@@ -55,6 +55,14 @@ const props = defineProps({
   footer: {
     type: Boolean,
     default: true
+  },
+  okText: {
+    type: String,
+    default: '确定'
+  },
+  cancelText: {
+    type: String,
+    default: '取消'
   }
 })
 const emits = defineEmits(['update:visible', 'confirm', 'cancel']);

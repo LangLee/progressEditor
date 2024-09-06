@@ -62,6 +62,9 @@ const Board = defineAsyncComponent(() => {
 const Apps = defineAsyncComponent(() => {
     return import('@/views/Apps.vue')
 })
+const Forget = defineAsyncComponent(() => {
+    return import('@/views/Forget.vue')
+})
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -159,6 +162,11 @@ const routes = [
         name: 'apps',
         path: '/apps',
         component: Apps
+    },
+    {
+        name: 'forget',
+        path: '/forget',
+        component: Forget
     }
 ]
 
