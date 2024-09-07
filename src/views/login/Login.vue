@@ -1,6 +1,6 @@
 <template>
-    <div class="h-screen flex flex-col items-center justify-center lg:bg-slate-300/20 p-4">
-        <div class="w-full lg:w-96 flex flex-col bg-white p-4 lg:p-8 rounded-md lg:shadow-md">
+    <div class="h-screen flex flex-col items-center justify-center lg:bg-slate-300/20 dark:bg-transparent p-4">
+        <div class="w-full lg:w-96 flex flex-col bg-white dark:bg-transparent dark:lg:bg-neutral-800 p-4 lg:p-8 rounded-md lg:shadow-md">
             <AccountLogin v-if="loginMode === 1" />
             <MobileLogin v-else-if="loginMode === 2" />
             <WeChatLogin v-else-if="loginMode === 3" />

@@ -1,8 +1,8 @@
 <template>
     <div class="h-screen w-full flex flex-col overflow-y-auto">
         <Header :hiddenFold="true"></Header>
-        <div class="flex-1 flex flex-wrap justify-start bg-gray-300/20">
-            <div class="flex flex-col w-full items-center max-w-screen-sm mx-auto bg-white p-8 lg:px-16">
+        <div class="flex-1 flex flex-wrap justify-start bg-gray-300/20 dark:bg-transparent">
+            <div class="flex flex-col w-full items-center max-w-screen-sm mx-auto bg-white p-8 lg:px-16 dark:bg-transparent">
                 <AvatarUploader :upload="uploader" :img="imgUrl" @remove="remove" />
                 <ProInput class="mb-4" name="name" label="用户名称" v-model="user.name" placeholder="请输入用户名称" border required></ProInput>
                 <!-- <ProInput class="" name="email" label="邮箱" v-model="user.email" placeholder="请输入邮箱"></ProInput> -->

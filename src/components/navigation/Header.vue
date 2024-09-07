@@ -23,11 +23,11 @@
                 <Avatar class="cursor-pointer mr-2" size="sm" :file=" user && user.avatar"></Avatar>
                 <span class="text-sm font-bold cursor-pointer">{{ user && user.name }}</span>
                 <template #content>
-                    <div class="min-w-20 lg:min-w-24 bg-white dark:bg-neutral-800 rounded text-center text-slate-500 dark:text-slate-50">
+                    <div class="min-w-20 lg:min-w-24 bg-white dark:bg-neutral-700 rounded dark:rounded-none text-center text-slate-500 dark:text-slate-300">
                         <ul>
-                            <ol class="px-2 py-1 hover:bg-blue-400 hover:text-slate-50 rounded dark:border-b dark:border-slate-50/20 cursor-pointer"><a
+                            <ol class="px-2 py-1 hover:bg-neutral-100 hover:text-slate-700 dark:hover:bg-neutral-600 dark:hover:text-slate-50 rounded dark:rounded-none cursor-pointer"><a
                                     @click.stop="mine">我的</a></ol>
-                            <ol class="px-2 py-1 hover:bg-blue-400 hover:text-slate-50 rounded cursor-pointer"><a
+                            <ol class="px-2 py-1 hover:bg-neutral-100 hover:text-slate-700 dark:hover:bg-neutral-600 dark:hover:text-slate-50 rounded dark:rounded-none cursor-pointer"><a
                                     @click.stop="exit">退出</a></ol>
                         </ul>
                     </div>

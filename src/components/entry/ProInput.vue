@@ -1,8 +1,8 @@
 <template>
     <div class="flex text-base" :class="wrapClass">
-        <label v-if="label" class="px-1 py-2 text-gray-500" :class="labelClass" :for="name">{{ label }}</label>
+        <label v-if="label" class="px-1 py-2 text-gray-500 dark:text-gray-400" :class="labelClass" :for="name">{{ label }}</label>
         <input :id="name"
-            class="flex-1 px-4 py-3 w-0 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 focus:outline-none"
+            class="flex-1 px-4 py-3 w-0 bg-transparent text-slate-600 dark:text-gray-300 lg:text-lg placeholder-slate-300 focus:outline-none"
             :class="inputClass"
             :type="type" v-model="stateValue" :placeholder="placeholder" @change="update" @focus="focus" @blur="blur"/>
     </div>

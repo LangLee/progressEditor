@@ -9,10 +9,10 @@ html {
 }
 
 .dark .tippy-box[data-theme~=light] {
-  color: rgb(38 38 38);
+  color: #404040;
 }
 .dark .tippy-box[data-theme~=light]>.tippy-svg-arrow {
-  fill: rgb(38 38 38);
+  fill: #404040;
 }
 /* body {
   background-image: url(./assets/bg-01.avif);
