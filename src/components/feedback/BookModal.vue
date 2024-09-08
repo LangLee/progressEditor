@@ -1,12 +1,9 @@
 <template>
     <Modal v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
-        <input
-            class="p-2 my-2 bg-white dark:bg-neutral-800 text-slate-600 dark:text-slate-100 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="book.title" placeholder="请输入书名" />
+        <ProInput class="my-2" name="title" v-model="book.title" placeholder="请输入书名" border />
         <ProSelect class="my-2" v-model="book.category" :options="categoryOptions"></ProSelect>
-        <input v-if="fixedType === 'link'"
-            class="p-2 my-2 bg-white dark:bg-neutral-800 text-slate-600 dark:text-slate-100 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="book.url" placeholder="请输入链接(http://www.xxxx.com)" />
+        <ProInput v-if="fixedType === 'link'" class="my-2" name="url" v-model="book.url"
+            placeholder="请输入链接(http://www.xxxx.com)" />
         <ProSelect v-else-if="!fixedType" class="my-2" v-model="book.type" :options="typeOptions"></ProSelect>
     </Modal>
 </template>
@@ -14,7 +11,8 @@
 import { ref, reactive, defineProps, watch, computed } from 'vue'
 import Modal from './Modal.vue'
 import { Classification } from '@/types/enum'
-import ProSelect from '../common/Select.vue'
+import ProSelect from '@/components/entry/ProSelect.vue'
+import ProInput from '@/components/entry/ProInput.vue'
 const props = defineProps({
     visible: {
         type: Boolean,
@@ -40,7 +38,7 @@ const props = defineProps({
     },
     typeOptions: {
         type: Object,
-        default: () => Object.keys(Classification).filter((key)=>!['chat', 'link'].includes(key)).map((key) => ({ label: Classification[key], value: key }))
+        default: () => Object.keys(Classification).filter((key) => !['chat', 'link'].includes(key)).map((key) => ({ label: Classification[key], value: key }))
     },
     fixedType: {
         type: String,

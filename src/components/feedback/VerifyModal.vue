@@ -1,12 +1,8 @@
 <template>
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel" okText="绑定">
-        <input
-            class="px-4 py-3 my-3 bg-white text-slate-600 placeholder-slate-300 border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
-            type="text" v-model="modelValue" :placeholder="placeholder" />
+        <ProInput class="my-2" name="modelValue" v-model="modelValue" :placeholder="placeholder" />
         <div class="w-full my-3 flex flex-row justify-between">
-            <input
-                class="w-40 px-4 py-3 mr-2 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
-                type="text" v-model="verification" placeholder="输入验证码" />
+            <ProInput class="mr-2" :width="40" name="verification" v-model="verification" placeholder="输入验证码" />
             <button class="px-2 bg-slate-300 text-white font-semibold rounded-md hover:bg-slate-600"
                 @click.stop="onSign">{{ verifying ? '重新发送' : '发送验证码' }}</button>
         </div>
@@ -16,6 +12,7 @@
 import { ref, reactive, defineProps, defineEmits, watch, computed } from 'vue'
 import Modal from './Modal.vue'
 import { sign, verifyAndUpdate } from '@/api/verification'
+import ProInput from '@/components/entry/ProInput.vue';
 const props = defineProps({
     name: {
         type: String,
@@ -42,7 +39,7 @@ const visibleState = ref(props.visible)
 const title = computed(() => `绑定${props.label}`);
 const placeholder = computed(() => `请输入${props.label}`)
 const confirm = () => {
-    verifyAndUpdate({[props.name]:modelValue.value}, verification.value).then((res) => {
+    verifyAndUpdate({ [props.name]: modelValue.value }, verification.value).then((res) => {
         if (res) {
             emits('confirm', modelValue.value);
             visibleState.value = false;
@@ -54,7 +51,7 @@ const cancel = () => {
     visibleState.value = false;
 }
 const onSign = () => {
-    sign({[props.name]:modelValue.value}).then((res) => {
+    sign({ [props.name]: modelValue.value }).then((res) => {
         verifying.value = true;
     })
 }

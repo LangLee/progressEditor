@@ -2,7 +2,7 @@
   <div
     class="flex flex-col lg:justify-center justify-end fixed top-0 left-0 inset-0 backdrop-blur bg-black/20 dark:bg-transparent transition-transform duration-500 ease-in-out delay-200"
     :class="{'translate-y-0': visible, 'translate-y-[100%]': !visible}" :style="{zIndex: zIndex}" @click.stop="closeModal">
-    <div class="flex flex-col w-full lg:w-80 mx-auto max-h-full lg:max-h-[60%] shadow-lg rounded-lg bg-white dark:bg-neutral-800" @click.stop>
+    <div class="flex flex-col w-full lg:w-80 mx-auto max-h-full lg:max-h-[60%] shadow-lg lg:rounded bg-white dark:bg-neutral-800" @click.stop>
       <div v-if="title || !closable" class="flex p-4 border-b border-slate-100 dark:border-slate-50/20">
         <div class="flex flex-1 items-center">
           <span class="text-lg font-semibold">{{ title }}</span>

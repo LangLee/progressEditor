@@ -1,13 +1,12 @@
 <template>
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
-        <input
-            class="p-2 mb-2 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="group.name" placeholder="请输入分类名" />
+        <ProInput class="my-2" name="name" v-model="group.name" placeholder="请输入分类名" />
     </Modal>
 </template>
 <script setup>
 import { ref, reactive, defineProps, watch, computed } from 'vue'
 import Modal from './Modal.vue'
+import ProInput from '@/components/entry/ProInput.vue'
 const props = defineProps({
     visible: {
         type: Boolean,

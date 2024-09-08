@@ -27,7 +27,7 @@
 import { ref, getCurrentInstance, watch } from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 // import Loading from '@/components/common/Loading.vue'
-import ProSelect from '@/components/common/Select.vue'
+import ProSelect from '@/components/entry/ProSelect.vue'
 import Header from '@/components/navigation/Header.vue'
 import ChatCard from '@/components/display/ChatCard.vue'
 import Question from '@/components/entry/Question.vue'

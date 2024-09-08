@@ -13,7 +13,7 @@
             type="text" v-model="verification" placeholder="输入验证码" /> -->
             <button class="px-2 bg-slate-300 text-white font-semibold rounded-md hover:bg-slate-600">获取验证码</button>
         </div>
-        <button class="w-full py-3 my-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+        <button class="w-full py-2 my-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                 @click="onLogin">登录</button>
         <UserPrivacy v-model="privacy"></UserPrivacy>
     </div>

@@ -1,28 +1,20 @@
 <template>
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
-        <!-- <input
-            class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="app.name" placeholder="请输入应用名" :required="true"/> -->
-        <input
-            class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="app.title" placeholder="请输入应用标题" />
-        <input
-            class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="app.url" placeholder="请输入应用地址" />
-        <input
-            class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="app.icon" placeholder="应用图标" />
-        <div class="flex flex-row items-center px-2 mb-4">
+        <ProInput class="lg:my-2" name="name" v-model="app.name" placeholder="请输入应用名" />
+        <ProInput class="lg:my-2" name="title" v-model="app.title" placeholder="请输入应用标题" />
+        <ProInput class="lg:my-2" name="url" v-model="app.url" placeholder="请输入应用地址" />
+        <ProInput class="lg:my-2" name="icon" v-model="app.icon" placeholder="请输入应用图标" />
+        <div class="flex flex-row items-center px-2 my-2">
             <span class="mr-2">是否内置</span>
-            <Switch v-model="app.inner"></Switch>
+            <ProSwitch v-model="app.inner"></ProSwitch>
         </div>
-        <div class="flex flex-row items-center px-2">
+        <div class="flex flex-row items-center px-2 my-2">
             <span class="mr-2">快捷应用</span>
-            <Switch v-model="app.quick"></Switch>
+            <ProSwitch v-model="app.quick"></ProSwitch>
         </div>
-        <div v-if="system" class="flex flex-row items-center px-2 mt-4">
+        <div v-if="system" class="flex flex-row items-center px-2 my-2">
             <span class="mr-2">系统应用</span>
-            <Switch v-model="app.system"></Switch>
+            <ProSwitch v-model="app.system"></ProSwitch>
         </div>
     </Modal>
 </template>
@@ -30,7 +22,8 @@
 import { ref, reactive, defineProps, watch, computed } from 'vue'
 import Modal from './Modal.vue'
 import { Classification } from '@/types/enum'
-import Switch from '@/components/common/Switch.vue'
+import ProSwitch from '@/components/entry/ProSwitch.vue'
+import ProInput from '@/components/entry/ProInput.vue'
 const props = defineProps({
     title: {
         type: String,

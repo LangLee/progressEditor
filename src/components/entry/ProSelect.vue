@@ -1,12 +1,13 @@
 <template>
     <div ref="select"
-        class="flex p-2 bg-white text-slate-600 dark:text-slate-100 dark:bg-neutral-800 placeholder-slate-300 shadow-sm border rounded-md text-base"
-        :class="{ 'outline-none ring-2 ring-purple-600 border-transparent': !hidden }" @click="showModal">
+        class="flex p-2 bg-white text-slate-600 dark:text-slate-100 dark:bg-neutral-800 placeholder-slate-300 border rounded"
+        :class="{ 'outline-none ring-1 ring-blue-600 border-transparent': !hidden }" @click="showModal">
         <div class="flex-1 pr-4">
             <span v-if="display">{{ display }}</span>
             <span v-else class="text-slate-300">{{ palaceHolder }}</span>
         </div>
-        <tippy v-if="!mobile" ref="dropdown" trigger="click" placement="bottom-end" :offset="[10, 12]" animation="fade"
+        <RemixIcon v-if="mobile" class="float-right hover:text-blue-500" :name="hidden ? 'arrow-down-s-fill' : 'arrow-up-s-fill'" />
+        <tippy v-if="!mobile" ref="dropdown" trigger="click" placement="bottom-end" :offset="[10, 15]" animation="fade"
             :interactive="true" :arrow="false" :triggerTarget="select" :onShow="dropdownShow" :onHide="dropdownHide">
             <RemixIcon class="float-right hover:text-blue-500" :name="hidden ? 'arrow-down-s-fill' : 'arrow-up-s-fill'" />
             <template #content>
@@ -40,7 +41,7 @@
 <script setup>
 
 import { ref, reactive, watch, defineProps, defineEmits, onMounted } from 'vue'
-import RemixIcon from './RemixIcon.vue';
+import RemixIcon from '@/components/common/RemixIcon.vue';
 import Modal from '@/components/feedback/Modal.vue'
 import { isMobile } from '@/common/utils'
 const hidden = ref(true);

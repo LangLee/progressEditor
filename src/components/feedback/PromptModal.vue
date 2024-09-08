@@ -1,15 +1,13 @@
 <template>
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel">
-        <input
-            class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
-            type="text" v-model="prompt.name" placeholder="请输入名称" />
-        <textarea id="prompt" name="prompt"
-            class="p-2 mb-4 bg-white text-slate-600 placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
-            rows="2" v-model="prompt.content" placeholder="请输入内容"></textarea>
+        <ProInput class="my-2" name="name" v-model="prompt.name" placeholder="请输入名称" />
+        <ProTextarea class="my-2" type="textarea" name="content" v-model="prompt.content" placeholder="请输入内容" />
     </Modal>
 </template>
 <script setup>
 import { ref, reactive, defineProps, watch, computed } from 'vue'
+import ProInput from '@/components/entry/ProInput.vue'
+import ProTextarea from '@/components/entry/ProTextarea.vue'
 import Modal from './Modal.vue'
 const props = defineProps({
     title: {

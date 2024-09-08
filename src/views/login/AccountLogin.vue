@@ -10,10 +10,10 @@
         <div class="w-full text-right text-blue-500 hover:text-blue-700 cursor-pointer" @click="onForget">忘记密码？</div>
         <div class="w-full flex flex-row justify-between my-2">
             <button
-                class="w-1/2 py-3 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
+                class="w-1/2 py-2 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
                 @click="onLogin">登录</button>
             <button
-                class="w-1/2 py-3 ml-2 bg-red-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                class="w-1/2 py-2 ml-2 bg-red-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-red-600"
                 @click="onRegister">注册</button>
         </div>
         <UserPrivacy v-model="privacy" />

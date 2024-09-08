@@ -1,6 +1,6 @@
 <template>
-    <tippy ref="dropdown" :trigger="trigger" :placement="placement" :offset="offset" animation="scale"
-        :interactive="true" :onShow="dropdownShow" :onHide="dropdownHide">
+    <tippy ref="dropdown" :trigger="trigger" :placement="placement" :offset="offset"
+        :interactive="true" :onShow="dropdownShow" :onHide="dropdownHide" :arrow="false">
         <div>
             <slot name="title">
                 <span class="cursor-pointer">{{ title }}</span>

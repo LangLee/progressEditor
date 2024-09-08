@@ -13,7 +13,7 @@
 </template>
 <script setup>
 import { ref, reactive, onMounted, onBeforeUnmount, getCurrentInstance, watch } from 'vue'
-import ProSelect from '@/components/common/Select.vue'
+import ProSelect from '@/components/entry/ProSelect.vue'
 import Header from '@/components/navigation/Header.vue'
 import ChatPanel from '@/components/display/ChatPanel.vue'
 import Menu from '@/components/navigation/Menu.vue'
