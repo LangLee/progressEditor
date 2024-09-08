@@ -5,9 +5,9 @@
             <Fish />
             <p>Progress</p>
         </div>
-        <ProInput class="my-2" name="mobile" v-model="password" placeholder="请输入手机号"/>
+        <ProInput class="my-2" name="mobile" v-model="password" placeholder="输入手机号"/>
         <div class="w-full my-2 flex flex-row justify-between">
-            <ProInput :width="48" name="verification" v-model="verification" placeholder="请输入验证码"/>
+            <ProInput :width="48" name="verification" v-model="verification" placeholder="输入验证码"/>
             <!-- <input
             class="w-48 px-4 py-3 mr-2 bg-transparent text-slate-600 lg:text-lg placeholder-slate-300 shadow-sm border rounded-md text-base focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent"
             type="text" v-model="verification" placeholder="输入验证码" /> -->

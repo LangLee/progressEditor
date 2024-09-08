@@ -9,7 +9,7 @@
             <!-- <ProInput class="my-3" name="name" v-model="name" placeholder="输入用户名" /> -->
             <ProInput class="my-2" name="email" v-model="email" placeholder="输入邮箱" />
             <div class="w-full my-2 flex flex-row justify-between">
-                <ProInput :width="48" name="verification" v-model="verification" placeholder="请输入验证码" />
+                <ProInput :width="48" name="verification" v-model="verification" placeholder="输入验证码" />
                 <button class="px-2 bg-slate-300 text-white font-semibold rounded-md hover:bg-slate-600"
                     @click.stop="onSign">{{ verifying ? '重新发送' : '发送验证码' }}</button>
             </div>

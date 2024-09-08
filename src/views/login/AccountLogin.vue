@@ -5,9 +5,9 @@
             <Fish />
             <p>Progress</p>
         </div>
-        <ProInput class="my-2" name="name" v-model="name" placeholder="请输入用户名"/>
-        <ProInput class="my-2" type="password" name="password" v-model="password" placeholder="请输入密码"/>
-        <div class="w-full text-right text-blue-500 hover:text-blue-700 cursor-pointer" @click="onForget">忘记密码？</div>
+        <ProInput class="my-2" name="name" v-model="name" placeholder="输入用户名/手机号/邮箱号码"/>
+        <ProInput class="my-2" type="password" name="password" v-model="password" placeholder="输入密码"/>
+        <div class="w-full text-right"><span class="text-blue-500 hover:text-blue-700 cursor-pointer" @click="onForget">忘记密码？</span></div>
         <div class="w-full flex flex-row justify-between my-2">
             <button
                 class="w-1/2 py-2 mr-2 bg-blue-300 lg:text-lg text-white font-semibold rounded-md shadow-md hover:bg-blue-600"
