@@ -5,14 +5,14 @@
             <slot name="title">
                 <span class="cursor-pointer">{{ title }}</span>
             </slot>
-            <RemixIcon class="text-xs ml-1 text-gray-500" :name="hidden ? 'arrow-down-s-line' : 'arrow-up-s-line'" />
+            <RemixIcon class="text-xs ml-1 text-gray-700" :name="hidden ? 'arrow-down-s-line' : 'arrow-up-s-line'" />
         </div>
         <template #content>
             <slot name="content">
-                <div class="shadow-lg bg-white dark:bg-neutral-800 rounded dark:rounded-none p-1 min-w-36 font-normal">
+                <div class="min-w-36">
                     <div v-for="item in options" :key="item.value" @click.stop="hideDropdown">
                         <slot name="item" :item="item">
-                            <div class="h-8 leading-8 px-2 rounded dark:rounded-none mb-1 hover:bg-gray-100 cursor-pointer text-gray-500 dark:text-gray-400"
+                            <div class="h-8 leading-8 px-2 rounded dark:rounded-none mb-1 hover:bg-neutral-100 cursor-pointer text-gray-700 dark:text-gray-200"
                                 @click="onSelect(item)">{{ item.label }}</div>
                         </slot>
                     </div>

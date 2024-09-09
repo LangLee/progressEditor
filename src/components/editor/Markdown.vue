@@ -1,3 +1,17 @@
+<template>
+  <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10 xl:mr-80">
+    <!-- <FixedMenu :editor="editor"></FixedMenu> -->
+    <BubbleMenu :editor="editor"></BubbleMenu>
+    <editor-content class="h-full" :editor="editor" />
+  </div>
+  <div id="tableOfContent"
+    class="fixed z-20 top-16 bottom-0 right-0 py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-80 px-8">
+    <TableOfContent :editor=editor :anchors="anchors" />
+  </div>
+  <div v-if="editable" class="fixed top-28 right-4 z-40">
+      <FloatMenu :editor="editor" @save="emits('save')"></FloatMenu>
+  </div>
+</template>
 <script setup lang="ts">
 import Document from '@tiptap/extension-document'
 import Highlight from '@tiptap/extension-highlight'
@@ -31,8 +45,9 @@ import { createLowlight } from 'lowlight'
 import { watch, defineProps, defineComponent, onBeforeUnmount } from "vue"
 import Anchor from '@/types/anchor'
 import TableOfContent from '../navigation/TableOfContent.vue'
-// import FMenu from '../toolbar/FMenu.vue'
+// import FixedMenu from '../toolbar/FixedMenu.vue'
 import BubbleMenu from '../toolbar/BubbleMenu.vue'
+import FloatMenu from '../toolbar/FloatMenu.vue'
 
 import Commands from './extend/commands'
 import suggestion from './extend/suggestion'
@@ -40,6 +55,7 @@ import { debounce } from '@/common/utils.ts'
 
 import aiWrite from './extend/aiWrite'
 import {change} from '@/common/status'
+import { Export } from '@tiptap-pro/extension-export'
 // const CustomDocument = Document.extend({
 //   content: 'heading block*',
 // })
@@ -48,7 +64,6 @@ lowlight.register({ html, css, js, ts });
 // console.log(lowlight.listLanguages());
 defineComponent({
   TableOfContent,
-  // FMenu,
   BubbleMenu
 })
 const props = defineProps({
@@ -59,7 +74,7 @@ const props = defineProps({
   },
   anchors: Array<Anchor>
 });
-const emits = defineEmits(['update:modelValue', 'update:anchors']);
+const emits = defineEmits(['update:modelValue', 'update:anchors', 'save']);
 const updateContent = debounce((editor) => {
   emits('update:modelValue', editor.getHTML());
   change(true);
@@ -168,7 +183,14 @@ const editor = useEditor({
     TableRow,
     TableHeader,
     TableCell,
-    aiWrite
+    aiWrite,
+    Export.configure({
+      // The Convert App-ID from the convert settings page: https://cloud.tiptap.dev/convert-settings
+      appId: 'jkv2yemx',
+
+      // The JWT token you generated in the previous step
+      token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjU4NjI4MTgsIm5iZiI6MTcyNTg2MjgxOCwiZXhwIjoxNzI1OTQ5MjE4LCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiJqa3YyeWVteCJ9.ITcOVS7VcEUkEOuMWj6nR5lV9wcVtZe8T6l3BsqCuYA',
+    }),
   ],
 
   onUpdate: ({ editor }) => {
@@ -200,18 +222,6 @@ onBeforeUnmount(() => {
   editor.value && editor.value.destroy()
 })
 </script>
-
-<template>
-  <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10 xl:mr-80">
-    <!-- <FMenu :editor="editor"></FMenu> -->
-    <BubbleMenu :editor="editor"></BubbleMenu>
-    <editor-content class="h-full" :editor="editor" />
-  </div>
-  <div id="tableOfContent"
-    class="fixed z-20 top-16 bottom-0 right-0 py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-80 px-8">
-    <TableOfContent :editor=editor :anchors="anchors" />
-  </div>
-</template>
 <style lang="scss">
 .tiptap p.is-empty::before {
   color: #94a3b8;

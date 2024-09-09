@@ -5,7 +5,8 @@ const getPrompts = () => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {
-            return Promise.reject(res && res.data && res.data.message);
+            message.error(res && res.data && res.data.message);
+            return false;
         }
     });
 }
@@ -29,19 +30,21 @@ const updatePrompt = (params) => {
             }
             return res.data.data;
         } else {
-            return Promise.reject(res && res.data && res.data.message);
+            message.error(res && res.data && res.data.message);
+            return false;
         }
     });
 }
 const removePrompt = (id) => {
-    return axios.post("/prompt/removePrompt", {params: {id: id}}).then((res) => {
+    return axios.post("/prompt/removePrompt", {id}).then((res) => {
         if (res && res.data && res.data.success) {
             if (res.data.message) {
                 message.success(res.data.message);
             }
-            return res.data.data;
+            return true;
         } else {
-            return Promise.reject(res && res.data && res.data.message);
+            message.error(res && res.data && res.data.message);
+            return false;
         }
     });
 } 

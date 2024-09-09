@@ -433,6 +433,8 @@ export default {
           interactive: true,
           trigger: 'manual',
           placement: 'bottom-start',
+          theme: 'light',
+          arrow: false
         })
       },
 

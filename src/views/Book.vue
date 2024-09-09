@@ -1,11 +1,11 @@
 <template>
   <div class="w-full h-full flex" :class="{ 'select-none': !editable }">
-    <component :editable='editing' :is="currentComponent" v-model="content" v-model:anchors="anchors"></component>
-    <div v-if="editable"
+    <component :editable='editable' :is="currentComponent" v-model="content" v-model:anchors="anchors" @save="save"></component>
+    <!-- <div v-if="editable"
       class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-40 cursor-pointer"
       @click="doAction">
       <RemixIcon class="text-slate-50 text-lg" :name="editing ? 'save-line' : 'file-edit-line'" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -17,15 +17,14 @@ import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
 import Anchor from "@/types/anchor";
 import message from '@/components/feedback/message'
-import RemixIcon from "@/components/common/RemixIcon.vue"
+// import RemixIcon from "@/components/common/RemixIcon.vue"
 import loading from '@/components/feedback/loading.ts'
-import {change} from '@/common/status'
+import { change } from '@/common/status'
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
 const editable = ref(false);
-const editing = ref(false);
 let previousContent = '';
 const id = ref('')
 // let intervalSave: NodeJS.Timeout | number;
@@ -61,6 +60,11 @@ const autoSave = () => {
       resolve(false);
     })
   })
+}
+const save = () => {
+  autoSave().then(() => {
+    change(false);
+  });
 }
 const setCurrentComponent = (type) => {
   switch (type) {
@@ -107,18 +111,6 @@ const setCurrentComponent = (type) => {
     }
   }
 }
-const doAction = () => {
-  // 编辑模式
-  if (editing.value) {
-    // 保存
-    autoSave().then(() => {
-      editing.value = false;
-      change(false);
-    });
-  } else {
-    editing.value = editable.value;
-  }
-}
 watch(() => route.params.id, (newVal, oldValue) => {
   if (newVal && newVal !== oldValue) {
     if (typeof (newVal) === 'string') {
@@ -131,7 +123,6 @@ watch(() => route.params.id, (newVal, oldValue) => {
       previousContent = data.content || "";
       editable.value = (data.editable && data.type !== 'chat') || false;
       setCurrentComponent(data.type);
-      editing.value = editable.value;
       loading.hide();
     }).catch((msg) => {
       message.error(msg);

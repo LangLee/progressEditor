@@ -5,7 +5,7 @@
         <Contacts class="" @chatTo="chatTo" :fold="fold" :contacts="contacts" @toggleFold="toggleFold"></Contacts>
         <div class="flex-1 flex flex-col w-full lg:pl-80 bg-slate-300/20 overflow-hidden">
             <ChatPanel placeholder="咱们开始聊天吧..." :editable="editable" :messages="messages" :loading="loading"
-                @chart="onChat" :owner="userId" roleProperty="from" :chatter="chatter">
+                @chart="onChat" :owner="userId" roleProperty="from" :chatter="chatter" @clearChatter="clearChatter">
             </ChatPanel>
         </div>
     </div>
@@ -38,6 +38,9 @@ const chatTo = ({ _id: userId, avatar }) => {
     messageManage.changeRecipient(userId);
     chatter.value = { userId, avatar };
     editable.value = true;
+}
+const clearChatter = ()=>{
+  chatter.value = undefined;
 }
 const onChat = (question) => {
     messageManage.onChat(question);

@@ -1,9 +1,9 @@
 <template>
-  <div class="relative border border-slate-300/20 rounded overflow-hidden p-2 bg-white shadow-md min-w-56">
+  <div class="relative overflow-hidden min-w-56">
     <template v-if="items.length">
       <div v-for="(item, index) in items" :key="index"
-        class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-600"
-        :class="{ 'bg-gray-200': index === selectedIndex}" @click="selectItem(index)">
+        class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-600 cursor-pointer text-gray-700 dark:text-gray-200"
+        :class="{ 'bg-neutral-200 dark:bg-neutral-500': index === selectedIndex}" @click="selectItem(index)">
         <RemixIcon :name="item.icon" />
         <span class="ml-2">{{ item.title }}</span>
       </div>

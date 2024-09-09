@@ -1,6 +1,9 @@
 <template>
   <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10">
     <EditorContent class="h-full" :editor="editor" />
+    <div v-if="editable" class="fixed top-28 right-4 z-40">
+      <FloatMenu :editor="editor" @save="emits('save')"></FloatMenu>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -10,6 +13,7 @@ import Paper from './extend/paper.js'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import { watch, defineProps } from "vue"
 import { debounce } from '@/common/utils'
+import FloatMenu from '../toolbar/FloatMenu.vue'
 const props = defineProps({
   modelValue: String,
   editable: {
@@ -17,7 +21,7 @@ const props = defineProps({
     default: true
   }
 });
-const emits = defineEmits(['update:modelValue', 'update:anchors']);
+const emits = defineEmits(['update:modelValue', 'save']);
 const updateContent = debounce((editor) => {
   const content = editor.getJSON();
   emits('update:modelValue', JSON.stringify(content));
@@ -53,10 +57,10 @@ watch(() => props.modelValue, (value) => {
   ed && ed.commands.setContent(JSON.parse(value || ""), true);
 })
 watch(() => props.editable, (value, oldValue) => {
-    if (value === oldValue) {
-        return;
-    }
-    editor.value && editor.value.setEditable(value)
+  if (value === oldValue) {
+    return;
+  }
+  editor.value && editor.value.setEditable(value)
 })
 </script>
 <style lang="scss"></style>

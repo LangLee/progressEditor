@@ -1,6 +1,9 @@
 <template>
     <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10">
         <editor-content class="h-full" :editor="editor" />
+        <div v-if="editable" class="fixed top-28 right-4 z-40">
+            <FloatMenu :editor="editor" @save="emits('save')"></FloatMenu>
+        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -10,6 +13,7 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import { defineProps, defineEmits, watch, onBeforeUnmount } from 'vue'
 import { debounce } from '@/common/utils'
+import FloatMenu from '../toolbar/FloatMenu.vue'
 const props = defineProps({
     modelValue: String,
     editable: {
@@ -17,9 +21,9 @@ const props = defineProps({
         default: true
     }
 });
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'save']);
 const updateContent = debounce((editor) => {
-  emits('update:modelValue', editor.getHTML());
+    emits('update:modelValue', editor.getHTML());
 }, 300);
 const editor = useEditor({
     editable: props.editable,

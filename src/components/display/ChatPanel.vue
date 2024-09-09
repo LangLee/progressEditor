@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-col w-full h-full max-w-screen-md mx-auto">
-        <div v-if="messages && messages.length > 0" id="chatContent" class="w-full flex-1 p-2 lg:p-4 text-slate-900 font-normal overflow-y-auto">
+        <div v-if="messages && messages.length > 0" id="chatContent"
+            class="w-full flex-1 p-2 lg:p-4 text-slate-900 font-normal overflow-y-auto">
             <div class="flex flex-col content-space-between">
                 <ChatCard v-for="(item, index) in messages" :key="index" :content="item.content"
                     :position="item[roleProperty] === owner ? 'right' : 'left'"
@@ -13,12 +14,12 @@
         <slot v-else name="empty">
             <div class="flex flex-col w-full justify-center items-center p-10 overflow-y-auto">
                 <!-- <img class="h-48 lg:h-60 rounded-2xl mb-2" src="@/assets/fish.png" alt="我是李进步，我要进步"> -->
-                 <FishGlass />
+                <FishGlass />
                 <span class="text-gray-500 dark:text-gray-300 italic">子非鱼，安知鱼之乐？</span>
             </div>
         </slot>
         <div v-if="editable" class="relative w-full text-lg px-2 lg:px-4 mb-2 lg:mb-4">
-            <Question @send="onChat" :placeholder="placeholder"></Question>
+            <Question @send="onChat" @clearChatter="emits('clearChatter')" :placeholder="placeholder" :chatter="showCharter?chatter:null"></Question>
         </div>
         <!-- <Loading v-if="loading"></Loading> -->
     </div>
@@ -71,9 +72,13 @@ const props = defineProps({
     cardOperation: {
         type: Boolean,
         default: false
+    },
+    showCharter: {
+        type: Boolean,
+        default: false
     }
 })
-const emits = defineEmits(['chart'])
+const emits = defineEmits(['chart', 'clearChatter'])
 const question = ref('')
 const onChat = (content) => {
     // question.value = question.value.replace(/[\r\n]/g, '');

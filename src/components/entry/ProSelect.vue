@@ -11,10 +11,10 @@
             :interactive="true" :arrow="false" :triggerTarget="select" :onShow="dropdownShow" :onHide="dropdownHide">
             <RemixIcon class="float-right hover:text-blue-500" :name="hidden ? 'arrow-down-s-fill' : 'arrow-up-s-fill'" />
             <template #content>
-                <div class="py-1 bg-white dark:bg-neutral-800 text-slate-600 dark:text-slate-300 shadow-lg drop-shadow-lg rounded dark:rounded-none"
+                <div class=" text-slate-600 dark:text-slate-300"
                     :style="{ width: dropdownWidth }">
                     <div v-if="options && options.length" v-for="(item, index) in options" :key="index"
-                        class="w-full px-2 py-1 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-600 dark:hover:text-slate-50 rounded dark:rounded-none"
+                        class="w-full h-8 leading-8 px-2 rounded dark:rounded-none mb-1 hover:bg-neutral-100 cursor-pointer text-gray-700 dark:text-gray-200"
                         @click="selectItem(item)">
                         {{ item.label }}
                     </div>
@@ -90,7 +90,7 @@ watch(() => props.modelValue, (newVal) => {
     })
 }, { immediate: true })
 onMounted(() => {
-    dropdownWidth.value = `${select.value.clientWidth + 4}px`;
+    dropdownWidth.value = `${select.value.clientWidth-14}px`;
 })
 </script>
 

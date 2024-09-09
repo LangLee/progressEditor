@@ -756,6 +756,11 @@
     lodash.merge "^4.6.2"
     postcss-selector-parser "6.0.10"
 
+"@tiptap-pro/extension-export@^2.11.2":
+  version "2.11.2"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-export/-/extension-export-2.11.2.tgz#ee237e324f14ac19be16d5f1294e08388ab247c7"
+  integrity sha512-6sYqdDhuGiXR23dpPhaZiFtgYSWuRBJHZEoP/Di0f1Hb638VJP5Zf4lx8yjjLJxqLpKImpMpRswXBqq7RvOoOg==
+
 "@tiptap-pro/extension-file-handler@^2.8.9":
   version "2.10.5"
   resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-file-handler/-/extension-file-handler-2.10.5.tgz"

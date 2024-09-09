@@ -16,6 +16,7 @@
     "@floating-ui/vue": "^1.1.0",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@tailwindcss/typography": "^0.5.13",
+    "@tiptap-pro/extension-export": "^2.11.2",
     "@tiptap-pro/extension-file-handler": "^2.8.9",
     "@tiptap-pro/extension-table-of-contents": "^2.8.7",
     "@tiptap-pro/extension-unique-id": "^2.10.11",
