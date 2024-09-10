@@ -1,75 +1,80 @@
 <template>
   <div v-if="editor" :editor="editor"
-    class="flex flex-wrap p-1 mb-4 rounded border border-slate-300/20 shadow-lg text-gray-500 font-semibold "
-    :tippyOptions="{ maxWidth: 'none' }">
-    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="aiOptions">
+    class="fixedMenu flex flex-wrap p-2 bg-neutral-50 dark:bg-neutral-700 text-gray-700 dark:text-gray-100">
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="aiOptions">
       <template #title>
-        <RemixIcon class="mr-1 text-purple-500" name="robot-2-line"></RemixIcon>
-        <span class="text-purple-500">Ai Tools</span>
+        <RemixIcon class="mr-1 text-purple-500 dark:text-purple-300" name="robot-2-line"></RemixIcon>
+        <span class="text-purple-500 dark:text-purple-300">Ai Tools</span>
       </template>
       <template #item="{ item }">
-        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
           @click="handleAIWrite(item.value)"
-          :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
+          :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('heading', { level: item.level }) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
       </template>
     </Dropdown>
     <!-- <div class="my-2 border-l border-gray-300"></div> -->
-    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="headingOptions">
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="headingOptions">
       <template #title>
         <RemixIcon name="heading"></RemixIcon>
       </template>
       <template #item="{ item }">
-        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
           @click="editor.chain().focus().toggleHeading({ level: item.level }).run()"
-          :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
+          :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('heading', { level: item.level }) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
       </template>
     </Dropdown>
-    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" :options="listOptions">
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="listOptions">
       <template #title>
         <RemixIcon name="menu-line"></RemixIcon>
       </template>
       <template #item="{ item }">
-        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-gray-100 cursor-pointer text-gray-500"
-          @click="editor.chain().focus()[item.command]().run()" :class="{ 'bg-gray-200': editor.isActive(item.value) }">
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="editor.chain().focus()[item.command]().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive(item.value) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
       </template>
     </Dropdown>
     <div class="my-2 border-l border-gray-300"></div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()"
-      :class="{ 'bg-gray-200': editor.isActive('bold') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('bold') }">
       <RemixIcon name="bold" />
     </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleItalic().run()"
       :disabled="!editor.can().chain().focus().toggleItalic().run()"
-      :class="{ 'bg-gray-200': editor.isActive('italic') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('italic') }">
       <RemixIcon name="italic" />
     </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleUnderline().run()"
       :disabled="!editor.can().chain().focus().toggleUnderline().run()"
-      :class="{ 'bg-gray-200': editor.isActive('underline') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('underline') }">
       <RemixIcon name="underline" />
     </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleStrike().run()"
       :disabled="!editor.can().chain().focus().toggleStrike().run()"
-      :class="{ 'bg-gray-200': editor.isActive('strike') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('strike') }">
       <RemixIcon name="strikethrough" />
     </div>
     <tippy ref="linkDropdown" trigger="click" placement="bottom" :offset="[0, 10]" animation="scale" :interactive="true"
       :appendTo="appendToBody" :onShow="setLinkShow" :onHide="setLinkHide" maxWidth="none">
-      <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
-        :class="{ 'bg-gray-200': editor.isActive('link') }">
+      <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+        :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('link') }">
         <RemixIcon name="link" />
       </div>
       <template #content>
@@ -81,35 +86,85 @@
         </div>
       </template>
     </tippy>
-
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
-      @click="editor.chain().focus().setParagraph().run()" :class="{ 'bg-gray-200': editor.isActive('paragraph') }">
+    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @click="editor.chain().focus().setParagraph().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('paragraph') }">
       <RemixIcon name="paragraph" />
-    </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    </div> -->
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleCode().run()" :disabled="!editor.can().chain().focus().toggleCode().run()"
-      :class="{ 'bg-gray-200': editor.isActive('code') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('code') }">
       <RemixIcon name="code-view" />
     </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
-      @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-gray-200': editor.isActive('codeBlock') }">
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('codeBlock') }">
       <RemixIcon name="code-block" />
     </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleBlockquote().run()">
       <RemixIcon name="quote-text" />
     </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().setHorizontalRule().run()">
       <RemixIcon name="separator" />
-    </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer"
+    </div> -->
+    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().setHardBreak().run()">
       <RemixIcon name="text-wrap" />
-    </div>
-    <div class="mx-1 px-2 py-1 rounded-lg hover:bg-gray-100 cursor-pointer" @mousedown="onTranslate">
+    </div> -->
+    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @mousedown="onTranslate">
       <RemixIcon name="translate" />
+    </div> -->
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="blockOptions">
+      <template #title>
+        <RemixIcon name="paragraph"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="editor.chain().focus()[item.command]().run()">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @click="editor.chain().save()">
+      <RemixIcon name="save-line" />
     </div>
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @click="editor.chain().share()">
+      <RemixIcon name="share-line" />
+    </div>
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="importOptions" :arrow="false">
+      <template #title>
+        <RemixIcon name="import-line"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="handleImport(item.value)">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="exportOptions" :arrow="false">
+      <template #title>
+        <RemixIcon name="export-line"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="handleExport(item.value)">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
   </div>
 </template>
 <script setup>
@@ -126,7 +181,7 @@ const props = defineProps({
     default: null
   }
 })
-// const emits = defineEmits(['updateState']);
+const emits = defineEmits(['save', 'import', 'export', 'share']);
 const link = ref('');
 const linkDropdown = ref();
 const aiOptions = [{
@@ -157,36 +212,6 @@ const aiOptions = [{
   icon: 'expand-right-line',
   command: 'aiExtend'
 }];
-
-// {
-//   value: 'changTone',
-//   label: "Change tone",
-//   icon: 'mic-line',
-//   subMenu: true,
-//   options: [],
-//   command: 'aiAdjustTone'
-// }
-// {
-//   value: 'Emojify',
-//   label: "Emojify",
-//   icon: 'emotion-line',
-//   command: 'aiDeEmojify'
-// },  
-// {
-//   value: 'translate',
-//   label: "Translate",
-//   icon: 'translate-2',
-//   subMenu: true,
-//   options: [
-//     {
-//       value: 'translate-en',
-//       label: "en",
-//     }, {
-//       value: 'translate-ch',
-//       label: "zh",
-//     }  ],
-//   command: 'aiTranslate'
-// }
 const headingOptions = [{
   value: 'heading1',
   label: "Heading 1",
@@ -234,6 +259,45 @@ const listOptions = [{
   icon: 'list-check-3',
   command: 'toggleTaskList'
 }];
+
+const blockOptions = [{
+  value: 'paragraph',
+  label: "Paragraph",
+  icon: 'paragraph',
+  command: 'setParagraph'
+}, {
+  value: 'horizontalRule',
+  label: "Horizontal",
+  icon: 'separator',
+  command: 'setHorizontalRule'
+}, {
+  value: 'hardBreak',
+  label: "HardBreak",
+  icon: 'text-wrap',
+  command: 'setHardBreak'
+}];
+const importOptions = [{
+  value: 'markdown',
+  label: "导入markdown",
+  icon: 'import-line'
+}]
+const exportOptions = [{
+  value: 'markdown',
+  label: "导出markdown",
+  icon: 'markdown-line'
+}, {
+  value: 'json',
+  label: "导出json",
+  icon: 'javascript-line'
+}, {
+  value: 'html',
+  label: "导出html",
+  icon: 'html5-line'
+}, {
+  value: 'docx',
+  label: "导出word",
+  icon: 'file-word-line'
+}]
 const setLinkShow = () => {
   let linkStr = props.editor.getAttributes('link').href;
   link.value = linkStr;
@@ -307,9 +371,38 @@ const handleAIWrite = (key) => {
   let { doc, selection, tr } = props.editor?.view?.state || {};
   let { from, to } = selection || {};
   let text = doc.textBetween(from, to, '\n');
-  props.editor.chain().focus().setAiWrite({question: text, prompt}).run();
+  props.editor.chain().focus().setAiWrite({ question: text, prompt }).run();
+}
+const handleImport = (key) => {
+  switch (key) {
+    case 'markdown':
+      props?.editor?.commands?.import('md');
+      break;
+    default: break
+  }
+}
+const handleExport = (key) => {
+  switch (key) {
+    case 'json':
+      props?.editor?.commands?.export('json');
+      break;
+    case 'html':
+      props?.editor?.commands?.export('html');
+      break;
+    case 'markdown':
+      props?.editor?.commands?.export('md');
+      break;
+    case 'docx':
+      props?.editor?.commands?.import('docx');
+    default: break
+  }
 }
 </script>
 
 
-<style lang='scss' scoped></style>
+<style lang='scss' scoped>
+.fixedMenu {
+  box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 0.1)
+  
+}
+</style>

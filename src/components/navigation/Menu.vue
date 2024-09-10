@@ -4,11 +4,11 @@
         :class="foldState ? 'translate-x-[-100%]' : 'translate-x-0'" @click.stop="doFold">
         <div v-if="editable && groups && groups.length > 0"
             class="flex lg:mx-4 py-2 bg-white/95 lg:bg-transparent dark:bg-neutral-900/60 font-sans-serif font-medium">
-            <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 mx-2" @click.stop="onCreateGroup">
+            <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 mx-2" @click.stop="onCreateGroup">
                 <RemixIcon class="mr-1" name="folder-add-line" />
                 <span>分类</span>
             </button>
-            <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 mx-2" @click.stop="onCreateBook">
+            <button class="h-8 leading-8 text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500 mx-2" @click.stop="onCreateBook">
                 <RemixIcon class="mr-1" name="sticky-note-add-line" />
                 <span>笔记</span>
             </button>
@@ -53,8 +53,8 @@
                                 @touchend.passive="(e) => handleTouchEnd(e, book.id)"
                                 class="p-1 block rounded-md transition-colors duration-200 relative text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-100 cursor-pointer">
                                 <span class="w-full h-full flex flex-row"
-                                    :class="book.id === activeItem ? 'text-blue-500 font-bold' : ''">
-                                    <RemixIcon class="text-blue-500 mr-1" :name="getIconByType(book.type)"></RemixIcon>
+                                    :class="book.id === activeItem ? 'text-blue-500 dark:text-blue-300' : ''">
+                                    <RemixIcon class="text-blue-300 mr-1" :name="getIconByType(book.type)"></RemixIcon>
                                     <span class="break-all">{{ book.title }}</span>
                                 </span>
                                 <transition name="slide">
@@ -87,7 +87,7 @@
             class="h-full flex flex-col justify-center text-center text-gray-500 text-sm bg-white/95 lg:bg-transparent dark:bg-neutral-900/60">
             <RemixIcon name="folder-6-line" class="text-2xl"></RemixIcon>
             <p class="mt-1 italic">暂无数据<a v-if="editable" src="#"
-                    class="text-blue-500 mt-2 underline cursor-pointer hover:text-blue-700"
+                    class="text-blue-300 mt-2 underline cursor-pointer hover:text-blue-500"
                     @click="onCreateGroup">创建</a></p>
         </div>
         <BookModal :fixedType="fixedType" :title="`${isNew ? '新增' : '编辑'}书籍`" :visible="!!editBook"
@@ -225,9 +225,15 @@ const onRemoveGroup = (group, index) => {
         message.warning("该分类下有书籍，不能删除!")
         return;
     }
-    removeGroup(group.id).then(() => {
-        message.success("删除分类成功!")
-        groups.value.splice(index, 1);
+    modal.confirm({
+        title: "确认删除",
+        content: "确定删除该分类？",
+        onOk: () => {
+            removeGroup(group.id).then(() => {
+                message.success("删除分类成功!")
+                groups.value.splice(index, 1);
+            })
+        }
     })
 }
 

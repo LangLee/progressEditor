@@ -6,7 +6,7 @@ interface Book {
     author?: string,
     description?: string,
     image?: string,
-    content: string,
+    content?: string,
     anchors?: Array<Anchor>
     category?: string,
     type?: string,

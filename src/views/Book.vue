@@ -1,6 +1,7 @@
 <template>
   <div class="w-full h-full flex" :class="{ 'select-none': !editable }">
-    <component :editable='editable' :is="currentComponent" v-model="content" v-model:anchors="anchors" @save="save"></component>
+    <component :editable='editable' :is="currentComponent" v-model="content" v-model:anchors="anchors" @save="save"
+      @share="share" @import="onImport" @export="onExport"></component>
     <!-- <div v-if="editable"
       class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-40 cursor-pointer"
       @click="doAction">
@@ -20,13 +21,16 @@ import message from '@/components/feedback/message'
 // import RemixIcon from "@/components/common/RemixIcon.vue"
 import loading from '@/components/feedback/loading.ts'
 import { change } from '@/common/status'
+import { copyTextToClipboard } from '@/common/utils'
+import markdown from "@/components/editor/extend/markdown"
+import { saveAs } from 'file-saver'
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
 const editable = ref(false);
+let currentBook;
 let previousContent = '';
-const id = ref('')
 // let intervalSave: NodeJS.Timeout | number;
 const autoSave = () => {
   return new Promise((resolve) => {
@@ -45,7 +49,7 @@ const autoSave = () => {
       });
     }
     let book: Book = {
-      id: id.value,
+      id: currentBook._id,
       content: content.value,
       anchors: formatAnchors
     }
@@ -65,6 +69,62 @@ const save = () => {
   autoSave().then(() => {
     change(false);
   });
+}
+const share = () => {
+  let book: Book = {
+    id: currentBook._id,
+    share: true
+  }
+  updateBook(book).then(() => {
+    const url = `${window.location.origin}/#/book/${book.id}`;
+    const text = `标题：${book.title}\n链接：${url}\n`;
+    copyTextToClipboard(text, () => {
+      message.success("已经复制到剪切板！");
+    });
+  })
+}
+const onExport = (type, editor) => {
+  switch (type) {
+    case 'json': {
+      let json = editor.getJSON();
+      const blob = new Blob([JSON.stringify(json)], {
+        type: 'json/plain;charset=utf-8'
+      })
+      saveAs(blob, `${currentBook.title}.json`)
+      break;
+    }
+    case 'html': {
+      let html = editor.getHTML();
+      const blob = new Blob([html], {
+        type: 'html/plain;charset=utf-8'
+      })
+      saveAs(blob, `${currentBook.title}.html`)
+      break;
+    }
+    case 'docx': {
+      message.warning("暂不支持导出docx格式, 敬请期待！");
+      break;
+    }
+    case 'md': {
+      let md = markdown.serialize(editor.view.state.doc);
+      const blob = new Blob([md], {
+        type: 'md/plain;charset=utf-8'
+      })
+      saveAs(blob, `${currentBook.title}.md`)
+      break;
+    }
+    case 'pdf': {
+      message.warning("暂不支持导出docx格式, 敬请期待！");
+      break;
+    }
+    default:
+      break;
+  }
+}
+const onImport = (type) => {
+  if (type === 'md') {
+    window.open(`/#/import/md`);
+  }
 }
 const setCurrentComponent = (type) => {
   switch (type) {
@@ -113,16 +173,15 @@ const setCurrentComponent = (type) => {
 }
 watch(() => route.params.id, (newVal, oldValue) => {
   if (newVal && newVal !== oldValue) {
-    if (typeof (newVal) === 'string') {
-      id.value = newVal || '';
-    }
+    newVal = typeof (newVal) === 'string' ? newVal : '';
     loading.show();
-    getBookById(id.value).then((data: Book) => {
+    getBookById(newVal).then((data: Book) => {
       content.value = data.content || '';
       anchors.value = data.anchors || [];
       previousContent = data.content || "";
       editable.value = (data.editable && data.type !== 'chat') || false;
       setCurrentComponent(data.type);
+      currentBook = data;
       loading.hide();
     }).catch((msg) => {
       message.error(msg);

@@ -1944,6 +1944,11 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
+file-saver@^2.0.5:
+  version "2.0.5"
+  resolved "http://192.168.55.132:4873/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha1-1hz+LOBZ9BTYmendbUEH7iVnDDg=
+
 fill-range@^7.1.1:
   version "7.1.1"
   resolved "http://192.168.55.132:4873/fill-range/-/fill-range-7.1.1.tgz"

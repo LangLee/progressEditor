@@ -16,6 +16,12 @@
                 <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('md')">
                     <RemixIcon name="markdown-fill" v-tippy="{ content: '导出markdown' }"/>
                 </button>
+                <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('html')">
+                    <RemixIcon name="html5-fill" v-tippy="{ content: '导出html' }"/>
+                </button>
+                <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('json')">
+                    <RemixIcon name="javascript-fill" v-tippy="{ content: '导出json' }"/>
+                </button>
                 <button v-if="actions.includes('exportDocx')"  class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer" @click.stop="exportFile('docx')">
                     <RemixIcon name="file-word-fill" v-tippy="{ content: '导出word' }"/>
                 </button>
@@ -45,7 +51,7 @@ const props = defineProps({
         default: ['importMd', 'exportDocx', 'exportMd', 'share']
     }
 })
-const emits = defineEmits(['save'])
+// const emits = defineEmits(['save'])
 const more = ref(true);
 const toggleMore = () => {
     more.value = !more.value;
@@ -54,10 +60,13 @@ const importFile = () => {
     console.log('import');
 }
 const exportFile = (format) => {
-    props.editor?.chain()?.focus().export({ format}).run()
+    props.editor?.chain()?.export(format)
 }
 const save = () => {
-    emits('save');
+    props.editor?.chain()?.save()
+}
+const share = () => {
+    props.editor?.chain()?.share()
 }
 </script>
 

@@ -13,7 +13,7 @@
             <RemixIcon class="dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50"
                 :class="`text-${theme}-400 hover:text-${theme}-700`" name="more-fill" />
             <template #content>
-                <div class="bg-white dark:bg-neutral-600 shadow-lg drop-shadow-lg rounded px-2 text-sm lg:text-normal">
+                <div class="text-sm lg:text-normal">
                     <div class="p-1 dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50 cursor-pointer"
                         :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="edit">
                         <RemixIcon class="mr-1" name="edit-line"></RemixIcon>

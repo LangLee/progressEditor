@@ -4,7 +4,7 @@
         <ul v-if="anchors && anchors.length > 0" class="text-gray-600 leading-8 px-2">
             <li v-for="item in anchors" key="item.id" class="border-l dark:border-gray-500" :style="{ paddingLeft: item.level + 'rem' }">
                 <a class="block cursor-pointer"
-                    :class="{ 'text-blue-600 font-bold': item.isActive, 'hover:text-blue-400': !item.isActive, 'text-gray-500 dark:text-gray-500': item.isScrolledOver && !item.isActive, 'text-gray-700 dark:text-gray-400': !item.isScrolledOver && !item.isActive }"
+                    :class="{ 'text-blue-500 dark:text-blue-400 font-bold': item.isActive, 'hover:text-blue-400 dark:hover:text-blue-300': !item.isActive, 'text-gray-500 dark:text-gray-500': item.isScrolledOver && !item.isActive, 'text-gray-700 dark:text-gray-400': !item.isScrolledOver && !item.isActive }"
                     @click.stop=onItemClick(item)>
                     <RemixIcon v-if="item.level > 1" name="arrow-right-s-line" />
                     {{ item.textContent }}

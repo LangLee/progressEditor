@@ -1,16 +1,16 @@
 <template>
   <BubbleMenu v-if="editor" :editor="editor"
-    class="flex flex-wrap"
+    class="flex flex-wrap text-gray-700 dark:text-gray-100"
     :tippyOptions="{ maxWidth: 'none', theme: 'light', arrow: false }">
     <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer" :options="aiOptions">
       <template #title>
-        <RemixIcon class="mr-1 text-purple-500" name="robot-2-line"></RemixIcon>
-        <span class="text-purple-500">Ai Tools</span>
+        <RemixIcon class="mr-1 text-purple-500 dark:text-purple-300" name="robot-2-line"></RemixIcon>
+        <span class="text-purple-500 dark:text-purple-300">Ai Tools</span>
       </template>
       <template #item="{ item }">
         <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
           @click="handleAIWrite(item.value)"
-          :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
+          :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('heading', { level: item.level }) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
@@ -24,7 +24,7 @@
       <template #item="{ item }">
         <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
           @click="editor.chain().focus().toggleHeading({ level: item.level }).run()"
-          :class="{ 'bg-gray-200': editor.isActive('heading', { level: item.level }) }">
+          :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('heading', { level: item.level }) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
@@ -36,7 +36,7 @@
       </template>
       <template #item="{ item }">
         <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
-          @click="editor.chain().focus()[item.command]().run()" :class="{ 'bg-gray-200': editor.isActive(item.value) }">
+          @click="editor.chain().focus()[item.command]().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive(item.value) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
@@ -45,31 +45,31 @@
     <div class="my-2 border-l border-gray-300"></div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()"
-      :class="{ 'bg-gray-200': editor.isActive('bold') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('bold') }">
       <RemixIcon name="bold" />
     </div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleItalic().run()"
       :disabled="!editor.can().chain().focus().toggleItalic().run()"
-      :class="{ 'bg-gray-200': editor.isActive('italic') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('italic') }">
       <RemixIcon name="italic" />
     </div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleUnderline().run()"
       :disabled="!editor.can().chain().focus().toggleUnderline().run()"
-      :class="{ 'bg-gray-200': editor.isActive('underline') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('underline') }">
       <RemixIcon name="underline" />
     </div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleStrike().run()"
       :disabled="!editor.can().chain().focus().toggleStrike().run()"
-      :class="{ 'bg-gray-200': editor.isActive('strike') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('strike') }">
       <RemixIcon name="strikethrough" />
     </div>
     <tippy ref="linkDropdown" trigger="click" placement="bottom" :offset="[0, 10]" animation="scale" :interactive="true"
       :appendTo="appendToBody" :onShow="setLinkShow" :onHide="setLinkHide" maxWidth="none">
       <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-        :class="{ 'bg-gray-200': editor.isActive('link') }">
+        :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('link') }">
         <RemixIcon name="link" />
       </div>
       <template #content>
@@ -83,16 +83,16 @@
     </tippy>
 
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().setParagraph().run()" :class="{ 'bg-gray-200': editor.isActive('paragraph') }">
+      @click="editor.chain().focus().setParagraph().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('paragraph') }">
       <RemixIcon name="paragraph" />
     </div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleCode().run()" :disabled="!editor.can().chain().focus().toggleCode().run()"
-      :class="{ 'bg-gray-200': editor.isActive('code') }">
+      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('code') }">
       <RemixIcon name="code-view" />
     </div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-gray-200': editor.isActive('codeBlock') }">
+      @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('codeBlock') }">
       <RemixIcon name="code-block" />
     </div>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
