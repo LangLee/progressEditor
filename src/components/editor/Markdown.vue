@@ -62,6 +62,7 @@ import aiWrite from './extend/aiWrite'
 import {change} from '@/common/status'
 import { Export } from '@tiptap-pro/extension-export'
 import { Operation } from './extend/operation'
+import { upload } from '@/api/file'
 // const CustomDocument = Document.extend({
 //   content: 'heading block*',
 // })
@@ -195,7 +196,6 @@ const editor = useEditor({
     }),
     Operation.configure({
       onSave: ()=>{emits('save')},
-      onImport: (type)=>{emits('import', type)},
       onExport: (type, editor)=>{emits('export', type, editor)},
       onShare: ()=>{emits('share')},
     })

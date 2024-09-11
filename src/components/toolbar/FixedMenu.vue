@@ -137,20 +137,10 @@
       @click="editor.chain().share()">
       <RemixIcon name="share-line" />
     </div>
-    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      :options="importOptions" :arrow="false">
-      <template #title>
-        <RemixIcon name="import-line"></RemixIcon>
-      </template>
-      <template #item="{ item }">
-        <div
-          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
-          @click="handleImport(item.value)">
-          <RemixIcon :name="item.icon" />
-          <span class="ml-2">{{ item.label }}</span>
-        </div>
-      </template>
-    </Dropdown>
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @click="editor.chain().import()">
+      <RemixIcon name="import-line" />
+    </div>
     <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       :options="exportOptions" :arrow="false">
       <template #title>
@@ -185,32 +175,31 @@ const emits = defineEmits(['save', 'import', 'export', 'share']);
 const link = ref('');
 const linkDropdown = ref();
 const aiOptions = [{
+  value: 'write',
+  label: "Write",
+  icon: 'edit-2-line'
+}, {
   value: 'complete',
   label: "Complete",
-  icon: 'edit-2-line',
-  command: 'aiWrite'
+  icon: 'check-line'
 }, {
   value: 'simplify',
   label: "Simplify",
-  icon: 'edit-circle-line',
-  command: 'aiSimplify'
+  icon: 'edit-circle-line'
 },
 {
   value: 'summarize',
   label: "Summarize",
-  icon: 'more-line',
-  command: 'aiTldr'
+  icon: 'more-line'
 }, {
   value: 'correction',
   label: "Correction",
-  icon: 'eraser-line',
-  command: 'aiFixSpellingAndGrammar'
+  icon: 'eraser-line'
 },
 {
   value: 'longer',
   label: "Longer",
-  icon: 'expand-right-line',
-  command: 'aiExtend'
+  icon: 'expand-right-line'
 }];
 const headingOptions = [{
   value: 'heading1',
@@ -276,11 +265,6 @@ const blockOptions = [{
   icon: 'text-wrap',
   command: 'setHardBreak'
 }];
-const importOptions = [{
-  value: 'markdown',
-  label: "导入markdown",
-  icon: 'import-line'
-}]
 const exportOptions = [{
   value: 'markdown',
   label: "导出markdown",
@@ -373,14 +357,6 @@ const handleAIWrite = (key) => {
   let text = doc.textBetween(from, to, '\n');
   props.editor.chain().focus().setAiWrite({ question: text, prompt }).run();
 }
-const handleImport = (key) => {
-  switch (key) {
-    case 'markdown':
-      props?.editor?.commands?.import('md');
-      break;
-    default: break
-  }
-}
 const handleExport = (key) => {
   switch (key) {
     case 'json':
@@ -390,7 +366,7 @@ const handleExport = (key) => {
       props?.editor?.commands?.export('html');
       break;
     case 'markdown':
-      props?.editor?.commands?.export('md');
+      props?.editor?.commands?.export('markdown');
       break;
     case 'docx':
       props?.editor?.commands?.import('docx');

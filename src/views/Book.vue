@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full flex" :class="{ 'select-none': !editable }">
     <component :editable='editable' :is="currentComponent" v-model="content" v-model:anchors="anchors" @save="save"
-      @share="share" @import="onImport" @export="onExport"></component>
+      @share="share" @export="onExport"></component>
     <!-- <div v-if="editable"
       class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-40 cursor-pointer"
       @click="doAction">
@@ -24,6 +24,7 @@ import { change } from '@/common/status'
 import { copyTextToClipboard } from '@/common/utils'
 import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
+import { upload } from "@/api/file";
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
@@ -88,7 +89,7 @@ const onExport = (type, editor) => {
     case 'json': {
       let json = editor.getJSON();
       const blob = new Blob([JSON.stringify(json)], {
-        type: 'json/plain;charset=utf-8'
+        type: 'application/json;charset=utf-8'
       })
       saveAs(blob, `${currentBook.title}.json`)
       break;
@@ -96,7 +97,7 @@ const onExport = (type, editor) => {
     case 'html': {
       let html = editor.getHTML();
       const blob = new Blob([html], {
-        type: 'html/plain;charset=utf-8'
+        type: 'text/html;charset=utf-8'
       })
       saveAs(blob, `${currentBook.title}.html`)
       break;
@@ -105,10 +106,10 @@ const onExport = (type, editor) => {
       message.warning("暂不支持导出docx格式, 敬请期待！");
       break;
     }
-    case 'md': {
+    case 'markdown': {
       let md = markdown.serialize(editor.view.state.doc);
       const blob = new Blob([md], {
-        type: 'md/plain;charset=utf-8'
+        type: 'text/markdown;charset=utf-8'
       })
       saveAs(blob, `${currentBook.title}.md`)
       break;
@@ -119,11 +120,6 @@ const onExport = (type, editor) => {
     }
     default:
       break;
-  }
-}
-const onImport = (type) => {
-  if (type === 'md') {
-    window.open(`/#/import/md`);
   }
 }
 const setCurrentComponent = (type) => {

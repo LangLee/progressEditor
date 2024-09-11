@@ -10,16 +10,16 @@
 
         <transition name="slide-down">
             <div v-if="!more" class="flex flex-col gap-2">
-                <button v-if="actions.includes('importMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer" @click.stop="importFile">
-                    <RemixIcon name="import-fill" v-tippy="{ content: '导入markdown' }" />
+                <button v-if="actions.includes('import')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer" @click.stop="importFile">
+                    <RemixIcon name="import-fill" v-tippy="{ content: '导入' }" />
                 </button>
-                <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('md')">
+                <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('markdown')">
                     <RemixIcon name="markdown-fill" v-tippy="{ content: '导出markdown' }"/>
                 </button>
-                <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('html')">
+                <button v-if="actions.includes('exportHtml')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('html')">
                     <RemixIcon name="html5-fill" v-tippy="{ content: '导出html' }"/>
                 </button>
-                <button v-if="actions.includes('exportMd')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('json')">
+                <button v-if="actions.includes('exportJson')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('json')">
                     <RemixIcon name="javascript-fill" v-tippy="{ content: '导出json' }"/>
                 </button>
                 <button v-if="actions.includes('exportDocx')"  class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer" @click.stop="exportFile('docx')">
@@ -48,7 +48,7 @@ const props = defineProps({
     editor: Object,
     actions: {
         type: Array,
-        default: ['importMd', 'exportDocx', 'exportMd', 'share']
+        default: ['import', 'exportDocx', 'exportMd', 'exportHtml', 'exportJson', 'share']
     }
 })
 // const emits = defineEmits(['save'])
@@ -57,7 +57,7 @@ const toggleMore = () => {
     more.value = !more.value;
 }
 const importFile = () => {
-    console.log('import');
+    props.editor?.chain()?.import()
 }
 const exportFile = (format) => {
     props.editor?.chain()?.export(format)

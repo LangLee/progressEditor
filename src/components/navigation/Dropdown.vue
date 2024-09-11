@@ -5,7 +5,7 @@
             <slot name="title">
                 <span class="cursor-pointer">{{ title }}</span>
             </slot>
-            <RemixIcon v-if="arrow" class="text-xs ml-1 text-gray-700 dark:text-gray-100" :name="hidden ? 'arrow-down-s-line' : 'arrow-up-s-line'" />
+            <RemixIcon v-if="arrow" class="ml-1 text-gray-700 dark:text-gray-100" :name="hidden ? 'arrow-down-s-line' : 'arrow-up-s-line'" />
         </div>
         <template #content>
             <slot name="content">
