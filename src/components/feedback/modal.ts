@@ -3,8 +3,8 @@ import { createVNode, render, Slot, VNode } from 'vue';
 interface ModalOptions {
     title: String,
     content: String | VNode | Slot,
-    onOk: Function,
-    onCancel: Function
+    onOk?: Function,
+    onCancel?: Function
 };
 const createModal = (options: ModalOptions) => {
     const modalVNode = createVNode(ModalComponent, {

@@ -78,6 +78,7 @@ const serializerMarks = {
     [Code.name]: defaultMarkdownSerializer.marks.code,
     [Link.name]: {
         open(state, mark, parent, index) {
+            console.log(state);
             return isPlainURL(mark, parent, index, 1) ? "<" : "[";
         },
         close(state, mark, parent, index) {

@@ -41,15 +41,12 @@
     <span v-if="false"
         class="text-slate-400 hover:text-slate-700 text-purple-400 hover:text-purple-700 text-blue-400 hover:text-blue-700 text-green-400 hover:text-green-700 text-sky-400 hover:text-sky-700 text-yellow-400 hover:text-yellow-700 text-red-400 hover:text-red-700 text-orange-400 hover:text-orange-700 text-indigo-400 hover:text-indigo-700 text-pink-400 hover:text-pink-700">
     </span>
-    <Modal :visible="removing" :closable="false" title="确认删除" @confirm="confirmRemove" @cancel="cancelRemove">
-        <span class="align-center">你真的要删除这个卡片？</span>
-    </Modal>
 </template>
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { useRouter } from 'vue-router'
-import Modal from '@/components/feedback/Modal.vue'
+import modal from '@/components/feedback/modal'
 // import { isMobile } from '@/common/utils'
 const dropdown = ref();
 const appendToBody = () => document.body;
@@ -74,7 +71,6 @@ const props = defineProps({
     }
 })
 // const active = ref(false);
-const removing = ref(false);
 // let touchStart = 0;
 const emits = defineEmits(['update:modelValue', 'cardClick', 'edit', 'remove']);
 const open = () => {
@@ -95,14 +91,14 @@ const edit = () => {
     dropdown?.value?.hide();
 }
 const remove = () => {
-    removing.value = true;
+    modal.confirm({
+        title: '确认删除',
+        content: '你真的要删除这个卡片？',
+        onOk: ()=>{
+            emits('remove', props.modelValue);
+        }
+    })
     dropdown?.value?.hide();
-}
-const cancelRemove = () => {
-    removing.value = false;
-}
-const confirmRemove = () => {
-    emits('remove', props.modelValue);
 }
 // const onMouseenter = () => {
 //     if (isMobile()) return false;
