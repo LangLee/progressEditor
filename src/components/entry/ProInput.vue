@@ -1,5 +1,5 @@
 <template>
-    <div class="flex text-base" :class="wrapClass">
+    <div class="flex text-base" :class="wrapClass" :style="{width}">
         <label v-if="label" class="px-1 py-2 text-gray-500 dark:text-gray-400" :class="labelClass" :for="name">{{ label }}</label>
         <input :id="name"
             class="flex-1 p-2 w-0 bg-transparent text-slate-600 dark:text-gray-300 placeholder-slate-300 focus:outline-none"
@@ -13,7 +13,7 @@ import { isMobile } from '@/common/utils';
 const props = defineProps({
     width: {
         type: String,
-        default: 'full'
+        default: '100%'
     },
     name: {
         type: String,
@@ -55,7 +55,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue']);
 const isFocus = ref(false);
 const stateValue = ref(props.modelValue);
-const wrapClass = computed(() => `${props.horizontal?'flex-row items-center':'flex-col'} ${isMobile()?'border-b':''} w-${props.width} ${props.border?'border rounded':''} ${isFocus.value?'isFocus':''}`)
+const wrapClass = computed(() => `${props.horizontal?'flex-row items-center':'flex-col'} ${isMobile()?'border-b':''} ${props.border?'border rounded':''} ${isFocus.value?'isFocus':''}`)
 const inputClass = computed(() => `${!isMobile() && !props.border?'border rounded focus:ring-1 focus:ring-blue-600 focus:border-transparent':''} ${props.horizontal?'':'w-full'}`)
 const labelClass = computed(() => `w-${props.labelWidth} ${props.required?'required':''}`)
 const update = ()=>{

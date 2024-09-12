@@ -24,7 +24,6 @@ import { change } from '@/common/status'
 import { copyTextToClipboard } from '@/common/utils'
 import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
-import { upload } from "@/api/file";
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');

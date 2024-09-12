@@ -2,7 +2,7 @@
     <Modal :title="title" v-model:visible="visibleState" @confirm="confirm" @cancel="cancel" okText="绑定">
         <ProInput class="my-2" name="modelValue" v-model="modelValue" :placeholder="placeholder" />
         <div class="w-full my-3 flex flex-row justify-between">
-            <ProInput class="mr-2" :width="40" name="verification" v-model="verification" placeholder="输入验证码" />
+            <ProInput class="mr-2" width="10rem" name="verification" v-model="verification" placeholder="输入验证码" />
             <button class="px-2 bg-slate-300 text-white font-semibold rounded-md hover:bg-slate-600"
                 @click.stop="onSign">{{ verifying ? '重新发送' : '发送验证码' }}</button>
         </div>
