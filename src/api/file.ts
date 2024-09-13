@@ -1,10 +1,14 @@
 import axios from "axios";
-const upload = (formData) => {
-    return axios.post("/file/upload", formData, {
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
+const upload = (file) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    return axios.post("/file/upload", formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
-    }).then((res) => {
+    ).then((res) => {
         if (res.data.success) {
             return res.data.data;
         } else {

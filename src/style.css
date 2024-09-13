@@ -24,3 +24,8 @@ html {
   background: #404040;
   color: rgb(203 213 225);
 }
+
+:root {
+  --purple: rgb(168 85 247);
+  --purple-contrast: rgb(126 34 206);
+}

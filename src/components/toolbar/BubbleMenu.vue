@@ -73,7 +73,7 @@
         <RemixIcon name="link" />
       </div>
       <template #content>
-        <div class="flex flex-row shadow-lg bg-white rounded-lg p-1">
+        <div class="flex flex-row">
           <label for="link" class="mr-2">
             <input type="text" id="link" v-model="link" class="p-2 rounded-lg" placeholder="https://" />
           </label>

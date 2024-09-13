@@ -50,19 +50,8 @@ const copyTextToClipboard = (text, cb) => {
     }
     )
 }
-const uploadFile: (file) => Promise<string | ArrayBuffer | null> = (file) => {
+const uploadFile: (file: File) => Promise<string | ArrayBuffer | null> = (file: File) => {
     return new Promise((resolve, reject) => {
-        // 检查是否选择了文件
-        if (!file) {
-            reject("请选择一个文件");
-            return;
-        }
-        // 检查文件大小
-        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 最大文件大小为 5MB
-        if (file.size > MAX_FILE_SIZE) {
-            reject(`文件大小超过限制 (${MAX_FILE_SIZE / (1024 * 1024)} MB)`)
-            return;
-        }
         const reader = new FileReader();
         reader.onloadend = function () {
             resolve(reader.result);
@@ -81,7 +70,8 @@ const uploadFile: (file) => Promise<string | ArrayBuffer | null> = (file) => {
 }
 interface uploadOptions {
     accept?: string,
-    multiple?: boolean
+    multiple?: boolean,
+    uploader?: (file: File) => Promise<string | ArrayBuffer | null>
 }
 interface file {
     name?: string,
@@ -89,7 +79,7 @@ interface file {
     size?: number,
     data: string | ArrayBuffer | null
 }
-const upload: (uploadOptions) => Promise<file> = (options: uploadOptions = { accept: 'image/*', multiple: false }) => {
+const upload: (uploadOptions) => Promise<file> = (options: uploadOptions = { accept: 'image/*', multiple: false, uploader: uploadFile }) => {
     return new Promise((resolve, reject) => {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -101,7 +91,22 @@ const upload: (uploadOptions) => Promise<file> = (options: uploadOptions = { acc
             // 假设event是某个文件输入元素的change事件
             const inputElement = e.target as HTMLInputElement;
             const file = inputElement.files && inputElement.files[0];
-            uploadFile(file).then((result) => {
+            // 检查是否选择了文件
+            if (!file) {
+                reject("请选择一个文件");
+                return;
+            }
+            // 检查文件大小
+            const MAX_FILE_SIZE = 5 * 1024 * 1024; // 最大文件大小为 5MB
+            if (file?.size > MAX_FILE_SIZE) {
+                reject(`文件大小超过限制 (${MAX_FILE_SIZE / (1024 * 1024)} MB)`)
+                return;
+            }
+            if (!options.uploader) {
+                reject("未设置上传函数")
+                return;
+            }
+            options.uploader(file).then((result) => {
                 document.body.removeChild(fileInput);
                 resolve({ type: file?.type, name: file?.name, data: result });
             }).catch(

@@ -62,6 +62,8 @@ import aiWrite from './extend/aiWrite'
 import {change} from '@/common/status'
 import { Export } from '@tiptap-pro/extension-export'
 import { Operation } from './extend/operation'
+import { upload } from '@/api/file'
+import { baseUrl } from '@/api/globalConfig'
 // const CustomDocument = Document.extend({
 //   content: 'heading block*',
 // })
@@ -82,7 +84,6 @@ const updateContent = debounce((editor) => {
   change(true);
 }, 300);
 const editor = useEditor({
-  autofocus: true,
   editable: props.editable,
   content: props.modelValue,
   editorProps: {
@@ -142,16 +143,23 @@ const editor = useEditor({
       allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
       onDrop: (currentEditor, files, pos) => {
         files.forEach(file => {
-          const fileReader = new FileReader()
-          fileReader.readAsDataURL(file)
-          fileReader.onload = () => {
+          upload(file).then((file)=>{
+            const src = `${baseUrl}/file/preview?file=${file}`
             currentEditor.chain().insertContentAt(pos, {
               type: 'image',
-              attrs: {
-                src: fileReader.result,
-              },
+              attrs: {src}
             }).focus().run()
-          }
+          })
+        //   const fileReader = new FileReader()
+        //   fileReader.readAsDataURL(file)
+        //   fileReader.onload = () => {
+        //     currentEditor.chain().insertContentAt(pos, {
+        //       type: 'image',
+        //       attrs: {
+        //         src: fileReader.result,
+        //       },
+        //     }).focus().run()
+        //   }
         })
       },
       onPaste: (currentEditor, files, htmlContent) => {
@@ -162,17 +170,23 @@ const editor = useEditor({
             console.log(htmlContent) // eslint-disable-line no-console
             return false
           }
-
-          const fileReader = new FileReader()
-          fileReader.readAsDataURL(file)
-          fileReader.onload = () => {
+          upload(file).then((file)=>{
+            const src = `${baseUrl}/file/preview?file=${file}`
             currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {
               type: 'image',
-              attrs: {
-                src: fileReader.result,
-              },
+              attrs: {src}
             }).focus().run()
-          }
+          })
+          // const fileReader = new FileReader()
+          // fileReader.readAsDataURL(file)
+          // fileReader.onload = () => {
+          //   currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {
+          //     type: 'image',
+          //     attrs: {
+          //       src: fileReader.result,
+          //     },
+          //   }).focus().run()
+          // }
         })
       }
     }),

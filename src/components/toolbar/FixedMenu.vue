@@ -78,7 +78,7 @@
         <RemixIcon name="link" />
       </div>
       <template #content>
-        <div class="flex flex-row shadow-lg bg-white rounded-lg p-1">
+        <div class="flex flex-row">
           <label for="link" class="mr-2">
             <input type="text" id="link" v-model="link" class="p-2 rounded-lg" placeholder="https://" />
           </label>
@@ -130,6 +130,10 @@
       </template>
     </Dropdown>
     <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      @click="uploadImage">
+      <RemixIcon name="image-line" />
+    </div>
+    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().save()">
       <RemixIcon name="save-line" />
     </div>
@@ -164,6 +168,9 @@ import { getYouDaoAiTranslate, getAiChatStream } from "@/api/ai"
 import message from '../feedback/message';
 import Dropdown from '@/components/navigation/Dropdown.vue'
 import { marked } from 'marked'
+import { upload as uploadFile } from '@/api/file';
+import { upload } from '@/common/utils'
+import { baseUrl } from '@/api/globalConfig';
 const appendToBody = () => document.body;
 const props = defineProps({
   editor: {
@@ -372,6 +379,17 @@ const handleExport = (key) => {
       props?.editor?.commands?.import('docx');
     default: break
   }
+}
+const uploadImage = ()=>{
+  upload({
+    accept: 'image/*',
+    multiple: false,
+    uploader: uploadFile
+  }).then((file)=>{
+    let {data} = file;
+    let url = `${baseUrl}/file/preview?file=${data}`
+    props.editor.chain().focus().setImage({ src: url }).run();
+  })
 }
 </script>
 
