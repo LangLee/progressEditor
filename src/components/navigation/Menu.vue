@@ -107,6 +107,7 @@ import message from '@/components/feedback/message';
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { isMobile, copyTextToClipboard } from '@/common/utils'
 import modal from '@/components/feedback/modal'
+import {baseWebUrl} from '@/api/globalConfig'
 const router = useRouter();
 const route = useRoute();
 const groups = ref([]);
@@ -369,7 +370,7 @@ const onShareBook = (book) => {
     book.share = !book.share;
     updateBook(book).then((data) => {
         if (book.share) {
-            const url = `${window.location.origin}/#/book/${book.id}`;
+            const url = `${baseWebUrl}/#/book/${book.id}`;
             const text = `标题：${book.title}\n链接：${url}\n`;
             copyTextToClipboard(text);
             message.success("已经复制到剪切板！");

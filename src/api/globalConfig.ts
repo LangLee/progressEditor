@@ -1,6 +1,7 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 let baseUrl = BASE_URL || window.location.origin;
+let baseWebUrl = import.meta.env.VITE_WEB_URL || window.location.origin;
 // import message from '@/components/feedback/message'
 export default function initialize(route, logout: Function) {
     // 添加请求拦截器  
@@ -45,4 +46,4 @@ export default function initialize(route, logout: Function) {
         return Promise.reject(error);
     });
 }
-export {baseUrl}
+export {baseUrl, baseWebUrl}

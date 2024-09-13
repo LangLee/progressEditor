@@ -24,6 +24,7 @@ import { change } from '@/common/status'
 import { copyTextToClipboard } from '@/common/utils'
 import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
+import { baseWebUrl } from "@/api/globalConfig";
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
@@ -76,7 +77,7 @@ const share = () => {
     share: true
   }
   updateBook(book).then(() => {
-    const url = `${window.location.origin}/#/book/${book.id}`;
+    const url = `${baseWebUrl}/#/book/${book.id}`;
     const text = `标题：${book.title}\n链接：${url}\n`;
     copyTextToClipboard(text, () => {
       message.success("已经复制到剪切板！");
