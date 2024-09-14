@@ -25,6 +25,7 @@ import { copyTextToClipboard } from '@/common/utils'
 import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
 import { baseWebUrl } from "@/api/globalConfig";
+import html2canvas from 'html2canvas'
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
@@ -115,7 +116,18 @@ const onExport = (type, editor) => {
       break;
     }
     case 'pdf': {
-      message.warning("暂不支持导出docx格式, 敬请期待！");
+      message.warning("暂不支持导出pdf格式, 敬请期待！");
+      break;
+    }
+    case 'image': {
+      const wrapEditor = document.getElementById('editorWrapper');
+      if (wrapEditor) {
+        html2canvas(wrapEditor).then(function (canvas) {
+          canvas.toBlob((blob) => {
+            saveAs(blob, `${currentBook.title}.png`)
+          })
+        })
+      }
       break;
     }
     default:

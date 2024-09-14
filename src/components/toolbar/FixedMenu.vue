@@ -99,22 +99,6 @@
       @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('codeBlock') }">
       <RemixIcon name="code-block" />
     </div>
-    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().toggleBlockquote().run()">
-      <RemixIcon name="quote-text" />
-    </div>
-    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().setHorizontalRule().run()">
-      <RemixIcon name="separator" />
-    </div> -->
-    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().setHardBreak().run()">
-      <RemixIcon name="text-wrap" />
-    </div> -->
-    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @mousedown="onTranslate">
-      <RemixIcon name="translate" />
-    </div> -->
     <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       :options="blockOptions">
       <template #title>
@@ -131,7 +115,7 @@
     </Dropdown>
     <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="uploadImage">
-      <RemixIcon name="image-line" />
+      <RemixIcon name="image-add-line" />
     </div>
     <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().save()">
@@ -153,7 +137,7 @@
       <template #item="{ item }">
         <div
           class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
-          @click="handleExport(item.value)">
+          @click="editor?.commands?.export(item.value)">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
@@ -271,6 +255,11 @@ const blockOptions = [{
   label: "HardBreak",
   icon: 'text-wrap',
   command: 'setHardBreak'
+}, {
+  value: 'blockQuote',
+  label: "BlockQuote",
+  icon: 'quote-text',
+  command: 'toggleBlockquote'
 }];
 const exportOptions = [{
   value: 'markdown',
@@ -284,6 +273,10 @@ const exportOptions = [{
   value: 'html',
   label: "导出html",
   icon: 'html5-line'
+}, {
+  value: 'image',
+  label: "导出图片",
+  icon: 'file-image-line'
 }, {
   value: 'docx',
   label: "导出word",
@@ -363,22 +356,6 @@ const handleAIWrite = (key) => {
   let { from, to } = selection || {};
   let text = doc.textBetween(from, to, '\n');
   props.editor.chain().focus().setAiWrite({ question: text, prompt }).run();
-}
-const handleExport = (key) => {
-  switch (key) {
-    case 'json':
-      props?.editor?.commands?.export('json');
-      break;
-    case 'html':
-      props?.editor?.commands?.export('html');
-      break;
-    case 'markdown':
-      props?.editor?.commands?.export('markdown');
-      break;
-    case 'docx':
-      props?.editor?.commands?.import('docx');
-    default: break
-  }
 }
 const uploadImage = ()=>{
   upload({

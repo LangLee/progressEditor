@@ -22,6 +22,9 @@
                 <button v-if="actions.includes('exportJson')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('json')">
                     <RemixIcon name="javascript-fill" v-tippy="{ content: '导出json' }"/>
                 </button>
+                <button v-if="actions.includes('exportImage')" class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer"  @click.stop="exportFile('image')">
+                    <RemixIcon name="file-image-line" v-tippy="{ content: '导出图片' }"/>
+                </button>
                 <button v-if="actions.includes('exportDocx')"  class="w-8 h-8 text-center rounded-full bg-blue-700/50 hover:bg-blue-500 cursor-pointer" @click.stop="exportFile('docx')">
                     <RemixIcon name="file-word-fill" v-tippy="{ content: '导出word' }"/>
                 </button>
@@ -48,7 +51,7 @@ const props = defineProps({
     editor: Object,
     actions: {
         type: Array,
-        default: ['import', 'exportDocx', 'exportMd', 'exportHtml', 'exportJson', 'share']
+        default: ['import', 'exportDocx', 'exportMd', 'exportHtml', 'exportJson', 'exportImage', 'exportPdf', 'share']
     }
 })
 // const emits = defineEmits(['save'])
