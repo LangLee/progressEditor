@@ -65,6 +65,9 @@ const Apps = defineAsyncComponent(() => {
 const Forget = defineAsyncComponent(() => {
     return import('@/views/Forget.vue')
 })
+const FileManager = defineAsyncComponent(() => {
+    return import('@/views/FileManager.vue')
+})
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -167,6 +170,11 @@ const routes = [
         name: 'forget',
         path: '/forget',
         component: Forget
+    },
+    {
+        name: 'fileManager',
+        path: '/fileManager',
+        component: FileManager
     }
 ]
 

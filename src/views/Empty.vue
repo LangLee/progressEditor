@@ -1,6 +1,6 @@
 <template>
     <div
-        class="w-full h-full flex flex-col justify-center items-center my-20 text-gray-500 dark:text-gray-300 font-medium leading-6 italic">
+        class="w-full h-full flex flex-col justify-center items-center my-20 text-gray-500 dark:text-gray-300 leading-6 italic">
         <slot>
             <FishGlass class="m-2" />
             <p>鱼啊鱼</p>
