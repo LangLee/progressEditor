@@ -36,18 +36,34 @@
     <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       :options="listOptions">
       <template #title>
-        <RemixIcon name="menu-line"></RemixIcon>
+        <RemixIcon name="list-unordered"></RemixIcon>
       </template>
       <template #item="{ item }">
         <div
           class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
-          @click="editor.chain().focus()[item.command]().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive(item.value) }">
+          @click="editor.chain().focus()[item.command]().run()"
+          :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive(item.value) }">
           <RemixIcon :name="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
         </div>
       </template>
     </Dropdown>
     <div class="my-2 border-l border-gray-300"></div>
+    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="alignOptions">
+      <template #title>
+        <RemixIcon name="align-left"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="editor.chain().focus().setTextAlign(item.value).run()"
+          :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive({ textAlign: item.value }) }">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
     <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()"
       :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('bold') }">
@@ -86,19 +102,6 @@
         </div>
       </template>
     </tippy>
-    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().setParagraph().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('paragraph') }">
-      <RemixIcon name="paragraph" />
-    </div> -->
-    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().toggleCode().run()" :disabled="!editor.can().chain().focus().toggleCode().run()"
-      :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('code') }">
-      <RemixIcon name="code-view" />
-    </div>
-    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
-      @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('codeBlock') }">
-      <RemixIcon name="code-block" />
-    </div>
     <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       :options="blockOptions">
       <template #title>
@@ -113,10 +116,25 @@
         </div>
       </template>
     </Dropdown>
-    <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+    <Dropdown class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
+      :options="imageOptions">
+      <template #title>
+        <RemixIcon name="image-add-line"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div
+          class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="handleImageOperation(item.value)">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
+    <!-- <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="uploadImage">
       <RemixIcon name="image-add-line" />
-    </div>
+    </div> -->
+    <div class="my-2 border-l border-gray-300"></div>
     <div class="px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().save()">
       <RemixIcon name="save-line" />
@@ -143,6 +161,8 @@
         </div>
       </template>
     </Dropdown>
+    <ImageSelectModal :visible="imageSelectModalVisible" @confirm="handleImageSelectConfirm"
+      @cancel="handleImageSelectCancel"></ImageSelectModal>
   </div>
 </template>
 <script setup>
@@ -155,6 +175,7 @@ import { marked } from 'marked'
 import { upload as uploadFile } from '@/api/file';
 import { upload } from '@/common/utils'
 import { baseUrl } from '@/api/globalConfig';
+import ImageSelectModal from '@/components/feedback/ImageSelectModal.vue';
 const appendToBody = () => document.body;
 const props = defineProps({
   editor: {
@@ -165,6 +186,7 @@ const props = defineProps({
 const emits = defineEmits(['save', 'import', 'export', 'share']);
 const link = ref('');
 const linkDropdown = ref();
+const imageSelectModalVisible = ref(false);
 const aiOptions = [{
   value: 'write',
   label: "Write",
@@ -260,7 +282,18 @@ const blockOptions = [{
   label: "BlockQuote",
   icon: 'quote-text',
   command: 'toggleBlockquote'
+}, {
+  value: 'code',
+  label: "Code",
+  icon: 'code-view',
+  command: 'toggleCode'
+}, {
+  value: 'code',
+  label: "Code block",
+  icon: 'code-block',
+  command: 'toggleCodeBlock'
 }];
+// const codeOptions = [];
 const exportOptions = [{
   value: 'markdown',
   label: "导出markdown",
@@ -281,7 +314,33 @@ const exportOptions = [{
   value: 'docx',
   label: "导出word",
   icon: 'file-word-line'
-}]
+}];
+const alignOptions = [{
+  value: 'left',
+  label: "Align left",
+  icon: 'align-left'
+}, {
+  value: 'center',
+  label: "Align center",
+  icon: 'align-center'
+}, {
+  value: 'right',
+  label: "Align right",
+  icon: 'align-right'
+}, {
+  value: 'justify',
+  label: "Align justify",
+  icon: 'align-justify'
+}];
+const imageOptions = [{
+  value: 'upload',
+  label: "Upload",
+  icon: 'upload-2-line'
+}, {
+  value: 'select',
+  label: "Select",
+  icon: 'file-check-line'
+}];
 const setLinkShow = () => {
   let linkStr = props.editor.getAttributes('link').href;
   link.value = linkStr;
@@ -357,13 +416,35 @@ const handleAIWrite = (key) => {
   let text = doc.textBetween(from, to, '\n');
   props.editor.chain().focus().setAiWrite({ question: text, prompt }).run();
 }
-const uploadImage = ()=>{
+const handleImageOperation = (type) => {
+  switch (type) {
+    case 'upload':
+      uploadImage();
+      break;
+    case 'select':
+      imageSelectModalVisible.value = true;
+      break;
+    default:
+      break;
+  }
+}
+const handleImageSelectConfirm = (item) => {
+  if (item && item.name) {
+    const url = `${baseUrl}/file/preview?file=${item.name}`
+    props.editor.chain().focus().setImage({ src: url }).run();
+  }
+  imageSelectModalVisible.value = false;
+}
+const handleImageSelectCancel = () => {
+  imageSelectModalVisible.value = false;
+}
+const uploadImage = () => {
   upload({
     accept: 'image/*',
     multiple: false,
     uploader: uploadFile
-  }).then((file)=>{
-    let {data} = file;
+  }).then((file) => {
+    let { data } = file;
     let url = `${baseUrl}/file/preview?file=${data}`
     props.editor.chain().focus().setImage({ src: url }).run();
   })
@@ -374,6 +455,5 @@ const uploadImage = ()=>{
 <style lang='scss' scoped>
 .fixedMenu {
   box-shadow: 0 -5px 10px 0 rgb(0 0 0 / 0.1)
-  
 }
 </style>

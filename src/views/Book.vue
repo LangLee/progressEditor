@@ -122,7 +122,10 @@ const onExport = (type, editor) => {
     case 'image': {
       const wrapEditor = document.getElementById('editorWrapper');
       if (wrapEditor) {
-        html2canvas(wrapEditor).then(function (canvas) {
+        html2canvas(wrapEditor, {
+          useCORS: true,
+          allowTaint: false
+        }).then(function (canvas) {
           canvas.toBlob((blob) => {
             saveAs(blob, `${currentBook.title}.png`)
           })

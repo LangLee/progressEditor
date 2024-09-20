@@ -17,7 +17,7 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive, defineProps, defineComponent, watch } from 'vue'
+import { ref, reactive, defineProps, defineComponent, watch, nextTick } from 'vue'
 import { TextSelection } from '@tiptap/pm/state'
 import RemixIcon from '../common/RemixIcon.vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -37,7 +37,7 @@ const props = defineProps({
 })
 const onItemClick = (item) => {
     if (props.editor) {
-        const element = props.editor.view.dom.querySelector(`[data-toc-id="${item.id}"`)
+        const element = props.editor?.view?.dom && props.editor?.view?.dom.querySelector(`[data-toc-id="${item.id}"`)
         if (!element) return;
         const pos = props.editor.view.posAtDOM(element, 0)
 
@@ -66,7 +66,9 @@ const onItemClick = (item) => {
 }
 watch(() => route.query.anchorId, (value, oldValue) => {
     if (value && value !== oldValue) {
-        onItemClick({ id: value, pos: 0 })
+        nextTick(() => {
+            onItemClick({ id: value, pos: 0 })
+        })
     }
 }, { immediate: true });
 </script>

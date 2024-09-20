@@ -43,6 +43,18 @@
       </template>
     </Dropdown>
     <div class="my-2 border-l border-gray-300"></div>
+    <Dropdown class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer" :options="alignOptions">
+      <template #title>
+        <RemixIcon name="align-left"></RemixIcon>
+      </template>
+      <template #item="{ item }">
+        <div class="h-8 leading-8 px-2 rounded mb-1 hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer text-gray-700 dark:text-gray-200"
+          @click="editor.chain().focus().setTextAlign(item.value).run()" :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive({ textAlign: item.value }) }">
+          <RemixIcon :name="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </Dropdown>
     <div class="mx-1 px-2 py-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-500 cursor-pointer"
       @click="editor.chain().focus().toggleBold().run()" :disabled="!editor.can().chain().focus().toggleBold().run()"
       :class="{ 'bg-neutral-200 dark:bg-neutral-600': editor.isActive('bold') }">
@@ -238,6 +250,23 @@ const listOptions = [{
   label: "Task list",
   icon: 'list-check-3',
   command: 'toggleTaskList'
+}];
+const alignOptions = [{
+  value: 'left',
+  label: "Align left",
+  icon: 'align-left'
+}, {
+  value: 'center',
+  label: "Align center",
+  icon: 'align-center'
+}, {
+  value: 'right',
+  label: "Align right",
+  icon: 'align-right'
+}, {
+  value: 'justify',
+  label: "Align justify",
+  icon: 'align-justify'
 }];
 const setLinkShow = () => {
   let linkStr = props.editor.getAttributes('link').href;

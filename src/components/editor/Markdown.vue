@@ -1,6 +1,6 @@
 <template>
   <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10 xl:mr-80"
-  :class="{ 'mb-16': isMobile() && editable }">
+    :class="{ 'mb-16': isMobile() && editable }">
     <BubbleMenu v-if="!isMobile()" :editor="editor"></BubbleMenu>
     <editor-content class="h-full" :editor="editor" />
   </div>
@@ -59,7 +59,7 @@ import suggestion from './extend/suggestion'
 import { debounce, isMobile } from '@/common/utils.ts'
 
 import aiWrite from './extend/aiWrite'
-import {change} from '@/common/status'
+import { change } from '@/common/status'
 import { Export } from '@tiptap-pro/extension-export'
 import { Operation } from './extend/operation'
 import { upload } from '@/api/file'
@@ -104,7 +104,9 @@ const editor = useEditor({
     //     return editor.isActive('paragraph')
     //   },
     // }),
-    TextAlign,
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    }),
     Underline,
     Link.configure({
       openOnClick: false,
@@ -143,23 +145,23 @@ const editor = useEditor({
       allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
       onDrop: (currentEditor, files, pos) => {
         files.forEach(file => {
-          upload(file).then((file)=>{
+          upload(file).then((file) => {
             const src = `${baseUrl}/file/preview?file=${file}`
             currentEditor.chain().insertContentAt(pos, {
               type: 'image',
-              attrs: {src}
+              attrs: { src }
             }).focus().run()
           })
-        //   const fileReader = new FileReader()
-        //   fileReader.readAsDataURL(file)
-        //   fileReader.onload = () => {
-        //     currentEditor.chain().insertContentAt(pos, {
-        //       type: 'image',
-        //       attrs: {
-        //         src: fileReader.result,
-        //       },
-        //     }).focus().run()
-        //   }
+          //   const fileReader = new FileReader()
+          //   fileReader.readAsDataURL(file)
+          //   fileReader.onload = () => {
+          //     currentEditor.chain().insertContentAt(pos, {
+          //       type: 'image',
+          //       attrs: {
+          //         src: fileReader.result,
+          //       },
+          //     }).focus().run()
+          //   }
         })
       },
       onPaste: (currentEditor, files, htmlContent) => {
@@ -170,11 +172,11 @@ const editor = useEditor({
             console.log(htmlContent) // eslint-disable-line no-console
             return false
           }
-          upload(file).then((file)=>{
+          upload(file).then((file) => {
             const src = `${baseUrl}/file/preview?file=${file}`
             currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {
               type: 'image',
-              attrs: {src}
+              attrs: { src }
             }).focus().run()
           })
           // const fileReader = new FileReader()
@@ -208,9 +210,9 @@ const editor = useEditor({
       token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjU4NjI4MTgsIm5iZiI6MTcyNTg2MjgxOCwiZXhwIjoxNzI1OTQ5MjE4LCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiJqa3YyeWVteCJ9.ITcOVS7VcEUkEOuMWj6nR5lV9wcVtZe8T6l3BsqCuYA',
     }),
     Operation.configure({
-      onSave: ()=>{emits('save')},
-      onExport: (type, editor)=>{emits('export', type, editor)},
-      onShare: ()=>{emits('share')},
+      onSave: () => { emits('save') },
+      onExport: (type, editor) => { emits('export', type, editor) },
+      onShare: () => { emits('share') },
     })
   ],
 
