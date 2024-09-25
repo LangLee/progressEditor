@@ -10,7 +10,7 @@ const getLoginUser = ()=>{
         if (res.data.success) {
             return res.data.data;
         } else {
-            return Promise.reject(res.data.message);
+            return Promise.reject(res.data.data);
         }
     });
 }

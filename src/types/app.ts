@@ -6,6 +6,7 @@ interface App {
     author?: string,
     url?: string,
     system?: boolean,
-    description?: string
+    description?: string,
+    published?:boolean
 }
 export default App;

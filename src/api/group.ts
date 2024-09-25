@@ -9,8 +9,15 @@ const getPortalAndBooks = () => {
         }
     });
 }
-const getGroupAndBooks = (defaultGroup) => {
-    return axios.get("/groups/getAppGroupAndBooks", {params: {defaultGroup}}).then((res) => {
+const getGroupAndBooks = (defaultGroup, share) => {
+    // 分享的书籍将不会走权限校验
+    let url = '/groups/getAppShareGroupAndBooks';
+    let params;
+    if (!share) {
+        url = '/groups/getAppGroupAndBooks';
+        params = {defaultGroup};
+    }
+    return axios.get(url, {params}).then((res) => {
         if (res && res.data && res.data.success) {
             return res.data.data;
         } else {

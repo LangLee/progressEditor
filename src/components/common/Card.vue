@@ -24,6 +24,11 @@
                         <RemixIcon class="mr-1" name="delete-bin-line"></RemixIcon>
                         <span>删除</span>
                     </div>
+                    <div v-if="publishable" class="p-1 dark:text-slate-300 dark:hover:text-slate-50 dark:hover:border-slate-50 cursor-pointer"
+                        :class="`text-${theme}-400 hover:text-${theme}-700`" @click.stop="publish">
+                        <RemixIcon class="mr-1" name="share-line"></RemixIcon>
+                        <span>{{ modelValue.published?'取消发布':'发布' }}</span>
+                    </div>
                 </div>
             </template>
         </tippy>
@@ -68,11 +73,15 @@ const props = defineProps({
     editable: {
         type: Boolean,
         default: false
+    },
+    publishable: {
+        type: Boolean,
+        default: false
     }
 })
 // const active = ref(false);
 // let touchStart = 0;
-const emits = defineEmits(['update:modelValue', 'cardClick', 'edit', 'remove']);
+const emits = defineEmits(['update:modelValue', 'cardClick', 'edit', 'remove', 'publish']);
 const open = () => {
     if (!props.modelValue || !props.modelValue.url) {
         // 跳转链接为空
@@ -93,12 +102,21 @@ const edit = () => {
 const remove = () => {
     modal.confirm({
         title: '确认删除',
-        content: '你真的要删除这个卡片？',
+        content: '确定要删除该应用？',
         onOk: ()=>{
             emits('remove', props.modelValue);
         }
     })
     dropdown?.value?.hide();
+}
+const publish = ()=>{
+    modal.confirm({
+        title: '确认发布',
+        content: '确定要发布该应用？',
+        onOk: ()=>{
+            emits('publish', props.modelValue);
+        }
+    })
 }
 // const onMouseenter = () => {
 //     if (isMobile()) return false;

@@ -147,6 +147,10 @@ const props = defineProps({
     defaultSelected: {
         type: Boolean,
         default: true
+    },
+    share: {
+        type: Boolean,
+        default: false
     }
 })
 const foldState = ref(true);
@@ -307,7 +311,7 @@ const onUpdateBook = (book) => {
     })
 }
 onMounted(() => {
-    getGroupAndBooks(props.defaultGroup).then(data => {
+    getGroupAndBooks(props.defaultGroup, props.share).then(data => {
         groups.value = data || [];
         if (route.params.id) {
             // 激活菜单

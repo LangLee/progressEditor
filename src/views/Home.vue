@@ -1,8 +1,11 @@
 <template>
     <div class="h-screen w-full flex flex-col">
         <Header :hiddenFold="true">
-            <button class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" @click="setApps">
+            <button class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" v-tippy="{content: '我的应用'}" @click="setApps">
                 <RemixIcon name="apps-2-add-line" />
+            </button>
+            <button class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" v-tippy="{content: '图书馆'}" @click="setLibrary">
+                <RemixIcon name="book-shelf-line" />
             </button>
         </Header>
         <div class="flex-1 w-full flex flex-col overflow-y-auto p-2 lg:p-4">
@@ -36,6 +39,11 @@ const oneNote = ref();
 const setApps = () => {
     router.push({
         name: 'apps'
+    })
+}
+const setLibrary = () => {
+    router.push({
+        name: 'library'
     })
 }
 onMounted(() => {

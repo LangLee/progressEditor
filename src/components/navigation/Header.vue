@@ -19,7 +19,7 @@
         </div>
         <div class="flex-auto flex items-center justify-end pr-4 dark:text-slate-50">
             <RemixIcon :name="dark?'moon-fill':'sun-fill'" class="text-2xl cursor-pointer mr-2" @click="toggleDark"/>
-            <tippy trigger="click" placement="bottom-end" animation="scale" :interactive="true" :appendTo="appendToBody">
+            <tippy v-if="user" trigger="click" placement="bottom-end" animation="scale" :interactive="true" :appendTo="appendToBody">
                 <Avatar class="cursor-pointer mr-2" size="sm" :file=" user && user.avatar"></Avatar>
                 <span class="text-sm font-bold cursor-pointer">{{ user && user.name }}</span>
                 <template #content>
@@ -33,6 +33,7 @@
                     </div>
                 </template>
             </tippy>
+            <Avatar v-else class="cursor-pointer mr-2" size="sm" @click.stop="exit" v-tippy="{content: '登录'}"></Avatar>
         </div>
     </div>
 </template>
@@ -42,7 +43,7 @@ import RemixIcon from '@/components/common/RemixIcon.vue';
 import { useRouter } from 'vue-router';
 import Avatar from '@/components/common/Avatar.vue';
 import { useUserInfo, getUserInfo, setUserInfo } from '@/common/userInfo'
-import { getLoginUser } from '@/api/user'
+import { getLoginUser, login } from '@/api/user'
 import {baseUrl} from '@/api/globalConfig'
 import Fish from '@/components/animation/Fish.vue'
 const appendToBody = () => document.body;
@@ -71,6 +72,7 @@ const toggleFold = () => {
 }
 const exit = () => {
     localStorage.removeItem('me_token');
+    setUserInfo();
     router.push('/login');
 }
 const mine = () => {
@@ -96,7 +98,6 @@ onBeforeMount(() => {
     } else {
         user.value = userInfo;
     }
-
 })
 </script>
 
