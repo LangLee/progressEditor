@@ -1,8 +1,10 @@
 <template>
     <div id="editorWrapper" class="min-w-0 flex-auto px-4 sm:px-6 xl:px-8 py-10">
         <editor-content class="h-full" :editor="editor" />
-        <div v-if="editable" class="fixed top-28 right-4 z-40">
-            <FloatMenu :editor="editor" @save="emits('save')"></FloatMenu>
+    </div>
+    <div v-if="editable">
+        <div class="fixed top-28 right-4 z-40">
+            <FloatMenu :editor="editor"></FloatMenu>
         </div>
     </div>
 </template>
@@ -14,6 +16,7 @@ import Text from '@tiptap/extension-text'
 import { defineProps, defineEmits, watch, onBeforeUnmount } from 'vue'
 import { debounce } from '@/common/utils'
 import FloatMenu from '../toolbar/FloatMenu.vue'
+import { Operation } from './extend/operation'
 const props = defineProps({
     modelValue: String,
     editable: {
@@ -21,7 +24,7 @@ const props = defineProps({
         default: true
     }
 });
-const emits = defineEmits(['update:modelValue', 'save']);
+const emits = defineEmits(['update:modelValue', 'save', 'share', 'export']);
 const updateContent = debounce((editor) => {
     emits('update:modelValue', editor.getHTML());
 }, 300);
@@ -36,7 +39,12 @@ const editor = useEditor({
     extensions: [
         Document,
         Paragraph,
-        Text
+        Text,
+        Operation.configure({
+            onSave: () => { emits('save') },
+            onExport: (type, editor) => { emits('export', type, editor) },
+            onShare: () => { emits('share') }
+        })
     ],
     onUpdate: ({ editor }) => {
         updateContent(editor)

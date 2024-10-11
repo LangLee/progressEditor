@@ -2,7 +2,7 @@
     <div class="flex flex-row w-full justify-between items-center h-12 leading-[3rem] border border-gray-300/20 bg-white/90 dark:bg-neutral-900 m-1 px-4 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-neutral-800"
         @click.stop="skipTo" @mouseover.stop="onItemMouseover" @mouseleave.stop="onItemMouseleave"
         @touchstart.passive="handleTouchStart" @touchend.passive="handleTouchEnd">
-        <span>
+        <span class="flex-grow whitespace-nowrap text-ellipsis overflow-hidden">
             <RemixIcon class="text-blue-300 mr-2" name="chat-smile-2-line"></RemixIcon>
             <span>{{ book.title }}</span>
         </span>
@@ -18,7 +18,7 @@
                 <RemixIcon name="delete-bin-fill"></RemixIcon>
             </button>
         </span>
-        <span v-else class="text-slate-500">
+        <span v-else class="text-slate-500 min-w-40">
             {{ book.createTime }}
         </span>
         <Modal title="编辑" v-model:visible="editing" @confirm="confirm" @cancel="cancel">

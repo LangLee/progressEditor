@@ -1,7 +1,7 @@
 <template>
     <div class="h-screen w-full flex flex-col">
         <Header :hiddenFold="true">
-            <button class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" v-tippy="{content: '我的应用'}" @click="setApps">
+            <button v-if="user && user.administrator" class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" v-tippy="{content: '我的应用'}" @click="setApps">
                 <RemixIcon name="apps-2-add-line" />
             </button>
             <button class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" v-tippy="{content: '图书馆'}" @click="setLibrary">
@@ -31,7 +31,8 @@ import RemixIcon from '@/components/common/RemixIcon.vue'
 import { createApp, getApps, updateApp, removeApp } from '@/api/app.ts'
 import { getOneNote } from '@/api/note.ts'
 import message from '@/components/feedback/message';
-
+import {useUserInfo} from '@/common/userInfo'
+const user = useUserInfo();
 const router = useRouter();
 const apps = ref([]);
 const oneNote = ref();
