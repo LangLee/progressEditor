@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen w-full flex flex-col">
+    <div class="w-full flex flex-col">
         <Header :hiddenFold="true">
             <button v-if="user && user.administrator" class="px-2 py-1 hover:bg-slate-100 rounded text-2xl text-gray-500 font-medium" v-tippy="{content: '我的应用'}" @click="setApps">
                 <RemixIcon name="apps-2-add-line" />
@@ -8,8 +8,8 @@
                 <RemixIcon name="book-shelf-line" />
             </button>
         </Header>
-        <div class="flex-1 w-full flex flex-col overflow-y-auto p-2 lg:p-4">
-            <Note class="m-2 lg:m-4" :modelValue="oneNote" />
+        <div class="flex-1 w-full flex flex-col overflow-y-auto p-2 lg:p-4 max-w-screen-2xl mx-auto">
+            <Note class="shadow-lg rounded dark:rounded-none dark:border-b dark:border-slate-300/10 m-2 lg:m-4" :modelValue="oneNote" />
             <div class="flex flex-wrap justify-start">
                 <div v-for="(app, index) in apps" :key="app._id"
                     class="flex flex-col items-center p-2 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12">
@@ -29,13 +29,14 @@ import Header from '@/components/navigation/Header.vue';
 import Note from '@/components/display/Note.vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import { createApp, getApps, updateApp, removeApp } from '@/api/app.ts'
-import { getOneNote } from '@/api/note.ts'
+// import { getOneNote } from '@/api/note.ts'
+import { useOneNote } from '@/common/oneNote';
 import message from '@/components/feedback/message';
 import {useUserInfo} from '@/common/userInfo'
 const user = useUserInfo();
 const router = useRouter();
 const apps = ref([]);
-const oneNote = ref();
+const oneNote = useOneNote();
 
 const setApps = () => {
     router.push({
@@ -51,9 +52,9 @@ onMounted(() => {
     getApps('quick').then(data => {
         apps.value = data || [];
     })
-    getOneNote().then(data => {
-        oneNote.value = data;
-    })
+    // getOneNote().then(data => {
+    //     oneNote.value = data;
+    // })
 })
 </script>
 

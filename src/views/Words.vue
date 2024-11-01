@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen w-full justify-center items-center text-slate-700">
     <Header></Header>
-    <div class="flex-1 w-full p-2 bg-slate-300/20 overflow-y-auto">
+    <div class="flex-1 w-full p-2 bg-slate-300/20 overflow-y-auto max-w-screen-2xl mx-auto">
       <div class="flex flex-col w-full max-w-screen-md mx-auto">
         <WordCard class="mb-2" v-for="(word, index) in words" kye="word._id" :modelValue="word" @update:modelValue="(updateWord)=>toggleNewWord(index, updateWord)"/>
       </div>

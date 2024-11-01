@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative w-full p-2 bg-white dark:bg-neutral-800 rounded-lg border border-slate-200 dark:border-slate-300/20 text-base">
+        class="relative w-full p-2 bg-white dark:bg-neutral-800 rounded border border-slate-200 dark:border-slate-300/20 text-base">
         <div class="px-2 mb-2" v-if="chatter">
             <span class="bg-neutral-100 rounded-full px-2 py-1 text-slate-500 text-sm">
                 @和 <span class="text-slate-600 font-bold">{{ chatter && chatter.name }}</span> 聊聊

@@ -1,12 +1,12 @@
 <template>
     <div
-        class="flex flex-col items-center shadow-lg rounded dark:rounded-none bg-white dark:bg-transparent dark:border-b dark:border-slate-300/10">
+        class="flex flex-col items-center bg-white dark:bg-transparent">
         <div ref="imageContainer" class="relative w-full lg:max-w-[45rem] min-h-[10rem]">
-            <Loading></Loading>
+            <Loading v-if="loading"></Loading>
         </div>
-        <span class="lg:text-lg text-slate-300">{{ modelValue.photoBy }}</span>
+        <span v-if="modelValue.photoBy" class="text-sm text-slate-300 py-2">摄影｜{{ modelValue.photoBy }}</span>
         <p
-            class="w-full lg:w-[50rem] px-4 pb-4 lg:pb-8 lg:font-medium lg:text-lg text-slate-500 dark:text-slate-200 text-center">
+            class="w-full lg:max-w-[45rem] px-4 pb-4 lg:pb-8 text-slate-700 dark:text-slate-200">
             {{ modelValue.word }}</p>
     </div>
 </template>
@@ -31,14 +31,30 @@ const props = defineProps({
     }
 })
 const imageContainer = ref();
+const loading = ref(false);
+onMounted(() => {
+    if (props.modelValue.image) {
+        loading.value = true;
+        ImageManager.preloadImage(props.modelValue.image, (imageElement) => {
+            const firstChild = imageContainer?.value?.firstChild;
+            if (firstChild) {
+                imageContainer?.value?.removeChild(firstChild);
+            }
+            imageContainer?.value?.appendChild(imageElement);
+            loading.value = false;
+        })
+    }
+})
 watch(() => props.modelValue.image, (value, oldValue) => {
     if (value && value !== oldValue) {
+        loading.value = true;
         ImageManager.preloadImage(value, (imageElement) => {
             const firstChild = imageContainer?.value?.firstChild;
             if (firstChild) {
                 imageContainer?.value?.removeChild(firstChild);
             }
             imageContainer?.value?.appendChild(imageElement);
+            loading.value = false;
         })
     }
 }, { immediate: true })

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col h-screen w-full">
+    <div class="flex flex-col w-full">
         <Header :hiddenFold="true">
             <div v-if="editable">
             <button
@@ -22,7 +22,7 @@
             </button>
         </div>
         </Header>
-        <div class="flex-1 p-2 lg:p-4 overflow-y-auto">
+        <div class="flex-1 p-2 lg:p-4 overflow-y-auto w-full max-w-screen-2xl mx-auto">
             <ul v-for="(portal, index) in portals" :key="index">
                 <p class="mx-2 md:mx-4 lg:mx-4 text-gray-600 dark:text-gray-200 font-medium" @mouseover="onItemMouseover(portal.id)"
                 @mouseleave="onItemMouseleave()">

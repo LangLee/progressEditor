@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex" :class="{ 'select-none': !editable }">
+  <div class="w-full h-full flex max-w-screen-2xl mx-auto" :class="{ 'select-none': !editable }">
     <component :editable='editable' :is="currentComponent" v-model="content" v-model:anchors="anchors" @save="save"
       @share="share" @export="onExport"></component>
     <!-- <div v-if="editable"

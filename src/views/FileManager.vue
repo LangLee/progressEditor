@@ -2,7 +2,7 @@
     <div class="flex flex-col h-screen w-full">
         <Header :hiddenFold="true">
         </Header>
-        <div class="flex-1 flex flex-row flex-wrap p-2 lg:p-4 overflow-y-auto">
+        <div class="w-full flex-1 flex flex-row flex-wrap p-2 lg:p-4 overflow-y-auto max-w-screen-2xl mx-auto">
             <ImageView v-for="(item, index) in files" :key="index" :modelValue="item" @remove="(file)=>onRemove(file, index)"/>
             <div class="flex w-32 h-32 m-2 justify-center items-center border border-gray-100 text-5xl text-gray-300 hover:text-gray-500 cursor-pointer" @click="onUpload">
                 <RemixIcon name="upload-cloud-line"/>

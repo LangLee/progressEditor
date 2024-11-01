@@ -1,7 +1,7 @@
 <template>
-    <div class="h-screen w-full flex flex-col overflow-y-auto">
+    <div class="w-full flex flex-col overflow-y-auto">
         <Header :hiddenFold="true"></Header>
-        <div class="flex p-2 lg:p-4 flex-wrap justify-start">
+        <div class="w-full flex p-2 lg:p-4 flex-wrap justify-start max-w-screen-2xl mx-auto">
             <div v-for="(app, index) in apps" :key="app._id"
                 class="flex flex-col items-center p-2 lg:p-4 basis-1/4 md:basis-1/6 lg:basis-1/12">
                 <Card :publishable="true" :editable="true" :modelValue="app" theme="blue"

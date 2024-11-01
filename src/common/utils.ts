@@ -102,6 +102,7 @@ const upload: (uploadOptions) => Promise<file> = (options: uploadOptions = { acc
                 reject(`文件大小超过限制 (${MAX_FILE_SIZE / (1024 * 1024)} MB)`)
                 return;
             }
+            options.uploader = options.uploader || uploadFile;
             if (!options.uploader) {
                 reject("未设置上传函数")
                 return;

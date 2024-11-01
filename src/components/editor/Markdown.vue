@@ -5,11 +5,11 @@
     <editor-content class="h-full" :editor="editor" />
   </div>
   <div id="tableOfContent"
-    class="fixed z-20 top-16 bottom-0 right-0 py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-80 px-8">
+    class="fixed z-20 top-16 bottom-0 right-[max(0rem,calc(50%-48rem))] py-10 overflow-y-auto hidden xl:text-sm xl:block flex-none w-80 px-8">
     <TableOfContent :editor=editor :anchors="anchors" />
   </div>
   <div v-if="editable">
-    <div v-if="!isMobile()" class="fixed top-28 right-4 z-40">
+    <div v-if="!isMobile()" class="fixed top-28 right-[max(1rem,calc(50%-48rem))] z-40">
       <FloatMenu :editor="editor"></FloatMenu>
     </div>
     <div v-else class="fixed bottom-0 left-0 z-40">

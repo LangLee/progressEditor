@@ -12,10 +12,8 @@
             </div>
         </div>
         <slot v-else name="empty">
-            <div class="flex flex-col w-full justify-center items-center p-10 overflow-y-auto">
-                <!-- <img class="h-48 lg:h-60 rounded-2xl mb-2" src="@/assets/fish.png" alt="我是李进步，我要进步"> -->
-                <FishGlass />
-                <span class="text-gray-500 dark:text-gray-300 italic">子非鱼，安知鱼之乐？</span>
+            <div class="overflow-y-auto shadow-lg rounded dark:rounded-none dark:border-b dark:border-slate-300/10 bg-white dark:bg-neutral-800 lg:p-2 m-2 lg:m-4">
+                <Note class="max-w-[30rem] m-auto" :modelValue="oneNote" />
             </div>
         </slot>
         <div v-if="editable" class="relative w-full text-lg px-2 lg:px-4 mb-2 lg:mb-4">
@@ -34,6 +32,8 @@ import ChatCard from '@/components/display/ChatCard.vue'
 import Question from '@/components/entry/Question.vue'
 import { useUserInfo } from '@/common/userInfo'
 import FishGlass from '@/components/animation/FishGlass.vue'
+import Note from '@/components/display/Note.vue'
+import { useOneNote } from '@/common/oneNote';
 const userInfo = useUserInfo();
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -80,6 +80,7 @@ const props = defineProps({
 })
 const emits = defineEmits(['chart', 'clearChatter'])
 const question = ref('')
+const oneNote = useOneNote();
 const onChat = (content) => {
     // question.value = question.value.replace(/[\r\n]/g, '');
     emits('chart', content);
