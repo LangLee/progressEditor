@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 // import MdEditor from "@/components/editor/Markdown.vue"
-import { ref, shallowRef, watch, defineAsyncComponent } from "vue"
+import { ref, shallowRef, watch, defineAsyncComponent, onMounted, onUnmounted} from "vue"
 import { useRoute } from "vue-router";
 import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
@@ -26,6 +26,7 @@ import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
 import { baseWebUrl } from "@/api/globalConfig";
 import html2canvas from 'html2canvas'
+// import watermark from '@/common/watermark'
 const route = useRoute();
 const currentComponent = shallowRef();
 const content = ref('');
@@ -122,12 +123,17 @@ const onExport = (type, editor) => {
     case 'image': {
       const wrapEditor = document.getElementById('editorWrapper');
       if (wrapEditor) {
+        let pageFooter = document.createElement("p");
+        pageFooter.className="editor-footer"
+        pageFooter.innerText = "http://progress123.online";
+        wrapEditor.appendChild(pageFooter);
         html2canvas(wrapEditor, {
           useCORS: true,
           allowTaint: false
         }).then(function (canvas) {
           canvas.toBlob((blob) => {
-            saveAs(blob, `${currentBook.title}.png`)
+            saveAs(blob, `${currentBook.title}.png`);
+            wrapEditor.removeChild(pageFooter);
           })
         })
       }
@@ -201,16 +207,25 @@ watch(() => route.params.id, (newVal, oldValue) => {
   }
 }, { immediate: true })
 
-// onBeforeMount(() => {
-//   intervalSave = setInterval(() => {
-//     autoSave()
-//   }, 5000)
-// })
+onMounted(() => {
+  // intervalSave = setInterval(() => {
+  //   autoSave()
+  // }, 5000)
+  // 水印
+  // watermark.show();
+})
 
-// onBeforeUnmount(() => {
-//   clearInterval(intervalSave)
-// })
+onUnmounted(() => {
+  // clearInterval(intervalSave)
+  // watermark.out();
+})
 </script>
 
 
-<style lang="scss"></style>
+<style lang="scss">
+.editor-footer {
+  text-align: center;
+  color: rgb(209 213 219);
+  font-size: 14px;
+}
+</style>

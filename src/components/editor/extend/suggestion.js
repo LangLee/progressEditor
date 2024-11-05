@@ -2,6 +2,9 @@ import { VueRenderer } from '@tiptap/vue-3'
 import tippy from 'tippy.js'
 
 import CommandsList from './CommandsList.vue'
+import { upload as uploadFile } from '@/api/file';
+import { upload } from '@/common/utils'
+import { baseUrl } from '@/api/globalConfig';
 
 export default {
   items: ({ query }) => {
@@ -405,6 +408,22 @@ export default {
             .deleteRange(range)
             .unsetAllMarks()
             .run()
+        },
+      },
+      {
+        title: 'Upload Image',
+        key: 'uploadImage',
+        icon: 'image-add-line',
+        command: ({ editor, range }) => {
+          upload({
+            accept: 'image/*',
+            multiple: false,
+            uploader: uploadFile
+          }).then((file) => {
+            let { data } = file;
+            let url = `${baseUrl}/file/preview?file=${data}`
+            editor.chain().focus().deleteRange(range).setImage({ src: url }).run();
+          })
         },
       }
     ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.key.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
