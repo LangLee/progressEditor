@@ -64,6 +64,15 @@ const getQRCode = (scene) => {
         }
     })
 }
+const getUserList = ()=>{
+    return axios.get("/users/getUserList").then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
 export {
     login,
     register,
@@ -72,5 +81,6 @@ export {
     updateUser,
     uploadAvatar,
     removeAvatar,
-    getQRCode
+    getQRCode,
+    getUserList
 }

@@ -71,6 +71,12 @@ const FileManager = defineAsyncComponent(() => {
 const Library = defineAsyncComponent(() => {
     return import('@/views/Library.vue')
 })
+const UserManager = defineAsyncComponent(() => {
+    return import('@/views/UserManager.vue')
+})
+const Hot = defineAsyncComponent(() => {
+    return import('@/views/Hot.vue')
+})
 // 2.配置系统所有路由页面，浏览器通过path路径加载对应组件
 const routes = [
     {
@@ -201,6 +207,16 @@ const routes = [
         name: 'library',
         path: '/library',
         component: Library
+    },
+    {
+        name: 'userManager',
+        path: '/userManager',
+        component: UserManager
+    },
+    {
+        name: 'hot',
+        path: '/hotTop',
+        component: Hot
     }
 ]
 

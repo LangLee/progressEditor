@@ -122,10 +122,57 @@ const upload: (uploadOptions) => Promise<file> = (options: uploadOptions = { acc
         fileInput.click();
     })
 }
+const getTimeDifference = (t1, t2) => {
+    // 将时间转换为日期对象
+    var date1 = new Date(t1);
+    var date2 = new Date(t2);
+
+    // 将日期转换为毫秒
+    var time1 = date1.getTime();
+    var time2 = date2.getTime();
+
+    // 计算两个时间的差值（毫秒）
+    var difference = time2 - time1;
+
+    // 转换差值为秒
+    var seconds = Math.floor(Math.abs(difference / 1000));
+
+    // 转换差值为分钟
+    var minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+
+    // 转换差值为小时
+    var hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+
+    // 返回格式化的时间差
+    return {
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+    };
+}
+const getPassTimeText = (date)=>{
+    let {hours, minutes, seconds} = getTimeDifference(date, new Date());
+    if (hours) {
+        return `${hours}小时前更新`
+    } else if (minutes) {
+        return `${minutes}分前更新`
+    } else if (seconds) {
+        return `${seconds}秒前更新`
+    } else {
+        return '刚刚更新'
+    }
+}
+const getAssetsFile = (fileName) => {
+    return new URL(`../assets/${fileName}`, import.meta.url).href;
+}
 export {
     throttle,
     debounce,
     isMobile,
     copyTextToClipboard,
-    upload
+    upload,
+    getPassTimeText,
+    getAssetsFile
 }

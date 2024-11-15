@@ -9,7 +9,7 @@ const show = () => {
     const modalVNode = createVNode(LoadingComponent);
     // 创建一个元素来承载消息组件
     modalEl = document.createElement('div');
-    // modalEl.className = 'fixed top-4 left-0 w-full z-50'; // 添加一些基本定位样式
+    modalEl.className = 'fixed top-0 left-0 bottom-0 w-full z-50'; // 添加一些基本定位样式
 
     // 渲染组件到新创建的元素上
     render(modalVNode, modalEl);

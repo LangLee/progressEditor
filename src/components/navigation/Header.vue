@@ -3,7 +3,7 @@
         class="sticky h-16 top-0 z-20 w-full backdrop-blur lg:border-b dark:border-b lg:border-slate-900/10 bg-white/90 lg:bg-white/60 dark:border-slate-50/20 dark:bg-transparent lg:shadow-none shadow-lg">
         <div class="w-full h-full flex-none flex max-w-screen-2xl mx-auto ">
             <div
-            class="hidden lg:flex flex-none pl-4 sm:pl-6 xl:pl-8 items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72">
+            class="hidden lg:flex h-16 flex-none pl-4 sm:pl-6 xl:pl-8 items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72">
             <div class="flex flex-row items-center text-slate-500 dark:text-slate-300 cursor-pointer" @click="goHome">
                <Fish></Fish>
                <span class="text-gray-500 font-medium text-2xl">I want progress</span>

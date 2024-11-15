@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 // import MdEditor from "@/components/editor/Markdown.vue"
-import { ref, shallowRef, watch, defineAsyncComponent, onMounted, onUnmounted} from "vue"
+import { ref, shallowRef, watch, defineAsyncComponent, onMounted, onUnmounted } from "vue"
 import { useRoute } from "vue-router";
 import { getBookById, updateBook } from "@/api/book";
 import Book from "@/types/book"
@@ -26,6 +26,7 @@ import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
 import { baseWebUrl } from "@/api/globalConfig";
 import html2canvas from 'html2canvas'
+import htmlDocx from 'html-docx-js/dist/html-docx.js'
 // import watermark from '@/common/watermark'
 const route = useRoute();
 const currentComponent = shallowRef();
@@ -105,7 +106,11 @@ const onExport = (type, editor) => {
       break;
     }
     case 'docx': {
-      message.warning("暂不支持导出docx格式, 敬请期待！");
+      let htmlContent = editor.getHTML();
+      // 将 HTML 内容转换为 Docx 格式
+      const blob = htmlDocx.asBlob(htmlContent);
+      // 使用 saveAs 函数保存文件
+      saveAs(blob, `${currentBook.title}.docx`)
       break;
     }
     case 'markdown': {
@@ -124,7 +129,7 @@ const onExport = (type, editor) => {
       const wrapEditor = document.getElementById('editorWrapper');
       if (wrapEditor) {
         let pageFooter = document.createElement("p");
-        pageFooter.className="editor-footer"
+        pageFooter.className = "editor-footer"
         pageFooter.innerText = "http://progress123.online";
         wrapEditor.appendChild(pageFooter);
         html2canvas(wrapEditor, {
