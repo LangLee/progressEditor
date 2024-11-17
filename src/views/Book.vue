@@ -26,7 +26,8 @@ import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
 import { baseWebUrl } from "@/api/globalConfig";
 import html2canvas from 'html2canvas'
-import htmlDocx from 'html-docx-js/dist/html-docx.js'
+// import htmlDocx from 'html-docx-js/dist/html-docx.js'
+// import htmlDocx from '@/common/html-docx.js'
 // import watermark from '@/common/watermark'
 const route = useRoute();
 const currentComponent = shallowRef();
@@ -106,11 +107,12 @@ const onExport = (type, editor) => {
       break;
     }
     case 'docx': {
-      let htmlContent = editor.getHTML();
+      message.warning("暂不支持导出word格式, 敬请期待！");
+      // let htmlContent = editor.getHTML();
       // 将 HTML 内容转换为 Docx 格式
-      const blob = htmlDocx.asBlob(htmlContent);
+      // const blob = htmlDocx.asBlob(htmlContent);
       // 使用 saveAs 函数保存文件
-      saveAs(blob, `${currentBook.title}.docx`)
+      // saveAs(blob, `${currentBook.title}.docx`)
       break;
     }
     case 'markdown': {
