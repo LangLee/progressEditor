@@ -36,6 +36,7 @@ onMounted(() => {
         if (firstChild) return;
         loading.value = true;
         ImageManager.preloadImage(props.modelValue.image, (imageElement) => {
+            if (imageContainer?.value?.firstChild) return;
             imageContainer?.value?.appendChild(imageElement);
             loading.value = false;
         })
@@ -47,6 +48,7 @@ watch(() => props.modelValue.image, (value, oldValue) => {
         if (firstChild) return;
         loading.value = true;
         ImageManager.preloadImage(value, (imageElement) => {
+            if (imageContainer?.value?.firstChild) return;
             imageContainer?.value?.appendChild(imageElement);
             loading.value = false;
         })

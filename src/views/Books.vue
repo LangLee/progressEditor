@@ -4,7 +4,7 @@
   </Header>
   <div id="content" class="w-full max-w-screen-2xl mx-auto">
     <div class="lg:flex">
-      <Menu :editable="!published" :share="published" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange" :defaultSelected="published"></Menu>
+      <Menu :editable="!published" :share="published" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange"></Menu>
       <div id="contentWrapper" class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible lg:pl-80">
         <router-view></router-view>
       </div>

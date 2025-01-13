@@ -3,7 +3,7 @@
         <div class="w-full lg:w-96 flex flex-col bg-white p-8 rounded-md lg:shadow-md">
             <div
                 class="flex h-12 justify-center items-center font-sans font-medium lg:font-semibold text-2xl lg:text-3xl leading-12 text-slate-500 mt-2">
-                <Fish />
+                <!-- <Fish /> -->
                 <p>Progress</p>
             </div>
             <!-- <ProInput class="my-3" name="name" v-model="name" placeholder="输入用户名" /> -->
@@ -29,7 +29,6 @@ import md5 from 'md5'
 import { login } from '@/api/user'
 import { useRouter } from 'vue-router'
 import message from '@/components/feedback/message'
-import Fish from '@/components/animation/Fish.vue'
 import ProInput from '@/components/entry/ProInput.vue'
 import { sign, verifyAndUpdatePassword } from '@/api/verification'
 const name = ref('');

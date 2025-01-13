@@ -2,7 +2,7 @@
     <div class="w-full flex flex-col items-center justify-center">
         <div
             class="flex h-12 justify-center items-center font-sans font-medium lg:font-semibold text-2xl lg:text-3xl leading-12 text-slate-500 mt-2">
-            <Fish />
+            <!-- <Fish /> -->
             <p>Progress</p>
         </div>
         <ProInput class="my-2" name="name" v-model="name" placeholder="输入用户名/手机号/邮箱号码"/>
@@ -27,7 +27,6 @@ import { useRouter } from 'vue-router'
 import message from '@/components/feedback/message'
 import Stars from '@/common/starts'
 import { setUserInfo } from '@/common/userInfo'
-import Fish from '@/components/animation/Fish.vue'
 import ProInput from '@/components/entry/ProInput.vue'
 import UserPrivacy from './UserPrivacy.vue'
 const name = ref('');

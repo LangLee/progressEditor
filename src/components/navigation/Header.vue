@@ -5,7 +5,7 @@
             <div
             class="hidden lg:flex h-16 flex-none pl-4 sm:pl-6 xl:pl-8 items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72">
             <div class="flex flex-row items-center text-slate-500 dark:text-slate-300 cursor-pointer" @click="goHome">
-               <Fish></Fish>
+               <!-- <Fish></Fish> -->
                <span class="text-gray-500 font-medium text-2xl">I want progress</span>
             </div>
         </div>
@@ -48,7 +48,6 @@ import Avatar from '@/components/common/Avatar.vue';
 import { useUserInfo, getUserInfo, setUserInfo } from '@/common/userInfo'
 import { getLoginUser, login } from '@/api/user'
 import {baseUrl} from '@/api/globalConfig'
-import Fish from '@/components/animation/Fish.vue'
 const appendToBody = () => document.body;
 const user = useUserInfo();
 // const userAvatar = computed(() => {
