@@ -11,7 +11,7 @@
             :interactive="true" :arrow="false" :triggerTarget="select" :onShow="dropdownShow" :onHide="dropdownHide">
             <RemixIcon class="float-right hover:text-blue-500" :name="hidden ? 'arrow-down-s-fill' : 'arrow-up-s-fill'" />
             <template #content>
-                <div class=" text-slate-600 dark:text-slate-300"
+                <div class=" text-slate-600 dark:text-slate-300 overflow-y-auto max-h-60"
                     :style="{ width: dropdownWidth }">
                     <div v-if="options && options.length" v-for="(item, index) in options" :key="index"
                         class="w-full h-8 leading-8 px-2 rounded dark:rounded-none mb-1 hover:bg-neutral-100 cursor-pointer text-gray-700 dark:text-gray-200"
