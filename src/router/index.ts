@@ -44,9 +44,6 @@ const Translation = defineAsyncComponent(() => {
 const Portals = defineAsyncComponent(() => {
     return import('@/views/Portals.vue')
 })
-const Coding = defineAsyncComponent(() => {
-    return import('@/views/Coding.vue')
-})
 const Setting = defineAsyncComponent(() => {
     return import('@/views/Setting.vue')
 })
@@ -162,11 +159,6 @@ const routes = [
         name: 'portals',
         path: '/portals',
         component: Portals
-    },
-    {
-        name: 'coding',
-        path: '/coding',
-        component: Coding
     },
     {
         name: 'setting',

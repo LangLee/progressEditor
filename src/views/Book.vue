@@ -169,12 +169,6 @@ const setCurrentComponent = (type) => {
       );
       break;
     }
-    case "code": {
-      currentComponent.value = defineAsyncComponent(() =>
-        import('@/components/editor/Code.vue')
-      );
-      break;
-    }
     case "task": {
       currentComponent.value = defineAsyncComponent(() =>
         import('@/components/editor/Task.vue')
@@ -220,6 +214,13 @@ onMounted(() => {
   // }, 5000)
   // 水印
   // watermark.show();
+  document.addEventListener('keydown', (e) => {
+    console.log('press key', e.ctrlKey, e.key);
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      save();
+    }
+  })
 })
 
 onUnmounted(() => {

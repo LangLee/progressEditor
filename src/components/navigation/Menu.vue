@@ -320,7 +320,7 @@ onMounted(() => {
             proxy.$nextTick(() => {
                 scrollToBook(route.params.id)
             })
-        } else if (props.defaultSelected && groups.value[0]?.books[0]) {
+        } else if (props.defaultSelected && groups.value[0]?.books?.[0]) {
             onMenuChange(groups.value[0].books[0]);
         }
     })

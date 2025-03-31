@@ -1,6 +1,6 @@
 <template>
-    <div class="w-36 h-36 p-2 relative cursor-pointer">
-        <img class="w-full h-full" :src="src" :alt="modelValue.name"></img>
+    <div class="w-full p-2 relative cursor-pointer">
+        <img class="w-full" :src="src" :alt="modelValue.name"></img>
         <div class="absolute top-0 left-0 w-32 h-32 m-2 bg-gray-500 opacity-0 hover:opacity-50" @click="onSelect">
             <div class="flex justify-center items-center h-full">
                 <div class="text-white text-lg">

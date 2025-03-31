@@ -3,10 +3,10 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer'
 import vueJsx from "@vitejs/plugin-vue-jsx"; // 配置vue使用jsx
-
+import { visualizer } from 'rollup-plugin-visualizer'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueJsx()],
+  plugins: [vue(), vueJsx(), visualizer()],
   base: './',
   resolve: {
     alias: {

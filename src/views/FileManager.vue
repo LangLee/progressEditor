@@ -3,8 +3,8 @@
         <Header :hiddenFold="true">
         </Header>
         <div class="w-full flex-1 flex flex-row flex-wrap p-2 lg:p-4 overflow-y-auto max-w-screen-2xl mx-auto">
-            <ImageView v-for="(item, index) in files" :key="index" :modelValue="item" @remove="(file)=>onRemove(file, index)"/>
-            <div class="flex w-32 h-32 m-2 justify-center items-center border border-gray-100 text-5xl text-gray-300 hover:text-gray-500 cursor-pointer" @click="onUpload">
+            <ImageView class="basis-1/2 md:basis-1/3 lg:basis-1/6" v-for="(item, index) in files" :key="index" :modelValue="item" @remove="(file)=>onRemove(file, index)"/>
+            <div class="flex basis-1/2 md:basis-1/3 lg:basis-1/6 h-32 justify-center items-center border border-gray-100 text-5xl text-gray-300 hover:text-gray-500 cursor-pointer" @click="onUpload">
                 <RemixIcon name="upload-cloud-line"/>
             </div>
         </div>
