@@ -39,7 +39,6 @@ const LOGIN_MODE_MAP = {
 }
 const loginMode = ref(1)
 const toggleMode = (mode) => {
-    return message.info('暂不支持其它登录，敬请期待！')
     if (mode) {
         if (mode === 3) {
             modal.confirm({

@@ -55,8 +55,8 @@ const removeAvatar = (user) => {
         }
     })
 }
-const getQRCode = (scene) => {
-    return axios.get("/users/getQRCode", {params: {scene: scene}}).then(res=>{
+const getQRCode = () => {
+    return axios.get("/users/getQRCode").then(res=>{
         if (res.data.success) {
             return res.data.data;
         } else {
@@ -73,6 +73,15 @@ const getUserList = ()=>{
         }
     })
 }
+const checkLogin = (scene)=>{
+    return axios.get("/users/checkLogin", {params: {scene}}).then(res=>{
+        if (res.data.success) {
+            return res.data.data;
+        } else {
+            return Promise.reject(res.data.message);
+        }
+    })
+}
 export {
     login,
     register,
@@ -82,5 +91,6 @@ export {
     uploadAvatar,
     removeAvatar,
     getQRCode,
-    getUserList
+    getUserList,
+    checkLogin
 }
