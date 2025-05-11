@@ -1,7 +1,7 @@
 <template>
     <div class="w-full flex flex-col items-center justify-center relative">
         <div v-if="expire" class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-slate-50/90">
-            <button class="text-blue-300 hover:text-blue-500 cursor-pointer" @click="refreshQRCode"><RemixIcon class="text-5xl" name="refresh-line" /></button>
+            <RemixIcon class="text-5xl" name="refresh-line" @click="refreshQRCode"/>
         </div>
         <img v-if="qrCode" class="w-full h-full" :src="qrCode" alt="小程序码">
         <div v-else class="relative w-full min-h-56">

@@ -4,7 +4,8 @@
   </Header>
   <div id="content" class="w-full max-w-screen-2xl mx-auto">
     <div class="lg:flex">
-      <Menu :editable="!published" :share="published" @toggleFold="toggleFold" :fold="fold" @menuChange="onMenuChange"></Menu>
+      <Menu :defaultGroup="defaultGroup" :editable="!published" :share="published" @toggleFold="toggleFold" :fold="fold"
+        @menuChange="onMenuChange"></Menu>
       <div id="contentWrapper" class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible lg:pl-80">
         <router-view></router-view>
       </div>
@@ -12,13 +13,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Menu from '@/components/navigation/Menu.vue'
 import Header from '@/components/navigation/Header.vue'
 import Search from '@/components/common/Search.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const router = useRouter();
+const route = useRoute();
 const fold = ref(true);
+const defaultGroup = ref(false);
 const props = defineProps({
   published: {
     type: Boolean,
@@ -33,7 +36,7 @@ const toggleFold = (float) => {
   fold.value = !fold.value;
 }
 const onMenuChange = (id, appId) => {
-  let path = props.published?'/share':'/books';
+  let path = props.published ? '/share' : '/books';
   path = id ? `${path}/${id}` : path;
   router.replace({
     path: path,
@@ -42,6 +45,9 @@ const onMenuChange = (id, appId) => {
     }
   })
 }
+watch(() => route.query.defaultGroup, (value) => {
+  defaultGroup.value = !!value;
+}, { immediate: true })
 </script>
 
 

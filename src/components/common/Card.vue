@@ -87,7 +87,7 @@ const open = () => {
         // 跳转链接为空
         emits('cardClick');
     } else if (props.modelValue.inner) {
-        router.push({ path: props.modelValue.url, query: { appId: props.modelValue._id } });
+        router.push({ path: props.modelValue.url, query: { appId: props.modelValue._id, defaultGroup: props.modelValue?.system } });
     } else {
         window.open(props.modelValue.url, '_blank')
     }

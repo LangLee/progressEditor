@@ -1,12 +1,13 @@
 <template>
   <div class="w-full h-full flex max-w-screen-2xl mx-auto" :class="{ 'select-none': !editable }">
     <component :editable='editable' :is="currentComponent" v-model="content" v-model:anchors="anchors" @save="save"
-      @share="share" @export="onExport"></component>
+      @share="openShareModal" @export="onExport"></component>
     <!-- <div v-if="editable"
       class="fixed top-28 right-4 w-8 h-8 text-center rounded-full border bg-blue-700/10 hover:bg-blue-500 z-40 cursor-pointer"
       @click="doAction">
       <RemixIcon class="text-slate-50 text-lg" :name="editing ? 'save-line' : 'file-edit-line'" />
     </div> -->
+    <ShareModal :visible="showShareModal" :book="currentBook" @cancel="closeShareModal" @confirm="confirmShare" />
   </div>
 </template>
 
@@ -26,6 +27,8 @@ import markdown from "@/components/editor/extend/markdown"
 import { saveAs } from 'file-saver'
 import { baseWebUrl } from "@/api/globalConfig";
 import html2canvas from 'html2canvas'
+import ShareModal from "@/components/feedback/ShareModal.vue";
+
 // import htmlDocx from 'html-docx-js/dist/html-docx.js'
 // import htmlDocx from '@/common/html-docx.js'
 // import watermark from '@/common/watermark'
@@ -34,6 +37,7 @@ const currentComponent = shallowRef();
 const content = ref('');
 const anchors = ref(Array<Anchor>());
 const editable = ref(false);
+const showShareModal = ref(false);
 let currentBook;
 let previousContent = '';
 // let intervalSave: NodeJS.Timeout | number;
@@ -75,18 +79,22 @@ const save = () => {
     change(false);
   });
 }
-const share = () => {
-  let book: Book = {
-    id: currentBook._id,
-    share: true
-  }
-  updateBook(book).then(() => {
-    const url = `${baseWebUrl}/#/book/${book.id}`;
-    const text = `标题：${book.title}\n链接：${url}\n`;
+
+const openShareModal = () => {
+  // 打开分享模态框
+  showShareModal.value = true;
+};
+const closeShareModal = () => {
+  // 关闭分享模态框
+  showShareModal.value = false;
+};
+const confirmShare = () => {
+  const url = `${baseWebUrl}/#/book/${currentBook._id}`;
+    const text = `标题：${currentBook.title}\n链接：${url}\n`;
     copyTextToClipboard(text, () => {
       message.success("已经复制到剪切板！");
     });
-  })
+    closeShareModal();
 }
 const onExport = (type, editor) => {
   switch (type) {
