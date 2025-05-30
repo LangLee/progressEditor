@@ -826,6 +826,16 @@
   resolved "https://registry.npmmirror.com/@tiptap/extension-strike/-/extension-strike-2.11.7.tgz#311b55f06bb3d1f93c02b809844cc8d27d110422"
   integrity sha512-D6GYiW9F24bvAY7XMOARNZbC8YGPzdzWdXd8VOOJABhf4ynMi/oW4NNiko+kZ67jn3EGaKoz32VMJzNQgYi1HA==
 
+"@tiptap/extension-subscript@^2.12.0":
+  version "2.12.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extension-subscript/-/extension-subscript-2.12.0.tgz#f65946608f913e4999912bd86a8cd469afaaf772"
+  integrity sha512-9hQE28oHkIjLtn6ixysQJtHBSpEvcaV2pmYFkmoVDf4mHqbXGOUuywO3b/Fc0lNOU2aD/kgZNENNsFPWWaRWJA==
+
+"@tiptap/extension-superscript@^2.12.0":
+  version "2.12.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extension-superscript/-/extension-superscript-2.12.0.tgz#71c430e91f95171cf6e22e1c2bc7daa86cfa6267"
+  integrity sha512-qdUDRNGluGAG2Jok8DUezgSwTryZDs/72SyY4+gIB8nOkEfIOeM2avx8F0jETLk4Eyasfl8wbMbS1qY7s6ydfA==
+
 "@tiptap/extension-table-cell@^2.3.0":
   version "2.11.7"
   resolved "https://registry.npmmirror.com/@tiptap/extension-table-cell/-/extension-table-cell-2.11.7.tgz#8a9b5d224ef1af1c3ee27b4a343719d9f2be4173"
@@ -3124,6 +3134,11 @@ tippy.js@^6.3.7:
   integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
   dependencies:
     "@popperjs/core" "^2.9.0"
+
+tiptap-extension-global-drag-handle@^0.1.18:
+  version "0.1.18"
+  resolved "https://registry.npmmirror.com/tiptap-extension-global-drag-handle/-/tiptap-extension-global-drag-handle-0.1.18.tgz#e821c7639b30bc26a9b83c49dce26b968272a7cf"
+  integrity sha512-jwFuy1K8DP3a4bFy76Hpc63w1Sil0B7uZ3mvhQomVvUFCU787Lg2FowNhn7NFzeyok761qY2VG+PZ/FDthWUdg==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
