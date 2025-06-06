@@ -2,9 +2,9 @@ import { VueRenderer } from '@tiptap/vue-3'
 import tippy from 'tippy.js'
 
 import CommandsList from './CommandsList.vue'
-import { upload as uploadFile } from '@/api/file';
+import { upload as uploadFile } from '@/api/file'
 import { upload } from '@/common/utils'
-import { baseUrl } from '@/api/globalConfig';
+import { baseUrl } from '@/api/globalConfig'
 
 export default {
   items: ({ query }) => {
@@ -14,12 +14,7 @@ export default {
         key: 'aiWrite',
         icon: 'ai-generate',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setAiWrite()
-            .run()
+          editor.chain().focus().deleteRange(range).setAiWrite().run()
         },
       },
       {
@@ -66,12 +61,7 @@ export default {
         key: 'bold',
         icon: 'bold',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleBold()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleBold().run()
         },
       },
       {
@@ -79,36 +69,23 @@ export default {
         key: 'italic',
         icon: 'italic',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleItalic()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleItalic().run()
         },
-      },{
+      },
+      {
         title: 'Underline',
         key: 'underline',
         icon: 'underline',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleUnderline()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleUnderline().run()
         },
-      },{
+      },
+      {
         title: 'Strikethrough',
         key: 'strike',
         icon: 'strikethrough',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleStrike()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleStrike().run()
         },
       },
       {
@@ -155,12 +132,7 @@ export default {
         key: 'paragraph',
         icon: 'paragraph',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleParagraph()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleParagraph().run()
         },
       },
       {
@@ -168,12 +140,7 @@ export default {
         key: 'highlight',
         icon: 'highlight',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleHighlight()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleHighlight().run()
         },
       },
       {
@@ -181,12 +148,7 @@ export default {
         key: 'bulletList',
         icon: 'list-unordered',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleBulletList()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleBulletList().run()
         },
       },
       {
@@ -194,12 +156,7 @@ export default {
         key: 'orderedList',
         icon: 'list-ordered-2',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleOrderedList()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleOrderedList().run()
         },
       },
       {
@@ -207,12 +164,7 @@ export default {
         key: 'code',
         icon: 'code-view',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleCode()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleCode().run()
         },
       },
       {
@@ -220,12 +172,7 @@ export default {
         key: 'codeBlock',
         icon: 'code-block',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleCodeBlock()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleCodeBlock().run()
         },
       },
       {
@@ -233,12 +180,7 @@ export default {
         key: 'blockquote',
         icon: 'quote-text',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleBlockquote()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleBlockquote().run()
         },
       },
       {
@@ -246,12 +188,7 @@ export default {
         key: 'horizontal',
         icon: 'separator',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setHorizontalRule()
-            .run()
+          editor.chain().focus().deleteRange(range).setHorizontalRule().run()
         },
       },
       {
@@ -259,12 +196,7 @@ export default {
         key: 'hardBreak',
         icon: 'text-wrap',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setHardBreak()
-            .run()
+          editor.chain().focus().deleteRange(range).setHardBreak().run()
         },
       },
       {
@@ -272,12 +204,7 @@ export default {
         key: 'task',
         icon: 'list-check-3',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .toggleTaskList()
-            .run()
+          editor.chain().focus().deleteRange(range).toggleTaskList().run()
         },
       },
       {
@@ -289,98 +216,7 @@ export default {
             .chain()
             .focus()
             .deleteRange(range)
-            .insertTable({ rows: 3, cols: 3, withHeaderRow: false })
-            .run()
-        },
-      },
-      {
-        title: 'Column Before',
-        key: 'addTableColumnBefore',
-        icon: 'insert-column-left',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .addColumnBefore()
-            .run()
-        },
-      },
-      {
-        title: 'Column After',
-        key: 'addTableColumnAfter',
-        icon: 'insert-column-right',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .addColumnAfter()
-            .run()
-        },
-      },
-      {
-        title: 'Delete Column',
-        key: 'deleteTableColumn',
-        icon: 'delete-column',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .deleteColumn()
-            .run()
-        },
-      },
-      {
-        title: 'Row Before',
-        key: 'addTableRowBefore',
-        icon: 'insert-row-top',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .addRowBefore()
-            .run()
-        },
-      },
-      {
-        title: 'Row After',
-        key: 'addTableRowAfter',
-        icon: 'insert-row-bottom',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .addRowAfter()
-            .run()
-        },
-      },
-      {
-        title: 'Delete Row',
-        key: 'deleteTableRow',
-        icon: 'delete-row',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .deleteRow()
-            .run()
-        },
-      },
-      {
-        title: 'Delete Table',
-        key: 'deleteTable',
-        icon: 'delete-bin-4-line',
-        command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .deleteTable()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
             .run()
         },
       },
@@ -389,12 +225,7 @@ export default {
         key: 'deleteNode',
         icon: 'delete-bin-2-line',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .deleteNode()
-            .run()
+          editor.chain().focus().deleteRange(range).deleteNode().run()
         },
       },
       {
@@ -402,12 +233,7 @@ export default {
         key: 'clearMarks',
         icon: 'eraser-line',
         command: ({ editor, range }) => {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .unsetAllMarks()
-            .run()
+          editor.chain().focus().deleteRange(range).unsetAllMarks().run()
         },
       },
       {
@@ -418,15 +244,26 @@ export default {
           upload({
             accept: 'image/*',
             multiple: false,
-            uploader: uploadFile
+            uploader: uploadFile,
           }).then((file) => {
-            let { data } = file;
+            let { data } = file
             let url = `${baseUrl}/file/preview?file=${data}`
-            editor.chain().focus().deleteRange(range).setImage({ src: url }).run();
+            editor
+              .chain()
+              .focus()
+              .deleteRange(range)
+              .setImage({ src: url })
+              .run()
           })
         },
-      }
-    ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.key.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
+      },
+    ]
+      .filter(
+        (item) =>
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.key.toLowerCase().includes(query.toLowerCase())
+      )
+      .slice(0, 8)
   },
 
   render: () => {
@@ -434,7 +271,7 @@ export default {
     let popup
 
     return {
-      onStart: props => {
+      onStart: (props) => {
         component = new VueRenderer(CommandsList, {
           props,
           editor: props.editor,
@@ -453,7 +290,7 @@ export default {
           trigger: 'manual',
           placement: 'bottom-start',
           theme: 'light',
-          arrow: false
+          arrow: false,
         })
       },
 
@@ -486,3 +323,4 @@ export default {
     }
   },
 }
+
