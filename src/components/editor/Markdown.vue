@@ -28,52 +28,24 @@
   </div>
 </template>
 <script setup lang="ts">
-import Document from '@tiptap/extension-document'
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
-// import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import Table from '@tiptap/extension-table'
-import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
-import TableRow from '@tiptap/extension-table-row'
-// import Dropcursor from '@tiptap/extension-dropcursor'
-import FileHandler from '@tiptap-pro/extension-file-handler'
-import Image from '@tiptap/extension-image'
-// import Text from '@tiptap/extension-text'
-import TextAlign from '@tiptap/extension-text-align'
-import Underline from '@tiptap/extension-underline'
-import TaskItem from '@tiptap/extension-task-item'
-import TaskList from '@tiptap/extension-task-list'
-import Link from '@tiptap/extension-link'
-import { Superscript } from '@tiptap/extension-superscript'
-import SubScript from '@tiptap/extension-subscript'
-import { useEditor, EditorContent } from '@tiptap/vue-3'
-import { TableOfContents } from '@tiptap-pro/extension-table-of-contents'
-import GlobalDragHandle from 'tiptap-extension-global-drag-handle'
-
-import { common, createLowlight } from 'lowlight'
-
 // import FloatingMenu from '@tiptap/extension-floating-menu'
 import { watch, defineProps, onBeforeUnmount } from 'vue'
 import Anchor from '@/types/anchor'
 import TableOfContent from '../navigation/TableOfContent.vue'
+import { useEditor, EditorContent } from '@tiptap/vue-3'
+import { TableOfContents } from '@tiptap-pro/extension-table-of-contents'
+import FileHandler from '@tiptap-pro/extension-file-handler'
+
+import { debounce, isMobile } from '@/common/utils.ts'
+import editorExtends from './editorExtends'
+
 import FixedMenu from '../toolbar/FixedMenu.vue'
 import BubbleMenu from '../toolbar/BubbleMenu.vue'
 import BubbleTableMenu from '../toolbar/BubbleTableMenu.vue'
 import BubbleTableCellMenu from '../toolbar/BubbleTableCellMenu.vue'
 import FloatMenu from '../toolbar/FloatMenu.vue'
 
-import Commands from './extend/commands'
-import suggestion from './extend/suggestion'
-import { debounce, isMobile } from '@/common/utils.ts'
-
-import aiWrite from './extend/aiWrite'
-import { CustomCodeBlock } from './extend/codeBlock'
-import CodeBlockView from './extend/CodeBlockView.vue'
 import { change } from '@/common/status'
-import { Export } from '@tiptap-pro/extension-export'
 import { Operation } from './extend/operation'
 import { upload } from '@/api/file'
 import { baseUrl } from '@/api/globalConfig'
@@ -81,17 +53,6 @@ import './styles/index.css'
 // const CustomDocument = Document.extend({
 //   content: 'heading block*',
 // })
-const lowlight = createLowlight(common)
-// lowlight.register("mermaid", plaintext);
-// lowlight.register("powershell", powershell);
-// lowlight.register("abap", abap);
-// lowlight.register("erlang", erlang);
-// lowlight.register("elixir", elixir);
-// lowlight.register("dockerfile", dockerfile);
-// lowlight.register("clojure", clojure);
-// lowlight.register("fortran", fortran);
-// lowlight.register("haskell", haskell);
-// lowlight.register("scala", scala);
 const props = defineProps({
   modelValue: String,
   editable: {
@@ -115,8 +76,6 @@ const updateContent = debounce((editor) => {
 const editor = useEditor({
   editable: props.editable,
   content: props.modelValue,
-  immediatelyRender: true,
-  shouldRerenderOnTransaction: true,
   editorProps: {
     scrollThreshold: 80,
     scrollMargin: 80,
@@ -125,66 +84,11 @@ const editor = useEditor({
     },
   },
   extensions: [
-    Document,
-    StarterKit.configure({
-      document: false,
-    }),
-    Highlight,
-    Typography,
-    // FloatingMenu.configure({
-    //   shouldShow: ({ editor, view, state, oldState }) => {
-    //     // show the floating within any paragraph
-    //     return editor.isActive('paragraph')
-    //   },
-    // }),
-    TextAlign.configure({
-      types: ['heading', 'paragraph'],
-    }),
-    Underline,
-    Superscript,
-    SubScript,
-    Link.configure({
-      openOnClick: false,
-      defaultProtocol: 'https',
-    }),
-    TaskList,
-    TaskItem.configure({
-      nested: true,
-    }),
-    // CodeBlockLowlight.configure({
-    //   lowlight,
-    // }),
-
-    CustomCodeBlock.configure({
-      view: CodeBlockView,
-      lowlight,
-      HTMLAttributes: {
-        spellcheck: false,
-      },
-    }),
-    GlobalDragHandle,
+    ...editorExtends,
     TableOfContents.configure({
       onUpdate: (content) => {
         emits('update:anchors', content)
       },
-    }),
-    Placeholder.configure({
-      emptyEditorClass: 'is-editor-empty',
-      // showOnlyWhenEditable: false,
-      // showOnlyCurrent: false,
-      // includeChildren: true,
-      placeholder: () => {
-        //{ node }
-        // if (node.type.name === 'heading') {
-        //   return 'What’s the title?'
-        // }
-        // return 'Type / to browse options'
-        return '输入 / 查看操作'
-      },
-    }),
-    Image.configure({
-      inline: true,
-      allowBase64: true,
     }),
     FileHandler.configure({
       allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
@@ -201,16 +105,6 @@ const editor = useEditor({
               .focus()
               .run()
           })
-          //   const fileReader = new FileReader()
-          //   fileReader.readAsDataURL(file)
-          //   fileReader.onload = () => {
-          //     currentEditor.chain().insertContentAt(pos, {
-          //       type: 'image',
-          //       attrs: {
-          //         src: fileReader.result,
-          //       },
-          //     }).focus().run()
-          //   }
         })
       },
       onPaste: (currentEditor, files, htmlContent) => {
@@ -232,38 +126,8 @@ const editor = useEditor({
               .focus()
               .run()
           })
-          // const fileReader = new FileReader()
-          // fileReader.readAsDataURL(file)
-          // fileReader.onload = () => {
-          //   currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {
-          //     type: 'image',
-          //     attrs: {
-          //       src: fileReader.result,
-          //     },
-          //   }).focus().run()
-          // }
         })
       },
-    }),
-    Commands.configure({
-      suggestion,
-    }),
-    Table.configure({
-      resizable: true,
-      lastColumnResizable: false,
-      allowTableNodeSelection: true,
-    }),
-    TableRow,
-    TableHeader,
-    TableCell,
-    aiWrite,
-    Export.configure({
-      // The Convert App-ID from the convert settings page: https://cloud.tiptap.dev/convert-settings
-      appId: 'jkv2yemx',
-
-      // The JWT token you generated in the previous step
-      token:
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjU4NjI4MTgsIm5iZiI6MTcyNTg2MjgxOCwiZXhwIjoxNzI1OTQ5MjE4LCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiJqa3YyeWVteCJ9.ITcOVS7VcEUkEOuMWj6nR5lV9wcVtZe8T6l3BsqCuYA',
     }),
     Operation.configure({
       onSave: () => {
@@ -313,13 +177,5 @@ onBeforeUnmount(() => {
   editor.value && editor.value.destroy()
 })
 </script>
-<style lang="scss">
-.tiptap p.is-empty::before {
-  color: #94a3b8;
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
-}
-</style>
+<style lang="scss"></style>
 

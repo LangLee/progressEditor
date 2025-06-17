@@ -7,19 +7,26 @@
         :options="languageOptions"
         palaceHolder="auto"
         :disabled="!editor.isEditable"
-        @change="changeLanguage"
+        @update:modelValue="changeLanguage"
+        :showSearch="true"
       ></ProSelect>
       <span
-        class="hover:text-slate-700 dark:hover:text-neutral-300 cursor-pointer"
+        class="text-slate-500 hover:text-slate-700 dark:hover:text-neutral-300 cursor-pointer"
         @click.stop="copy"
       >
         <RemixIcon name="file-copy-2-line" />
         <span>复制</span>
       </span>
     </div>
-    <pre spellcheck="false">
-      <node-view-content as="code" :class="`language-${languageValue}`" />
-    </pre>
+    <pre
+      spellcheck="false"
+      :hidden="
+        (languageValue === 'mermaid' && !editor.isEditable) ||
+        (languageValue === 'mermaid' &&
+          !isSelected &&
+          node.textContent.length > 0)
+      "
+    ><node-view-content as="code" :class="`language-${languageValue}`" /></pre>
   </node-view-wrapper>
 </template>
 
@@ -56,41 +63,33 @@ const languageOptions = computed(() => {
 
 // 切换语言时更新属性和状态
 const changeLanguage = (language: string) => {
-  ;(languageValue.value = language),
-    props.updateAttributes({
-      language: language,
-    })
+  languageValue.value = language
+  props.updateAttributes({
+    language: language,
+  })
 }
 const copy = () => {
-  const code = props.node.attrs.code
+  const code = props.node?.textContent
   copyTextToClipboard(code, () => {
     message.success('复制成功')
   })
 }
-
+const updateSelection = () => {
+  const { state } = props.editor
+  const { from, to } = state.selection
+  // 检查选区是否与节点范围重叠
+  const isNodeSelected =
+    (from >= props.getPos() && from < props.getPos() + props.node.nodeSize) ||
+    (to > props.getPos() && to <= props.getPos() + props.node.nodeSize)
+  isSelected.value = isNodeSelected
+}
 // 监听编辑器选择变化
 onMounted(() => {
-  const updateSelection = () => {
-    const { state } = props.editor
-    const { from, to } = state.selection
-    // 检查选区是否与节点范围重叠
-    const isNodeSelected =
-      (from >= props.getPos() && from < props.getPos() + props.node.nodeSize) ||
-      (to > props.getPos() && to <= props.getPos() + props.node.nodeSize)
-    isSelected.value = isNodeSelected
-  }
-
   props.editor.on('selectionUpdate', updateSelection)
-  onBeforeUnmount(() => {
-    props.editor.off('selectionUpdate', updateSelection)
-  })
+})
+onBeforeUnmount(() => {
+  props.editor.off('selectionUpdate', updateSelection)
 })
 </script>
 
-<style scoped lang="less">
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-</style>
+<style scoped lang="less"></style>

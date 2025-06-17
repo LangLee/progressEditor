@@ -5,9 +5,17 @@
     :class="{ 'outline-none ring-1 ring-blue-600 border-transparent': !hidden }"
     @click="showModal"
   >
-    <div class="flex-1 pr-4">
-      <span v-if="display">{{ display }}</span>
-      <span v-else class="text-slate-300">{{ palaceHolder }}</span>
+    <div class="flex-1 pr-4 text-slate-400">
+      <input
+        v-if="showSearch && !disabled"
+        v-model="searchText"
+        @keyup.enter="filterOptions"
+        @blur="onInputBlur"
+        :placeholder="display || '输入关键字搜索'"
+        class="w-full outline-none bg-transparent"
+      />
+      <span v-else-if="{ display }">{{ display }}</span>
+      <span v-else>{{ palaceHolder }}</span>
     </div>
     <RemixIcon
       v-if="mobile"
@@ -19,7 +27,7 @@
       ref="dropdown"
       trigger="click"
       placement="bottom-end"
-      :offset="[10, 15]"
+      :offset="[10, 5]"
       animation="fade"
       :interactive="true"
       :arrow="false"
@@ -37,8 +45,8 @@
           :style="{ width: dropdownWidth }"
         >
           <div
-            v-if="options && options.length"
-            v-for="(item, index) in options"
+            v-if="filteredOptions && filteredOptions.length"
+            v-for="(item, index) in filteredOptions"
             :key="index"
             class="w-full h-8 leading-8 px-2 rounded dark:rounded-none mb-1 hover:bg-neutral-100 cursor-pointer text-gray-700 dark:text-gray-200"
             @click="selectItem(item)"
@@ -73,7 +81,15 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, watch, defineProps, defineEmits, onMounted } from 'vue'
+import {
+  ref,
+  reactive,
+  watch,
+  defineProps,
+  defineEmits,
+  onMounted,
+  nextTick,
+} from 'vue'
 import RemixIcon from '@/components/common/RemixIcon.vue'
 import Modal from '@/components/feedback/Modal.vue'
 import { isMobile } from '@/common/utils'
@@ -82,6 +98,8 @@ const dropdown = ref()
 const select = ref()
 const dropdownWidth = ref('')
 const mobile = ref(isMobile())
+const searchText = ref('')
+const filteredOptions = ref([])
 const props = defineProps({
   options: {
     type: Array,
@@ -96,13 +114,32 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  showSearch: {
+    type: Boolean,
+    default: false,
+  },
 })
-const emits = defineEmits(['update:value'])
+const emits = defineEmits(['update:modelValue'])
 const display = ref('')
+const filterOptions = () => {
+  const keyword = searchText.value.trim().toLowerCase()
+  if (!keyword) {
+    filteredOptions.value = props.options
+    return
+  }
+  filteredOptions.value = props.options.filter((item) =>
+    item.label.toLowerCase().includes(keyword)
+  )
+}
+const onInputBlur = () => {
+  searchText.value = ''
+}
 const selectItem = (item) => {
   display.value = item.label
   emits('update:modelValue', item.value)
   hidden.value = true
+  searchText.value = ''
+  filteredOptions.value = props.options
   dropdown?.value?.hide()
 }
 const dropdownShow = () => {
@@ -130,8 +167,17 @@ watch(
   },
   { immediate: true }
 )
+watch(
+  () => props.options,
+  (newOptions) => {
+    filteredOptions.value = newOptions
+  },
+  { immediate: true }
+)
 onMounted(() => {
-  dropdownWidth.value = `${select.value.clientWidth - 14}px`
+  nextTick(() => {
+    dropdownWidth.value = `${select.value.clientWidth - 14}px`
+  })
 })
 </script>
 
