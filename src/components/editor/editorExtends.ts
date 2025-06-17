@@ -3,7 +3,7 @@ import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+// import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Table from '@tiptap/extension-table'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
@@ -66,6 +66,7 @@ const editorExtends = [
       } else if (node.type.name === 'paragraph') {
         return '输入正文， 键入 "/" 查看命令'
       }
+      return ''
     },
   }),
   Highlight,

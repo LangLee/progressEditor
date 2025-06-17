@@ -32,6 +32,7 @@ const CustomCodeBlock = CodeBlockLowlight.extend<CustomCodeBlockOptions>({
             .run()
           return true
         }
+        return true
       },
     }
   },
