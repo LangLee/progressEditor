@@ -193,41 +193,41 @@ import {
   watch,
   getCurrentInstance,
   computed,
-} from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { createBook, removeBook, updateBook } from '../../api/book'
+} from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { createBook, removeBook, updateBook } from '../../api/book';
 import {
   getGroupAndBooks,
   createGroup,
   updateGroup,
   removeGroup,
-} from '../../api/group'
-import BookModal from '@/components/feedback/BookModal.vue'
-import GroupModal from '@/components/feedback/GroupModal.vue'
-import message from '@/components/feedback/message'
-import RemixIcon from '@/components/common/RemixIcon.vue'
-import { isMobile, copyTextToClipboard } from '@/common/utils'
-import modal from '@/components/feedback/modal'
-import { baseWebUrl } from '@/api/globalConfig'
-const router = useRouter()
-const route = useRoute()
-const groups = ref([])
-const appId = ref(route.query.appId)
+} from '../../api/group';
+import BookModal from '@/components/feedback/BookModal.vue';
+import GroupModal from '@/components/feedback/GroupModal.vue';
+import message from '@/components/feedback/message';
+import RemixIcon from '@/components/common/RemixIcon.vue';
+import { isMobile, copyTextToClipboard } from '@/common/utils';
+import modal from '@/components/feedback/modal';
+import { baseWebUrl } from '@/api/globalConfig';
+const router = useRouter();
+const route = useRoute();
+const groups = ref([]);
+const appId = ref(route.query.appId);
 // 鼠标点击激活书签
-const activeItem = ref('')
+const activeItem = ref('');
 // 鼠标移入节点，可控制操作显影
-const hoverItem = ref('')
+const hoverItem = ref('');
 // 当前input输入编辑的节点
-const editItem = ref('')
+const editItem = ref('');
 // 弹窗编辑分类
-const editGroup = ref(undefined)
+const editGroup = ref(undefined);
 // 弹窗编辑书签
-const editBook = ref(undefined)
+const editBook = ref(undefined);
 // 是否是新增的分类或者书签
-const isNew = ref(false)
+const isNew = ref(false);
 // 标记移动端触摸事件
-let touchStart = null
-const { proxy } = getCurrentInstance()
+let touchStart = null;
+const { proxy } = getCurrentInstance();
 const props = defineProps({
   fold: {
     type: Boolean,
@@ -253,269 +253,272 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-})
-const foldState = ref(true)
-const emits = defineEmits(['toggleFold', 'menuChange'])
+});
+const foldState = ref(true);
+const emits = defineEmits(['toggleFold', 'menuChange']);
 const getIconByType = (type) => {
   switch (type) {
     case 'markdown':
-      return 'markdown-line'
+      return 'markdown-line';
     case 'text':
-      return 'draft-line'
+      return 'draft-line';
     case 'chat':
-      return 'message-2-line'
+      return 'message-2-line';
     case 'link':
-      return 'links-line'
+      return 'links-line';
     case 'todo':
-      return 'todo-line'
+      return 'todo-line';
     case 'drawing':
-      return 'image-edit-line'
+      return 'image-edit-line';
     case 'code':
-      return 'file-code-line'
+      return 'file-code-line';
     default:
-      return 'markdown-line'
+      return 'markdown-line';
   }
-}
+};
 const doFold = () => {
-  foldState.value = true
-  emits('toggleFold', true)
-}
+  foldState.value = true;
+  emits('toggleFold', true);
+};
 const onMenuChange = (item) => {
-  let { id } = item || {}
+  let { id } = item || {};
   // 激活菜单
   // activeItem.value = id || '';
   // editItem.value = '';
-  doFold()
-  emits('menuChange', id, route.query.appId)
-}
+  doFold();
+  emits('menuChange', id, route.query.appId);
+};
 const onCreateGroup = () => {
-  editGroup.value = { name: '新增分类' }
-  isNew.value = true
-}
+  editGroup.value = { name: '新增分类' };
+  isNew.value = true;
+};
 const onInputEditGroup = (id) => {
-  if (id === 'default') return
-  editItem.value = id
+  if (id === 'default') return;
+  editItem.value = id;
   proxy.$nextTick(() => {
-    let titleInput = proxy.$refs.titleInput
-    console.log(titleInput)
-    titleInput && titleInput[0] && titleInput[0].focus()
-  })
-}
+    let titleInput = proxy.$refs.titleInput;
+    console.log(titleInput);
+    titleInput && titleInput[0] && titleInput[0].focus();
+  });
+};
 const onEditGroup = (group) => {
-  editGroup.value = group
-  isNew.value = false
-}
+  editGroup.value = group;
+  isNew.value = false;
+};
 const finishEditGroup = () => {
   if (editGroup.value && isNew.value) {
     createGroup(editGroup.value).then((data) => {
-      let { _id, name } = data
-      if (!_id) return
-      groups.value.push({ id: _id, name, books: [] })
-      editItem.value = ''
-      editGroup.value = undefined
-      isNew.value = false
-    })
+      let { _id, name } = data;
+      if (!_id) return;
+      groups.value.push({ id: _id, name, books: [] });
+      editItem.value = '';
+      editGroup.value = undefined;
+      isNew.value = false;
+    });
   } else if (editGroup.value) {
-    onUpdateGroup(editGroup.value)
+    onUpdateGroup(editGroup.value);
   }
-}
+};
 const onUpdateGroup = (group) => {
   updateGroup(group).then(() => {
-    editItem.value = ''
-    editGroup.value = undefined
-    isNew.value = false
-  })
-}
+    editItem.value = '';
+    editGroup.value = undefined;
+    isNew.value = false;
+  });
+};
 const onRemoveGroup = (group, index) => {
   if (group.books && group.books.length > 0) {
-    message.warning('该分类下有书籍，不能删除!')
-    return
+    message.warning('该分类下有书籍，不能删除!');
+    return;
   }
   modal.confirm({
     title: '确认删除',
     content: '确定删除该分类？',
     onOk: () => {
       removeGroup(group.id).then(() => {
-        message.success('删除分类成功!')
-        groups.value.splice(index, 1)
-      })
+        message.success('删除分类成功!');
+        groups.value.splice(index, 1);
+      });
     },
-  })
-}
+  });
+};
 
 const onCreateBook = () => {
-  isNew.value = true
+  isNew.value = true;
   editBook.value = {
     title: '新增笔记',
     type: props.fixedType || 'markdown',
     category: groups?.value[0]?.id,
-  }
-}
+  };
+};
 const finishEditBook = () => {
   if (editBook && isNew.value) {
-    createBook(editBook.value).then((data) => {
-      let group = groups.value.find(({ id }) => id === data.category)
+    let book = { ...editBook.value };
+    book.category = book.category === 'default' ? undefined : book.category;
+    createBook(book).then((data) => {
+      let group = groups.value.find(({ id }) => id === data.category);
       if (!group) {
-        group = groups.value.find(({ id }) => id === 'default')
-        if (!group) return
+        group = groups.value.find(({ id }) => id === 'default');
+        if (!group) return;
       }
-      group.books = group.books || []
-      data.id = data._id
-      group.books.splice(0, 0, data)
-      onMenuChange(data)
-      editBook.value = undefined
-    })
+      group.books = group.books || [];
+      data.id = data._id;
+      group.books.splice(0, 0, data);
+      onMenuChange(data);
+      editBook.value = undefined;
+    });
   } else if (editBook && editBook.value) {
-    onUpdateBook(editBook.value)
+    onUpdateBook(editBook.value);
   }
-}
+};
 const closeModal = () => {
-  editItem.value = ''
-  editBook.value = undefined
-  editGroup.value = undefined
-  isNew.value = false
-}
+  editItem.value = '';
+  editBook.value = undefined;
+  editGroup.value = undefined;
+  isNew.value = false;
+};
 const onRemoveBook = (books, index) => {
-  let book = books[index]
+  let book = books[index];
   if (!book || !book.id) {
-    return
+    return;
   }
   modal.confirm({
     title: '确认删除',
     content: '确认删除该内容？',
     onOk: () => {
       removeBook(book.id).then(() => {
-        books.splice(index, 1)
-        let activeIdx = books && books.length > index ? index : books.length - 1
-        onMenuChange(activeIdx < 0 ? null : books[activeIdx])
-        message.success('删除书籍成功!')
-      })
+        books.splice(index, 1);
+        let activeIdx =
+          books && books.length > index ? index : books.length - 1;
+        onMenuChange(activeIdx < 0 ? null : books[activeIdx]);
+        message.success('删除书籍成功!');
+      });
     },
-  })
-}
+  });
+};
 const onEditBookTitle = (id) => {
-  editItem.value = id
+  editItem.value = id;
   proxy.$nextTick(() => {
-    let titleInput = proxy.$refs.titleInput
-    titleInput && titleInput[0] && titleInput[0].focus()
-  })
-}
+    let titleInput = proxy.$refs.titleInput;
+    titleInput && titleInput[0] && titleInput[0].focus();
+  });
+};
 const onEditBook = (book) => {
   // 缓存当前分类
-  editItem.value = book.category
-  editBook.value = book
-  isNew.value = false
-}
+  editItem.value = book.category;
+  editBook.value = book;
+  isNew.value = false;
+};
 const onUpdateBook = (book) => {
   updateBook({
     ...book,
-    category: book.category === 'default' ? '' : book.category,
+    category: book.category === 'default' ? undefined : book.category,
   }).then((data) => {
     if (editItem.value !== book.category) {
       // 移动书籍到新的分类下
     }
-    editItem.value = ''
-    editBook.value = undefined
-  })
-}
+    editItem.value = '';
+    editBook.value = undefined;
+  });
+};
 onMounted(() => {
   getGroupAndBooks(props.defaultGroup, props.share).then((data) => {
-    groups.value = data || []
+    groups.value = data || [];
     if (route.params.id) {
       // 激活菜单
-      activeItem.value = route.params.id
-      editItem.value = ''
+      activeItem.value = route.params.id;
+      editItem.value = '';
       proxy.$nextTick(() => {
-        scrollToBook(route.params.id)
-      })
+        scrollToBook(route.params.id);
+      });
     } else if (props.defaultSelected && groups.value[0]?.books?.[0]) {
-      onMenuChange(groups.value[0].books[0])
+      onMenuChange(groups.value[0].books[0]);
     }
-  })
-})
+  });
+});
 const scrollToBook = (bookId) => {
-  let sideBar = document.getElementById('navBar')
+  let sideBar = document.getElementById('navBar');
   if (navBar && bookId) {
-    let book = document.getElementById(`book-${bookId}`)
+    let book = document.getElementById(`book-${bookId}`);
     if (book) {
       navBar.scrollTo({
         top: book.offsetTop,
         behavior: 'smooth',
-      })
+      });
     }
   }
-}
+};
 const onItemMouseover = (id) => {
-  if (isMobile()) return false
-  hoverItem.value = id
-}
+  if (isMobile()) return false;
+  hoverItem.value = id;
+};
 const onItemMouseleave = (id) => {
-  if (isMobile()) return false
-  hoverItem.value = ''
-}
+  if (isMobile()) return false;
+  hoverItem.value = '';
+};
 const handleTouchStart = (e, id) => {
-  touchStart = { x: e.touches[0].clientX, target: id }
-}
+  touchStart = { x: e.touches[0].clientX, target: id };
+};
 const handleTouchEnd = (e, id) => {
-  if (!touchStart) return true
-  let { x, target } = touchStart
+  if (!touchStart) return true;
+  let { x, target } = touchStart;
   if (target !== id) {
-    touchStart = null
-    return true
+    touchStart = null;
+    return true;
   }
-  let touchEnd = e.changedTouches[0].clientX
-  let distance = Math.abs(x - touchEnd)
+  let touchEnd = e.changedTouches[0].clientX;
+  let distance = Math.abs(x - touchEnd);
   if (distance < 10) {
-    touchStart = null
-    return true
+    touchStart = null;
+    return true;
   }
   if (x > touchEnd) {
     // 左移
-    hoverItem.value = id
+    hoverItem.value = id;
   } else if (x < touchEnd) {
     // 右移
-    hoverItem.value = ''
+    hoverItem.value = '';
   }
-  touchStart = null
-}
+  touchStart = null;
+};
 const onShareBook = (book) => {
-  book.share = !book.share
+  book.share = !book.share;
   updateBook(book).then((data) => {
     if (book.share) {
-      const url = `${baseWebUrl}/#/book/${book.id}`
-      const text = `标题：${book.title}\n链接：${url}\n`
-      copyTextToClipboard(text)
-      message.success('已经复制到剪切板！')
+      const url = `${baseWebUrl}/#/book/${book.id}`;
+      const text = `标题：${book.title}\n链接：${url}\n`;
+      copyTextToClipboard(text);
+      message.success('已经复制到剪切板！');
     } else {
-      message.success('取消分享成功！')
+      message.success('取消分享成功！');
     }
-  })
-}
+  });
+};
 watch(
   () => route.params.id,
   (value, oldValue) => {
     if (value !== oldValue) {
-      activeItem.value = value
-      editItem.value = ''
+      activeItem.value = value;
+      editItem.value = '';
     }
   },
   { immediate: true }
-)
+);
 watch(
   () => route.query.appId,
   (value) => {
-    appId.value = value
-    console.log(value)
+    appId.value = value;
+    console.log(value);
   },
   { immediate: true }
-)
+);
 watch(
   () => props.fold,
   (value, oldValue) => {
-    foldState.value = value
+    foldState.value = value;
   },
   { immediate: true }
-)
+);
 </script>
 
 <style lang="scss" scoped>

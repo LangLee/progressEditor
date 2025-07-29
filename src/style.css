@@ -6,21 +6,25 @@
 html {
   height: 100%;
   width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Source Han Sans CN,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-size: 16px;
 }
-.tippy-box[data-theme~=light] {
+.tippy-box[data-theme~='light'] {
   font-size: 0.875rem;
   color: rgb(148 163 184);
 }
-.dark .tippy-box[data-theme~=light] {
+.dark .tippy-box[data-theme~='light'] {
   color: #404040;
 }
-.dark .tippy-box[data-theme~=light]>.tippy-svg-arrow {
+.dark .tippy-box[data-theme~='light'] > .tippy-svg-arrow {
   fill: #404040;
 }
-.dark .tippy-box[data-theme~=light]>.tippy-backdrop {
+.dark .tippy-box[data-theme~='light'] > .tippy-backdrop {
   background-color: #404040;
 }
-.dark .tippy-box[data-theme~=light] {
+.dark .tippy-box[data-theme~='light'] {
   background: #404040;
   color: rgb(203 213 225);
 }
